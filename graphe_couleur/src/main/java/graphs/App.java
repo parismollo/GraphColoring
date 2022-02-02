@@ -1,4 +1,4 @@
-package projet_graphe_L2;
+package graphs;
 
 /**
  * Hello world!
