@@ -33,10 +33,11 @@ public class Vertex {
         return vertices.remove(node);
     }
 
-    public String infos() {
-        String str = "";
-        for(Vertex n : vertices)
-            str += id+" -> "+n.id+"\n";
+    public String printInfo() {
+        String str = "Vertex ID: "+this.id+"----> {";
+        for(Vertex v : vertices)
+            str += v.id+" ";
+        str+="}";
         return str;
     }
 

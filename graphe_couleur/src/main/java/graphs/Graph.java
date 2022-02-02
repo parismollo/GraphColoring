@@ -55,22 +55,8 @@ public class Graph {
         this.title = title;
     }
 
-        /**
-     * [Possible Bug/Issue]: 
-     * Not sure this can work. 
-     * This vertex may have vertices 
-     * that are not in the graph. 
-     */
-
-    // public Vertex addVertex(Vertex v) {
-    //     if(!this.vertices.contains(v)){
-    //         this.vertices.add(v);
-    //     }
-    //     return v;  
-    // }
-
     public static Graph randomGraph(int nb) {
-        Graph graph = new Graph("Graph test");
+        Graph graph = new Graph("Test");
 
         for(int i=1;i<=nb;i++)
             graph.addVertex();
@@ -90,17 +76,36 @@ public class Graph {
         do {
             r2 = rd.nextInt(vertices.size());
         } while(r2 == r1);
-      addEdge(vertices.get(r1), vertices.get(r2));
+        addEdge(vertices.get(r1), vertices.get(r2));
     }
+
+
+            /**
+     * [Possible Bug/Issue]: 
+     * Not sure this can work. 
+     * This vertex may have vertices 
+     * that are not in the graph. 
+     */
+
+    // public Vertex addVertex(Vertex v) {
+    //     if(!this.vertices.contains(v)){
+    //         this.vertices.add(v);
+    //     }
+    //     return v;  
+    // }
+
+  
 
     @Override
     public String toString() {
-        String str = vertices.size()+" noeuds :\n";
-
-       for(Vertex vertex : vertices)
-            str += vertex.infos()+"\n";
-
-      return str;
+        String str = "<---------------GRAPH INFO--------------->";
+        str += "\nTitle: "+this.title;
+        str+= "\nSize: "+this.vertices.size();
+        str+="\n\n\tVertices\n";
+        for(Vertex v : vertices)
+            str += v.printInfo()+"\n";
+        str+="<----------------------------------------->\n";
+        return str;
     }
 
 }
