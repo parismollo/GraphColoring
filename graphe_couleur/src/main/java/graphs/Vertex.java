@@ -33,12 +33,13 @@ public class Vertex {
         return vertices.remove(node);
     }
 
-    // public String infos() {
-    //     String str = "";
-    //     for(Vertex n : vertices)
-    //         str += label+" -> "+n.label+"\n";
-    //     return str;
-    // }
+    public String printInfo() {
+        String str = "Vertex ID: "+this.id+"----> {";
+        for(Vertex v : vertices)
+            str += v.id+" ";
+        str+="}";
+        return str;
+    }
 
     @Override
     public String toString() {

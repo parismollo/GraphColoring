@@ -56,7 +56,32 @@ public class Graph {
         this.title = title;
     }
 
-        /**
+    public static Graph randomGraph(int nb) {
+        Graph graph = new Graph("Test");
+
+        for(int i=1;i<=nb;i++)
+            graph.addVertex();
+
+        for(Vertex n : graph.vertices)
+            graph.randomConnection();
+
+        return graph;
+    }
+
+    public void randomConnection() {
+        if(vertices.size() < 2)
+            return;
+        Random rd = new Random();
+        int r1 = rd.nextInt(vertices.size());
+        int r2;
+        do {
+            r2 = rd.nextInt(vertices.size());
+        } while(r2 == r1);
+        addEdge(vertices.get(r1), vertices.get(r2));
+    }
+
+
+            /**
      * [Possible Bug/Issue]: 
      * Not sure this can work. 
      * This vertex may have vertices 
@@ -70,42 +95,18 @@ public class Graph {
     //     return v;  
     // }
 
-
-    // public static Graph randomGraph(int nb) {
-    //     Graph graph = new Graph();
-
-    //     for(int i=1;i<=nb;i++)
-    //         graph.addNode(i+"");
-
-    //     for(Vertex n : graph.vertices)
-    //         graph.randomConnection();
-
-    //     return graph;
-    // }
-
-    // public void randomConnection() {
-    //     if(vertices.size() < 2)
-    //         return;
-    //     Random rd = new Random();
-    //     int r1 = rd.nextInt(vertices.size());
-    //     int r2;
-    //     do {
-    //         r2 = rd.nextInt(vertices.size());
-    //     } while(r2 == r1);
-
-    //     addEdge(vertices.get(r1), vertices.get(r2));
-    // }
-
   
 
-    // @Override
-    // public String toString() {
-    //     String str = vertices.size()+" noeuds :\n";
- 
-    //     for(Vertex node : vertices)
-    //         str += node.infos()+"\n";
-
-    //     return str;
-    // }
+    @Override
+    public String toString() {
+        String str = "<---------------GRAPH INFO--------------->";
+        str += "\nTitle: "+this.title;
+        str+= "\nSize: "+this.vertices.size();
+        str+="\n\n\tVertices\n";
+        for(Vertex v : vertices)
+            str += v.printInfo()+"\n";
+        str+="<----------------------------------------->\n";
+        return str;
+    }
 
 }
