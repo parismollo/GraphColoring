@@ -61,7 +61,7 @@ public class Graph {
         for(int i=1;i<=nb;i++)
             graph.addVertex();
 
-        for(Vertex n : graph.vertices)
+        for(int i=0;i<graph.vertices.size();i++)
             graph.randomConnection();
 
         return graph;

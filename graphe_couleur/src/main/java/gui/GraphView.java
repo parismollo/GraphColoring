@@ -31,7 +31,6 @@ public class GraphView extends JPanel {
         int maxLine = 3, maxColumn = 3;
         int coeffW = (int)getPreferredSize().getWidth() / maxColumn;
         int coeffH = (int)getPreferredSize().getHeight() / maxLine;
-        System.out.println(getWidth()+" "+getHeight());
         int x = 0, y = 0;
 
         for(int i=0;i<vertices.size();i++) {
@@ -79,6 +78,10 @@ public class GraphView extends JPanel {
                            v2.getX()+center, v2.getY()+center);
             }
         }
+    }
+
+    public Graph getGraph() {
+        return graph;
     }
 
     /*

@@ -12,7 +12,6 @@ public class App {
         Graph graph = Graph.randomGraph(10);
         System.out.println(graph);
 
-        GUI gui = new GUI(1200, 800);
-
+        new GUI(1200, 800);
     }
 }
