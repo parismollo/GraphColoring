@@ -28,43 +28,45 @@ public class Graph {
         Vertex v = new Vertex();
         return this.vertices.add(v);
     }
-
+    
+    @SuppressWarnings("unchecked")
     public boolean removeVertex(Vertex vertex) {
         boolean allEdgesRemoved = true;
-        for (Vertex  otherVertex: vertex.getVertices()) {
+        ArrayList<Vertex> nextVertices = (ArrayList<Vertex>) vertex.getVertices().clone();
+        for (Vertex  otherVertex: nextVertices) {
             allEdgesRemoved = (allEdgesRemoved && this.removeEdge(vertex, otherVertex));
         }
         return this.vertices.remove(vertex) && allEdgesRemoved;
     }
 
-    public boolean addEdge(Vertex v1, Vertex v2) {
+    private boolean addEdge(Vertex v1, Vertex v2) {
         if(this.vertices.contains(v1) && this.vertices.contains(v2)){
             return v1.addVertex(v2) && v2.addVertex(v1);
         }
         return false;
     }
     
-    public boolean removeEdge(Vertex v1, Vertex v2) {
+    private boolean removeEdge(Vertex v1, Vertex v2) {
         if(this.vertices.contains(v1) && this.vertices.contains(v2)){
             return v1.removeVertex(v2) && v2.removeVertex(v1);
         }
         return false;
     }
 
-
     public void setTitle(String title) {
         this.title = title;
     }
 
     public static Graph randomGraph(int nb) {
+        int c = 0;
         Graph graph = new Graph("Test");
-
         for(int i=1;i<=nb;i++)
             graph.addVertex();
 
-        for(Vertex n : graph.vertices)
+        while (c<graph.vertices.size()) {
             graph.randomConnection();
-
+            c++;
+        }
         return graph;
     }
 
@@ -81,12 +83,12 @@ public class Graph {
     }
 
 
-            /**
+    /**
      * [Possible Bug/Issue]: 
      * Not sure this can work. 
      * This vertex may have vertices 
      * that are not in the graph. 
-     */
+    */
 
     // public Vertex addVertex(Vertex v) {
     //     if(!this.vertices.contains(v)){

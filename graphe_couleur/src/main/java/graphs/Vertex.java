@@ -29,8 +29,8 @@ public class Vertex {
         return false;
     }
 
-    public boolean removeVertex(Vertex node) {
-        return vertices.remove(node);
+    public boolean removeVertex(Vertex v) {
+        return this.vertices.remove(v);
     }
 
     public String printInfo() {
