@@ -1,5 +1,7 @@
 package graphs;
 
+import gui.GUI;
+
 /**
  * Hello world!
  *
@@ -19,5 +21,7 @@ public class App {
         graph.addVertex();
 
         System.out.println(graph);
+
+        new GUI(1200, 800);
     }
 }
