@@ -40,13 +40,9 @@ public class Vertex {
     //     return str;
     // }
 
-
-    /**
-     * Auxiliary methods
-     */
-    // @Override
-    // public String toString() {
-    //     return id;
-    // }
+    @Override
+    public String toString() {
+        return "Vertex ID:"+id;
+    }
 
 }

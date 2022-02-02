@@ -24,7 +24,39 @@ public class Graph {
         return this.vertices;
     }
 
-    /**
+    public boolean addVertex() {
+        Vertex v = new Vertex();
+        return this.vertices.add(v);
+    }
+
+    public boolean removeVertex(Vertex vertex) {
+        boolean allEdgesRemoved = true;
+        for (Vertex  otherVertex: vertex.getVertices()) {
+            allEdgesRemoved = (allEdgesRemoved && this.removeEdge(vertex, otherVertex));
+        }
+        return this.vertices.remove(vertex) && allEdgesRemoved;
+    }
+
+    public boolean addEdge(Vertex v1, Vertex v2) {
+        if(this.vertices.contains(v1) && this.vertices.contains(v2)){
+            return v1.addVertex(v2) && v2.addVertex(v1);
+        }
+        return false;
+    }
+    
+    public boolean removeEdge(Vertex v1, Vertex v2) {
+        if(this.vertices.contains(v1) && this.vertices.contains(v2)){
+            return v1.removeVertex(v2) && v2.removeVertex(v1);
+        }
+        return false;
+    }
+
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+        /**
      * [Possible Bug/Issue]: 
      * Not sure this can work. 
      * This vertex may have vertices 
@@ -37,44 +69,6 @@ public class Graph {
     //     }
     //     return v;  
     // }
-
-
-    /**
-     * Just connect vertices that are inside the graph class.
-     * @param v1
-     * @param v2
-     * @return true if operations works and false otherwise
-     */
-    public boolean addEdge(Vertex v1, Vertex v2) {
-        if(this.vertices.contains(v1) && this.vertices.contains(v2)){
-            v1.addVertex(v2);
-            v2.addVertex(v1);
-            return true;
-        }
-        return false;
-    }
-    
-    public boolean removeEdge(Vertex v1, Vertex v2) {
-        if(this.vertices.contains(v1) && this.vertices.contains(v2)){
-            return v1.removeVertex(v2) && v2.removeVertex(v1);
-        }
-        return false;
-    }
-
-    private Vertex addVertex() {
-        Vertex v = new Vertex();
-        this.vertices.add(v);
-        return v;
-    }
-
-    private void removeVertex(Vertex vertex) {
-        this.vertices.remove(vertex);
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
 
 
     // public static Graph randomGraph(int nb) {
