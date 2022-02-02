@@ -51,7 +51,6 @@ public class Graph {
         return false;
     }
 
-
     public void setTitle(String title) {
         this.title = title;
     }
@@ -70,42 +69,38 @@ public class Graph {
     //     return v;  
     // }
 
+    public static Graph randomGraph(int nb) {
+        Graph graph = new Graph("Graph test");
 
-    // public static Graph randomGraph(int nb) {
-    //     Graph graph = new Graph();
+        for(int i=1;i<=nb;i++)
+            graph.addVertex();
 
-    //     for(int i=1;i<=nb;i++)
-    //         graph.addNode(i+"");
+        for(Vertex n : graph.vertices)
+            graph.randomConnection();
 
-    //     for(Vertex n : graph.vertices)
-    //         graph.randomConnection();
+        return graph;
+    }
 
-    //     return graph;
-    // }
+    public void randomConnection() {
+        if(vertices.size() < 2)
+            return;
+        Random rd = new Random();
+        int r1 = rd.nextInt(vertices.size());
+        int r2;
+        do {
+            r2 = rd.nextInt(vertices.size());
+        } while(r2 == r1);
+      addEdge(vertices.get(r1), vertices.get(r2));
+    }
 
-    // public void randomConnection() {
-    //     if(vertices.size() < 2)
-    //         return;
-    //     Random rd = new Random();
-    //     int r1 = rd.nextInt(vertices.size());
-    //     int r2;
-    //     do {
-    //         r2 = rd.nextInt(vertices.size());
-    //     } while(r2 == r1);
+    @Override
+    public String toString() {
+        String str = vertices.size()+" noeuds :\n";
 
-    //     addEdge(vertices.get(r1), vertices.get(r2));
-    // }
+       for(Vertex vertex : vertices)
+            str += vertex.infos()+"\n";
 
-  
-
-    // @Override
-    // public String toString() {
-    //     String str = vertices.size()+" noeuds :\n";
- 
-    //     for(Vertex node : vertices)
-    //         str += node.infos()+"\n";
-
-    //     return str;
-    // }
+      return str;
+    }
 
 }
