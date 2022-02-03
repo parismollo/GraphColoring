@@ -28,6 +28,7 @@ public class GUI extends JFrame {
 		
 		// Pour l'instant, pour tester :
 		Graph graph = Graph.randomGraph(9);
+		System.out.println(graph);
 		setGraphViewPage(graph);
 
 		this.setVisible(true);
