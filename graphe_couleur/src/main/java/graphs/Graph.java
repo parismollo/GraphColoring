@@ -53,6 +53,24 @@ public class Graph {
         return false;
     }
 
+    public Vertex searchVertex(Vertex v) {
+        for(Vertex vertex : this.vertices) {
+            if(vertex.equals(v)) {
+                return v;
+            }
+        }
+        return null;
+    }
+
+    public Vertex searchVertex(int id) {
+        for(Vertex vertex : this.vertices) {
+            if(vertex.getId() == id) {
+                return vertex;
+            }
+        }
+        return null;
+    }
+
     public void setTitle(String title) {
         this.title = title;
     }
