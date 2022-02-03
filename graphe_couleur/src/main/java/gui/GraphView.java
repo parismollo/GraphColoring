@@ -16,8 +16,17 @@ import graphs.Vertex;
 public class GraphView extends JPanel {
     
     private Graph graph;
+
+    private GraphPlayView graphPlayView;
     private List<VertexView> verticesView;
 
+    public GraphView(GraphPlayView graphPlayView, Graph graph, int width, int height) {
+        this(graph, width, height);
+        this.graphPlayView = graphPlayView;
+    }
+
+    // On peut faire un GraphView sans forcement utiliser
+    // un graphPlayView
     public GraphView(Graph graph, int width, int height) {
         this.graph = graph;
         this.verticesView = new ArrayList<VertexView>();
@@ -34,7 +43,7 @@ public class GraphView extends JPanel {
         int x = 0, y = 0;
 
         for(int i=0;i<vertices.size();i++) {
-            VertexView vertex = new VertexView(vertices.get(i));
+            VertexView vertex = new VertexView(this, vertices.get(i));
             verticesView.add(vertex);
             this.add(vertex);
             vertex.setLocation(x, y);
@@ -82,6 +91,10 @@ public class GraphView extends JPanel {
 
     public Graph getGraph() {
         return graph;
+    }
+
+    public GraphPlayView getGraphPlayView() {
+        return graphPlayView;
     }
 
     /*

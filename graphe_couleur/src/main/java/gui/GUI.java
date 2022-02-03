@@ -11,7 +11,7 @@ public class GUI extends JFrame {
 
 	private int width;
 	private int height;
-	
+
 	// Pour l'instant la GUI prend un game en parametre.
 	public GUI(int w, int h) {
 		this.setTitle("Graph");
@@ -42,8 +42,8 @@ public class GUI extends JFrame {
 		this.getContentPane().removeAll();
 		this.setResizable(true);
 		//this.setExtendedState(JFrame.MAXIMIZED_BOTH);*
-		GraphView graphView = new GraphView(graph, width, height);
-		this.getContentPane().add(graphView);
+		GraphPlayView graphPlayView = new GraphPlayView(graph, width, height);
+		this.getContentPane().add(graphPlayView);
 		revalidate();
 		repaint();
 	}
