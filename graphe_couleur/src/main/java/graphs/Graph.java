@@ -7,6 +7,8 @@ public class Graph {
     private String title;
     private ArrayList<Vertex> vertices;
 
+    private int id = 1;
+
     public Graph(String title, ArrayList<Vertex> vertices) {
         this.setTitle(title);
         this.vertices = vertices;
@@ -25,7 +27,7 @@ public class Graph {
     }
 
     public boolean addVertex() {
-        Vertex v = new Vertex();
+        Vertex v = new Vertex(id++);
         return this.vertices.add(v);
     }
     

@@ -4,7 +4,7 @@ import java.awt.Color;
 import java.util.ArrayList;
 
 public class Vertex {
-    private static int counter = 0;
+    private static int counter = 1;
     private final int id;
     private Color color = Color.WHITE;
     private ArrayList<Vertex> vertices;
@@ -16,6 +16,15 @@ public class Vertex {
 
     public Vertex() {
         this(new ArrayList<Vertex>());
+    }
+
+    public Vertex(int id, ArrayList<Vertex> vertices) {
+        this.id = id;
+        this.vertices = vertices;
+    }
+
+    public Vertex(int id) {
+        this(id, new ArrayList<Vertex>());
     }
 
     public int getId() {

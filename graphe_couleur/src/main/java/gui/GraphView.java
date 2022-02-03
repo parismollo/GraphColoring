@@ -32,7 +32,7 @@ public class GraphView extends JPanel {
         this.verticesView = new ArrayList<VertexView>();
         
         this.setLayout(null);
-        this.setBackground(Color.RED);
+        this.setBackground(Color.WHITE);
         this.setPreferredSize(new Dimension(width, height));
 
         List<Vertex> vertices = graph.getVertices();
