@@ -27,8 +27,8 @@ public class VertexView extends JPanel {
         this.graphView = graphView;
     }
 
-    public VertexView(Vertex vertex) {
-        this.vertex = vertex;
+    public VertexView(Vertex v) {
+        this.vertex = v;
 
         this.addMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent e) {

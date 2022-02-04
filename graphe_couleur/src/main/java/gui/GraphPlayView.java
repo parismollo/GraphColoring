@@ -31,8 +31,8 @@ public class GraphPlayView extends JPanel {
                       lightColor,
                       darkColor;
 
-        public ColorButton(Color color) {
-            this.color = color;
+        public ColorButton(Color c) {
+            this.color = c;
             this.lightColor = getLighterColor(color, 0.55f);
             this.darkColor = lightColor;
             this.setMaximumSize(new Dimension(50, 30));
