@@ -11,7 +11,7 @@ public class WelshPowell {
         for(int i = 0 ; i < list.size() -1 ; i ++) {
             int index = i;
             for(int j = i + 1 ; j < list.size() ; j++) {
-                if(list.get(j).getVertices().size() < list.get(index).getVertices().size() ) {
+                if(list.get(j).getVertices().size() > list.get(index).getVertices().size() ) {
                     index = j; 
                 }
             }
@@ -25,6 +25,9 @@ public class WelshPowell {
     public static ArrayList<Vertex> welshPowell(ArrayList<Vertex>list){
         ArrayList<Vertex> temp = new ArrayList<Vertex>();
         temp = selectionSort(list);
+        for(int i = 0 ; i < temp.size();i++){
+            System.out.println(temp.get(i).getVertices().size());
+        }
         Color tab [] = {Color.BLUE,Color.RED,Color.GREEN,Color.YELLOW};
         int iterator = 0;
         while(iterator != 4){
