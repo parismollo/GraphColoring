@@ -48,7 +48,8 @@ public class GraphView extends JPanel {
             this.add(vertex);
             vertex.setLocation(x, y);
             // vertex.setSize(width, height); // Peut etre un jour
-            if(i % maxColumn == 0 && i != 0) {
+            System.out.println(i+" "+(maxColumn)+" "+((i+1) % (maxColumn) == 0));
+            if((i+1) % maxColumn == 0 && i != 0) {
                 x = 0;
                 y += coeffH;
             }
