@@ -2,6 +2,7 @@ package algorithms;
 
 import java.awt.Color;
 import java.util.ArrayList;
+
 import graphs.Vertex;
 
 public class WelshPowell {
@@ -13,7 +14,6 @@ public class WelshPowell {
                 if(list.get(j).getVertices().size() < list.get(index).getVertices().size() ) {
                     index = j; 
                 }
-
             }
             Vertex tmp = list.get(index);
             list.set(index, list.get(i));
@@ -22,26 +22,29 @@ public class WelshPowell {
         return list;
     }
 
-    public static ArrayList<Vertex> welshPowell(ArrayList<Vertex> list){
-        ArrayList<Vertex> temp;
+    public static ArrayList<Vertex> welshPowell(ArrayList<Vertex>list){
+        ArrayList<Vertex> temp = new ArrayList<Vertex>();
         temp = selectionSort(list);
-        for(int i = 0 ; i < list.size() ; i++){
-            if(i % 6 == 0){
-                temp.get(i).setColor(Color.BLUE);
+        Color tab [] = {Color.BLUE,Color.RED,Color.GREEN,Color.YELLOW};
+        int iterator = 0;
+        while(iterator != 4){
+            Color current = tab[iterator];
+            for(int i = 0 ; i < temp.size();i++){
+                if(temp.get(i).getColor().equals(Color.WHITE) && containsColor(temp.get(i).getVertices(), current) == false){
+                    temp.get(i).setColor(current);
+                }
             }
-            else if(i % 6 == 1 || i % 6 == 5){
-                temp.get(i).setColor(Color.RED);
-            }
-            else if(i % 6 == 2|| i % 6 == 4){
-                temp.get(i).setColor(Color.GREEN);
-            }
-            else if(i % 6 == 3){
-                temp.get(i).setColor(Color.YELLOW);
-            }
-            else{
-                System.out.println("Erreur dans le code de changement de couleur");
-            }
+            iterator++;
         }
         return temp;
+    }
+
+    public static boolean containsColor(ArrayList<Vertex> vertices , Color c){
+        for(int i = 0 ; i < vertices.size();i++){
+            if(vertices.get(i).getColor().equals(c)){
+                return true;
+            }
+        }
+        return false;
     }
 }
