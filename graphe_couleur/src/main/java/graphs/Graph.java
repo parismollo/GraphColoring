@@ -77,6 +77,10 @@ public class Graph {
         this.title = title;
     }
 
+    public void setVerticesList(ArrayList<Vertex> vertices){
+        this.vertices = vertices;
+    }
+    
     public static Graph randomGraph(int nb) {
         int c = 0;
         Graph graph = new Graph("Test");

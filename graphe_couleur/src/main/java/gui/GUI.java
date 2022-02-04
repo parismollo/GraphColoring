@@ -28,6 +28,7 @@ public class GUI extends JFrame {
 		
 		// Pour l'instant, pour tester :
 		Graph graph = Graph.randomGraph(9);
+		graph.setVerticesList(algorithms.WelshPowell.welshPowell(graph.getVertices()));
 		System.out.println(graph);
 		setGraphViewPage(graph);
 
