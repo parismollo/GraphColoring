@@ -5,6 +5,8 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+import java.awt.geom.Path2D;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,7 +50,6 @@ public class GraphView extends JPanel {
             this.add(vertex);
             vertex.setLocation(x, y);
             // vertex.setSize(width, height); // Peut etre un jour
-            System.out.println(i+" "+(maxColumn)+" "+((i+1) % (maxColumn) == 0));
             if((i+1) % maxColumn == 0 && i != 0) {
                 x = 0;
                 y += coeffH;
@@ -71,6 +72,14 @@ public class GraphView extends JPanel {
         super.paintComponent(g);
         // On change la taille des arretes.
         Graphics2D g2d = (Graphics2D)g;
+
+        // INCROYABLE !!
+        // Effet d'antialiasing. Le graphique est beaucoup plus lisse qu'avant.
+        g2d.setRenderingHint(
+            RenderingHints.KEY_ANTIALIASING,
+            RenderingHints.VALUE_ANTIALIAS_ON);
+        ////////////////
+
         g2d.setStroke(new BasicStroke(5));
 
         int center = -1;
@@ -84,11 +93,21 @@ public class GraphView extends JPanel {
                 v2 = getVertexView(vertex);
                 if(v2 == null)
                     continue;
-                g.drawLine(vertexView.getX()+center, vertexView.getY()+center,
+                g2d.drawLine(vertexView.getX()+center, vertexView.getY()+center,
                            v2.getX()+center, v2.getY()+center);
             }
         }
-    }
+
+        /*
+        // Pour tracer des courbes
+        Path2D path = new Path2D.Double();
+        path.moveTo(200, 200);
+        path.curveTo(0, 0, 100, 100, 200, 0);
+
+        g2d.draw(path); // Courbe vide
+        // g2d.fill(path); // Courbe remplie
+        */
+    }   
 
     public Graph getGraph() {
         return graph;

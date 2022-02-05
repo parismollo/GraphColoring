@@ -30,8 +30,13 @@ public class GUI extends JFrame {
 		Graph graph = Graph.randomGraph(9);
 		graph.setVerticesList(algorithms.WelshPowell.welshPowell(graph.getVertices()));
 		System.out.println(graph);
+		
 		setGraphViewPage(graph);
-
+		
+		////// TEST: on clique sur le pays pour le dessiner
+		// Il faut commenter setGraphViewPage si vous voulez tester
+		// setFillImagePage();
+		///////////
 		this.setVisible(true);
 	}
 	
@@ -49,6 +54,16 @@ public class GUI extends JFrame {
 		repaint();
 	}
 	
+	/////////////// TEST ////////////
+	public void setFillImagePage() {
+		this.getContentPane().removeAll();
+		this.setResizable(true);
+		this.getContentPane().add(new FillImagePan("src/resources/europe.jpeg"));
+		revalidate();
+		repaint();
+	}
+	/////////////////////////////////
+
 	public void close() {
     	this.dispose();
         System.exit(0);
