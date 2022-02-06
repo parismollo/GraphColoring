@@ -41,8 +41,11 @@ public class FillImagePan extends JPanel {
     }
     
     public void colorImage(int x, int y, boolean[][] visited) {
+        /* Pour compter le nombre d'appels.
+        // ATTENTION: ralenti beaucoup la vitesse de l'algo
         count++;
         System.out.println(count);
+        */
         if(outOfBorders(x, y) || visited[x][y])
             return;
         Color c = new Color(image.getRGB(x, y));
@@ -62,8 +65,11 @@ public class FillImagePan extends JPanel {
     }
 
     public void colorImage2(int x, int y, boolean[][] visited) {
+        /* Pour compter le nombre d'appels.
+        // ATTENTION: ralenti beaucoup la vitesse de l'algo
         count++;
         System.out.println(count);
+        */
         if(outOfBorders(x, y) || visited[x][y])
             return;
         Color c = new Color(image.getRGB(x, y));
@@ -99,8 +105,11 @@ public class FillImagePan extends JPanel {
         s.add(new Point(x, y));
         while(!s.empty()) {
             Point p = s.pop();
+            /* Pour compter le nombre de tours de boucle
+            // ATTENTION: ralenti beaucoup la vitesse de l'algo
             count++;
             System.out.println(count);
+            */
             if(outOfBorders(p.x, p.y) || visited[p.x][p.y])
                 continue;
             Color c = new Color(image.getRGB(p.x, p.y));
