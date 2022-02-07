@@ -55,10 +55,10 @@ public class GUI extends JFrame {
 	}
 	
 	/////////////// TEST ////////////
-	public void setFillImagePage() {
+	public void setMapPage(String mapURL) {
 		this.getContentPane().removeAll();
 		this.setResizable(true);
-		this.getContentPane().add(new FillImagePan("src/resources/europe.jpeg"));
+		this.getContentPane().add(new MapView(mapURL));
 		revalidate();
 		repaint();
 	}
