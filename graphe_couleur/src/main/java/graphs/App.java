@@ -15,7 +15,7 @@ public class App {
         // java -cp target/appli.jar map
         if(args != null && args.length == 1) {
             if(args[0].toUpperCase().equals("MAP"))
-                gui.setFillImagePage();
+                gui.setMapPage("src/resources/europe.jpeg");
         }
     }
 

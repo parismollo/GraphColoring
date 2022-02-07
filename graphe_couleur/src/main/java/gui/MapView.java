@@ -13,11 +13,11 @@ import java.util.Stack;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
-public class FillImagePan extends JPanel {
+public class MapView extends JPanel {
     
     private BufferedImage image;
 
-    public FillImagePan(String url) {
+    public MapView(String url) {
         try {
             image = ImageIO.read(new File(url));
         } catch (IOException e) {
