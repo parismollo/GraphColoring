@@ -28,7 +28,7 @@ public class App {
         System.out.println(graph);
         graph.addVertex();
         System.out.println(graph);
-        System.out.println(graph.searchVertex(7));
-        System.out.println(graph.searchVertex(v));
+        System.out.println(graph.getVertex(7));
+        System.out.println(graph.getVertex(v));
     }
 }

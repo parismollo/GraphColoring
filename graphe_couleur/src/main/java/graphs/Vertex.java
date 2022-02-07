@@ -8,6 +8,7 @@ public class Vertex {
     private final int id;
     private Color color = Color.WHITE;
     private ArrayList<Vertex> vertices;
+    private String title; 
 
     public Vertex(ArrayList<Vertex> vertices) {
         this.id = counter++;
@@ -25,6 +26,11 @@ public class Vertex {
 
     public Vertex(int id) {
         this(id, new ArrayList<Vertex>());
+    }
+
+    public Vertex(int id, String title) {
+        this(id, new ArrayList<Vertex>());
+        this.title = title;
     }
 
     public int getId() {
@@ -45,9 +51,9 @@ public class Vertex {
     }
 
     public String printInfo() {
-        String str = "Vertex ID: "+this.id+"----> {";
+        String str = "Vertex Title: "+this.title+"----> {";
         for(Vertex v : vertices)
-            str += v.id+" ";
+            str += v.getTitle()+" ";
         str+="}";
         return str;
     }
@@ -59,10 +65,14 @@ public class Vertex {
     public Color getColor() {
         return color;
     }
+    
+    public String getTitle() {
+        return this.title;
+    }
 
     @Override
     public String toString() {
-        return "Vertex ID:"+id;
+        return "Vertex Id:"+id + "Vertex Title: "+this.title;
     }
 
 }

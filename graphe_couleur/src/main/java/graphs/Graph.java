@@ -30,7 +30,19 @@ public class Graph {
         Vertex v = new Vertex(id++);
         return this.vertices.add(v);
     }
-    
+
+
+    public Vertex addVertex(String title) {
+        Vertex v = new Vertex(id++, title);
+        this.vertices.add(v);
+        return v;
+         
+    }
+
+    public boolean addVertex(Vertex v) {
+        return this.vertices.add(v);
+    }
+
     @SuppressWarnings("unchecked")
     public boolean removeVertex(Vertex vertex) {
         boolean allEdgesRemoved = true;
@@ -41,21 +53,21 @@ public class Graph {
         return this.vertices.remove(vertex) && allEdgesRemoved;
     }
 
-    private boolean addEdge(Vertex v1, Vertex v2) {
+    public boolean addEdge(Vertex v1, Vertex v2) {
         if(this.vertices.contains(v1) && this.vertices.contains(v2)){
             return v1.addVertex(v2) && v2.addVertex(v1);
         }
         return false;
     }
     
-    private boolean removeEdge(Vertex v1, Vertex v2) {
+    public boolean removeEdge(Vertex v1, Vertex v2) {
         if(this.vertices.contains(v1) && this.vertices.contains(v2)){
             return v1.removeVertex(v2) && v2.removeVertex(v1);
         }
         return false;
     }
 
-    public Vertex searchVertex(Vertex v) {
+    public Vertex getVertex(Vertex v) {
         for(Vertex vertex : this.vertices) {
             if(vertex.equals(v)) {
                 return v;
@@ -64,9 +76,18 @@ public class Graph {
         return null;
     }
 
-    public Vertex searchVertex(int id) {
+    public Vertex getVertex(int id) {
         for(Vertex vertex : this.vertices) {
             if(vertex.getId() == id) {
+                return vertex;
+            }
+        }
+        return null;
+    }
+
+    public Vertex getVertex(String title) {
+        for(Vertex vertex : this.vertices) {
+            if(vertex.getTitle().equals(title)) {
                 return vertex;
             }
         }
