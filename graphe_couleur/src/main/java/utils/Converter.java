@@ -4,8 +4,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 
-import javax.crypto.SealedObject;
-
 import graphs.Graph;
 import graphs.Vertex;
 
