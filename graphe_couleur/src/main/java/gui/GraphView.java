@@ -39,7 +39,7 @@ public class GraphView extends JPanel {
 
         List<Vertex> vertices = graph.getVertices();
 
-        int maxLine = 3, maxColumn = 3;
+        int maxLine = 7, maxColumn = 8;
         int coeffW = (int)getPreferredSize().getWidth() / maxColumn;
         int coeffH = (int)getPreferredSize().getHeight() / maxLine;
         int x = 0, y = 0;

@@ -28,9 +28,9 @@ public class WelshPowell {
         for(int i = 0 ; i < temp.size();i++){
             System.out.println(temp.get(i).getVertices().size());
         }
-        Color tab [] = {Color.BLUE,Color.RED,Color.GREEN,Color.YELLOW};
+        Color tab [] = {Color.BLUE,Color.RED,Color.GREEN,Color.YELLOW, Color.PINK};
         int iterator = 0;
-        while(iterator != 4){
+        while(iterator != tab.length) {
             Color current = tab[iterator];
             for(int i = 0 ; i < temp.size();i++){
                 if(temp.get(i).getColor().equals(Color.WHITE) && containsColor(temp.get(i).getVertices(), current) == false){

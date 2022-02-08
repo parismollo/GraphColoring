@@ -13,7 +13,7 @@ import graphs.Vertex;
  * The Converter class, transforms a csv file into a graph. 
  */
 public class Converter {
-    static String saveFolder = "graphe_couleur/src/resources/";
+    static String saveFolder = "src/resources/";
     static String graphName;
 
     public static void main(String[] args) throws Exception {
@@ -28,7 +28,7 @@ public class Converter {
         }
     }
 
-    private static Graph mapToGraph(String filepath) throws FileNotFoundException {
+    public static Graph mapToGraph(String filepath) throws FileNotFoundException {
         Graph graph = new Graph(graphName);
 
         Scanner scanner = new Scanner(new File(filepath));

@@ -1,10 +1,12 @@
 package gui;
 
 import java.awt.Dimension;
+import java.io.FileNotFoundException;
 
 import javax.swing.JFrame;
 
 import graphs.Graph;
+import utils.Converter;
 
 public class GUI extends JFrame {
 	private static final long serialVersionUID = 1L;
@@ -31,6 +33,14 @@ public class GUI extends JFrame {
 		graph.setVerticesList(algorithms.WelshPowell.welshPowell(graph.getVertices()));
 		System.out.println(graph);
 		
+		try {
+			graph = Converter.mapToGraph("src/resources/USA.csv");
+			graph.setVerticesList(algorithms.WelshPowell.welshPowell(graph.getVertices()));
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 		setGraphViewPage(graph);
 		
 		////// TEST: on clique sur le pays pour le dessiner

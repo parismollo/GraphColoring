@@ -1,6 +1,7 @@
 package graphs;
 
 import java.awt.Color;
+import java.awt.Point;
 import java.util.ArrayList;
 
 public class Vertex {
@@ -9,6 +10,7 @@ public class Vertex {
     private Color color = Color.WHITE;
     private ArrayList<Vertex> vertices;
     private String title; 
+    private Point position;
 
     public Vertex(ArrayList<Vertex> vertices) {
         this.id = counter++;
@@ -73,6 +75,22 @@ public class Vertex {
     @Override
     public String toString() {
         return "Vertex Id:"+id + "Vertex Title: "+this.title;
+    }
+
+    public void setPosition(int x, int y) {
+        position = new Point(x, y);
+    }
+
+    public Point getPosition() {
+        return position;
+    }
+
+    public int getX() {
+        return position.x;
+    }
+
+    public int getY() {
+        return position.y;
     }
 
 }
