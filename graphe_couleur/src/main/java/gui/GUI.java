@@ -67,7 +67,7 @@ public class GUI extends JFrame {
 	public void setMapPage(Graph graph, String mapURL) {
 		this.getContentPane().removeAll();
 		this.setResizable(false);
-		MapView map = new MapView(graph, mapURL);
+		MapView map = new MapView(graph, mapURL, true);
 		this.setMinimumSize(map.getMapDim());
 		this.setSize(map.getMapDim());
 		

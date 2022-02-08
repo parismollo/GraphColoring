@@ -58,7 +58,7 @@ public class MapView extends JPanel {
                     System.out.println();
                     
                     try {
-                        Converter.write(v, url);
+                        Converter.write(v, url.substring(0, url.lastIndexOf("."))+".csv");
                     } catch (IOException e1) {
                         // TODO Auto-generated catch block
                         e1.printStackTrace();

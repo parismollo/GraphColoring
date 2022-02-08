@@ -25,4 +25,4 @@ hs_err_pid*
 # ignore l'arbre target
 graphe_couleur/target/*
 graphe_couleur/.vscode
-
+*.odt
