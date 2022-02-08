@@ -31,13 +31,12 @@ public class GUI extends JFrame {
 		// Pour l'instant, pour tester :
 		Graph graph = Graph.randomGraph(9);
 		graph.setVerticesList(algorithms.WelshPowell.welshPowell(graph.getVertices()));
-		System.out.println(graph);
+		//System.out.println(graph);
 		
 		try {
 			graph = Converter.mapToGraph("src/resources/USA.csv");
 			graph.setVerticesList(algorithms.WelshPowell.welshPowell(graph.getVertices()));
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -57,7 +56,7 @@ public class GUI extends JFrame {
 	public void setGraphViewPage(Graph graph) {
 		this.getContentPane().removeAll();
 		this.setResizable(true);
-		//this.setExtendedState(JFrame.MAXIMIZED_BOTH);*
+		//this.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		GraphPlayView graphPlayView = new GraphPlayView(graph, width, height);
 		this.getContentPane().add(graphPlayView);
 		revalidate();
@@ -65,10 +64,14 @@ public class GUI extends JFrame {
 	}
 	
 	/////////////// TEST ////////////
-	public void setMapPage(String mapURL) {
+	public void setMapPage(Graph graph, String mapURL) {
 		this.getContentPane().removeAll();
-		this.setResizable(true);
-		this.getContentPane().add(new MapView(mapURL));
+		this.setResizable(false);
+		MapView map = new MapView(graph, mapURL);
+		this.setMinimumSize(map.getMapDim());
+		this.setSize(map.getMapDim());
+		
+		this.getContentPane().add(map);
 		revalidate();
 		repaint();
 	}

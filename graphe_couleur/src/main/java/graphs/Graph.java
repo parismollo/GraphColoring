@@ -142,7 +142,13 @@ public class Graph {
     //     return v;  
     // }
 
-  
+    public Vertex getVertex(int x, int y) {
+        for(Vertex v : vertices) {
+            if(v.getX() == x && v.getY() == y)
+                return v;
+        }
+        return null;
+    }
 
     @Override
     public String toString() {

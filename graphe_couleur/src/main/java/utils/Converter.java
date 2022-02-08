@@ -1,7 +1,12 @@
 package utils;
 
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Scanner;
 
 import graphs.Graph;
@@ -15,7 +20,7 @@ public class Converter {
     static String graphName;
 
     public static void main(String[] args) throws Exception {
-        if(args.length !=2) {
+        /*if(args.length !=2) {
             throw new Exception("\n[LOG]: Please insert the file path. Only two arguments are accepted [filepath] [filename], e.g. java Converter USA.txt USA\n");
         }else {
             String path = args[0];
@@ -23,7 +28,10 @@ public class Converter {
             graphName = fileName;
             loadFile(path, fileName);
             System.out.println(mapToGraph(saveFolder+fileName+".csv"));
-        }
+        }*/
+        Vertex v = new Vertex();
+        v.setPosition(22, 220);
+        write(v, "src/resources/USA.csv");
     }
 
     public static Graph mapToGraph(String filepath) throws FileNotFoundException {
@@ -96,4 +104,29 @@ public class Converter {
             throw new Exception("\n[LOG]: File could not be saved.\n");
         }
     }
+
+    public static void write(Vertex v, String filepath) throws IOException {
+        String str = new String(Files.readAllBytes(Paths.get(filepath)));
+        Scanner sc = new Scanner(str);
+        String newStr = sc.nextLine()+"\n";
+        while(sc.hasNext()) {
+            String line = sc.nextLine();
+            String[] split = line.split(",\"");
+            if(split != null && split[0].equals(v.getTitle())) {
+                String main = split[0].strip()+",";
+                main += "\""+split[1].strip();
+                main = main.substring(0, main.lastIndexOf("\"")+1)+",";
+                main += v.getX()+","+v.getY();
+                newStr += main+"\n";
+            }
+            else {
+                newStr += line+"\n";
+            }
+        }
+        BufferedWriter writer = new BufferedWriter(new FileWriter(filepath));
+        writer.write(newStr);
+        
+        writer.close();
+    }
+
 }

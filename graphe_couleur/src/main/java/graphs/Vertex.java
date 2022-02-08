@@ -81,6 +81,10 @@ public class Vertex {
         position = new Point(x, y);
     }
 
+    public void setPosition(Point p) {
+        this.position = p;
+    }
+
     public Point getPosition() {
         return position;
     }

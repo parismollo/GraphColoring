@@ -1,6 +1,7 @@
 package gui;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.event.MouseAdapter;
@@ -8,29 +9,68 @@ import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Scanner;
 import java.util.Stack;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
+import graphs.Graph;
+import graphs.Vertex;
+import utils.Converter;
+
 public class MapView extends JPanel {
     
+    private Graph graph;
     private BufferedImage image;
+    private static Scanner sc = new Scanner(System.in);
+    private boolean devMode;
 
-    public MapView(String url) {
+    public MapView(Graph graph, String url) {
+        this(graph, url, false);
+    }
+
+    public MapView(Graph graph, String url, boolean devMode) {
         try {
             image = ImageIO.read(new File(url));
         } catch (IOException e) {
             e.printStackTrace();
         }
+
         this.addMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent e) {
                 super.mousePressed(e);
                 colorImage3(e.getX(), e.getY(),
                     new boolean[image.getWidth()][image.getHeight()]);
+               /* if(graph != null) {
+                    for(Vertex v : graph.getVertices()) {
+                        if(!isWhite(v.getPosition()))
+                            System.out.println("aaaa");
+
+                    }
+                }
+                */
+                if(devMode) {
+                    System.out.println(e.getPoint());
+                    System.out.print("Nom du lieu : ");
+                    Vertex v = graph.getVertex(sc.nextLine());
+                    v.setPosition(e.getPoint());
+                    System.out.println();
+                    
+                    try {
+                        Converter.write(v, url);
+                    } catch (IOException e1) {
+                        // TODO Auto-generated catch block
+                        e1.printStackTrace();
+                    }
+                }
                 repaint();
             }
         });
+    }
+
+    public MapView(String url) {
+        this(null, url);
     }
 
     // Pour compter le nombre de recursivite ou de tours de boucle
@@ -131,6 +171,12 @@ public class MapView extends JPanel {
         }
     }
 
+    public boolean isWhite(Point p) {
+        Color c = new Color(image.getRGB(p.x, p.y));
+        int min = 220;
+        return c.getRed() > min && c.getGreen() > min && c.getBlue() > min;
+    }
+
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -146,6 +192,10 @@ public class MapView extends JPanel {
         spaceY /= 2;
         g.drawImage(image, spaceX, spaceY, imgW, imgH, null);
         */
+    }
+
+    public Dimension getMapDim() {
+        return new Dimension(image.getWidth(), image.getHeight());
     }
 
 }
