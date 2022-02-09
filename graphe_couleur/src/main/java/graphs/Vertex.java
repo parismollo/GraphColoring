@@ -53,7 +53,7 @@ public class Vertex {
     }
 
     public String printInfo() {
-        String str = "Vertex Title: "+this.title+"----> {";
+        String str = "Vertex Title: "+this.title+" "+this.printPosition()+" ----> {";
         for(Vertex v : vertices)
             str += v.getTitle()+" ";
         str+="}";
@@ -95,6 +95,13 @@ public class Vertex {
 
     public int getY() {
         return position.y;
+    }
+
+    public String printPosition() {
+        if (this.position != null) {
+            return "["+this.getX()+";"+this.getY()+"]";
+        }
+        return "[?; ?]";
     }
 
 }

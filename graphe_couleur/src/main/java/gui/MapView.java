@@ -53,15 +53,16 @@ public class MapView extends JPanel {
                 if(devMode) {
                     System.out.println(e.getPoint());
                     System.out.print("Nom du lieu : ");
-                    Vertex v = graph.getVertex(sc.nextLine());
-                    v.setPosition(e.getPoint());
-                    System.out.println();
+                   
                     
                     try {
-                        Converter.write(v, url.substring(0, url.lastIndexOf("."))+".csv");
-                    } catch (IOException e1) {
+                        Vertex v = graph.getVertex(sc.nextLine());
+                        v.setPosition(e.getPoint());
+                        System.out.println();
+                        Converter.writeCoordinates(v, url.substring(0, url.lastIndexOf("."))+".csv");
+                    } catch (Exception e1) {
                         // TODO Auto-generated catch block
-                        e1.printStackTrace();
+                        System.out.println("Vertex not found. Please insert a valid title");
                     }
                 }
                 repaint();

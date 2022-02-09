@@ -20,7 +20,7 @@ public class Converter {
     static String graphName;
 
     public static void main(String[] args) throws Exception {
-        /*if(args.length !=2) {
+        if(args.length !=2) {
             throw new Exception("\n[LOG]: Please insert the file path. Only two arguments are accepted [filepath] [filename], e.g. java Converter USA.txt USA\n");
         }else {
             String path = args[0];
@@ -28,10 +28,11 @@ public class Converter {
             graphName = fileName;
             loadFile(path, fileName);
             System.out.println(mapToGraph(saveFolder+fileName+".csv"));
-        }*/
-        Vertex v = new Vertex();
-        v.setPosition(22, 220);
-        write(v, "src/resources/USA.csv");
+        }
+        
+        // Vertex v = new Vertex();
+        // v.setPosition(22, 220);
+        // writeCoordinates(v, "src/resources/USA.csv");
     }
 
     public static Graph mapToGraph(String filepath) throws FileNotFoundException {
@@ -46,16 +47,17 @@ public class Converter {
             String line = scanner.next();
             String[] vertices = line.split(",\"");
 
-            // System.out.println("vertices[0]:" + vertices[0]);
-            // System.out.println(vertices[1]);
-
             String main = vertices[0].strip();
             String[] borders = vertices[1].replace("\"", "").split(",");
-
             Vertex v = graph.getVertex(main);
             if(v == null) {
                 v = graph.addVertex(main);
             }
+            if(vertices.length == 3) {
+                String[] points = vertices[2].replace("\"", "").split(",");
+                v.setPosition(Integer.parseInt(points[0]), Integer.parseInt(points[1]));
+            }
+
             for(String s : borders) {
                 s = s.strip();
                 Vertex border = graph.getVertex(s);
@@ -66,11 +68,12 @@ public class Converter {
             }         
         }
         scanner.close();
-
         return graph;
     }
 
-    private static void loadFile(String filepath, String filename) throws Exception{
+
+
+    public static void loadFile(String filepath, String filename) throws Exception{
         /**
          * 1. Check if CSV file.
          * 2. Read and Load File into resources folder.
@@ -105,7 +108,7 @@ public class Converter {
         }
     }
 
-    public static void write(Vertex v, String filepath) throws IOException {
+    public static void writeCoordinates(Vertex v, String filepath) throws IOException {
         String str = new String(Files.readAllBytes(Paths.get(filepath)));
         Scanner sc = new Scanner(str);
         String newStr = sc.nextLine()+"\n";
@@ -116,16 +119,17 @@ public class Converter {
                 String main = split[0].strip()+",";
                 main += "\""+split[1].strip();
                 main = main.substring(0, main.lastIndexOf("\"")+1)+",";
-                main += v.getX()+","+v.getY();
+                main += "\""+v.getX()+","+v.getY()+"\"";
                 newStr += main+"\n";
+                System.out.println("Vertex: "+v.getTitle()+" updated.");
             }
             else {
                 newStr += line+"\n";
             }
         }
+        sc.close();
         BufferedWriter writer = new BufferedWriter(new FileWriter(filepath));
         writer.write(newStr);
-        
         writer.close();
     }
 
