@@ -30,12 +30,12 @@ public class GUI extends JFrame {
 		
 		// Pour l'instant, pour tester :
 		Graph graph = Graph.randomGraph(9);
-		graph.setVerticesList(algorithms.WelshPowell.welshPowell(graph.getVertices()));
+		//graph.setVerticesList(algorithms.WelshPowell.welshPowell(graph.getVertices()));
 		//System.out.println(graph);
 		
 		try {
 			graph = Converter.mapToGraph("src/resources/USA.csv");
-			graph.setVerticesList(algorithms.WelshPowell.welshPowell(graph.getVertices()));
+			graph.setVerticesList(algorithms.Dsatur.dsatur(graph.getVertices()));
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
