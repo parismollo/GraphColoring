@@ -1,7 +1,9 @@
-package graphs;
+package launcher;
 
 import java.io.FileNotFoundException;
 
+import graphs.Graph;
+import graphs.Vertex;
 import gui.GUI;
 import utils.Converter;
 
