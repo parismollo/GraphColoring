@@ -30,7 +30,7 @@ public class MapView extends JPanel {
         this(graph, url, false);
     }
 
-    public MapView(Graph graph, String url, boolean devMode) {
+    public MapView(Graph graph, final String url, boolean devMode) {
         try {
             image = ImageIO.read(new File(url));
         } catch (IOException e) {
@@ -50,13 +50,13 @@ public class MapView extends JPanel {
                     }
                 }
                 */
-                if(devMode) {
+                if(MapView.this.devMode) {
                     System.out.println(e.getPoint());
                     System.out.print("Nom du lieu : ");
                    
                     
                     try {
-                        Vertex v = graph.getVertex(sc.nextLine());
+                        Vertex v = MapView.this.graph.getVertex(sc.nextLine());
                         v.setPosition(e.getPoint());
                         System.out.println();
                         Converter.writeCoordinates(v, url.substring(0, url.lastIndexOf("."))+".csv");
