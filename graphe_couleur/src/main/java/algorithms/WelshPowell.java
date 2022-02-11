@@ -21,7 +21,7 @@ public class WelshPowell {
         }
         return list;
     }
-
+    
     public static ArrayList<Vertex> welshPowell(ArrayList<Vertex>list){
         ArrayList<Vertex> temp = new ArrayList<Vertex>();
         temp = selectionSort(list);

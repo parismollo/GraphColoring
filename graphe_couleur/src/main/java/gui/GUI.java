@@ -1,11 +1,13 @@
 package gui;
 
+import java.awt.Color;
 import java.awt.Dimension;
+import java.util.ArrayList;
 
 import javax.swing.JFrame;
 
 import graphs.Graph;
-
+import graphs.Vertex;
 public class GUI extends JFrame {
 	private static final long serialVersionUID = 1L;
 
@@ -30,6 +32,15 @@ public class GUI extends JFrame {
 		Graph graph = Graph.randomGraph(9);
 		graph.setVerticesList(algorithms.WelshPowell.welshPowell(graph.getVertices()));
 		System.out.println(graph);
+		//Test pour Greedy : (qui retourne un boolean)
+		
+		/*Color[] nb = {Color.blue};
+		Color[] color = new Color[15];
+		for(int i=0;i<15;i++){
+			color[i] = Color.WHITE;
+		}
+		//ArrayList<Vertex> list = algorithms.Greedy.selectionSort(graph.getVertices());
+		System.out.println(algorithms.Greedy.graphColoring(0, nb, color, graph.getVertices()));*/
 		
 		setGraphViewPage(graph);
 		
