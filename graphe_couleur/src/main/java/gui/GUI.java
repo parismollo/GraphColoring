@@ -3,11 +3,14 @@ package gui;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.util.ArrayList;
+import java.io.FileNotFoundException;
 
 import javax.swing.JFrame;
 
 import graphs.Graph;
 import graphs.Vertex;
+import utils.Converter;
+
 public class GUI extends JFrame {
 	private static final long serialVersionUID = 1L;
 
@@ -42,6 +45,13 @@ public class GUI extends JFrame {
 		//ArrayList<Vertex> list = algorithms.Greedy.selectionSort(graph.getVertices());
 		System.out.println(algorithms.Greedy.graphColoring(0, nb, color, graph.getVertices()));*/
 		
+		try {
+			graph = Converter.mapToGraph("src/resources/USA.csv");
+			graph.setVerticesList(algorithms.Dsatur.dsatur(graph.getVertices()));
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+
 		setGraphViewPage(graph);
 		
 		////// TEST: on clique sur le pays pour le dessiner
@@ -58,7 +68,7 @@ public class GUI extends JFrame {
 	public void setGraphViewPage(Graph graph) {
 		this.getContentPane().removeAll();
 		this.setResizable(true);
-		//this.setExtendedState(JFrame.MAXIMIZED_BOTH);*
+		//this.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		GraphPlayView graphPlayView = new GraphPlayView(graph, width, height);
 		this.getContentPane().add(graphPlayView);
 		revalidate();
@@ -66,10 +76,14 @@ public class GUI extends JFrame {
 	}
 	
 	/////////////// TEST ////////////
-	public void setFillImagePage() {
+	public void setMapPage(Graph graph, String mapURL) {
 		this.getContentPane().removeAll();
-		this.setResizable(true);
-		this.getContentPane().add(new FillImagePan("src/resources/europe.jpeg"));
+		this.setResizable(false);
+		MapView map = new MapView(graph, mapURL, true);
+		this.setMinimumSize(map.getMapDim());
+		this.setSize(map.getMapDim());
+		
+		this.getContentPane().add(map);
 		revalidate();
 		repaint();
 	}
