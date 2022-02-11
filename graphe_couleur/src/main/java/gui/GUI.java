@@ -33,6 +33,16 @@ public class GUI extends JFrame {
 		//graph.setVerticesList(algorithms.WelshPowell.welshPowell(graph.getVertices()));
 		//System.out.println(graph);
 		
+		//Test pour Greedy : (qui retourne un boolean)
+		
+		/*Color[] nb = {Color.blue};
+		Color[] color = new Color[15];
+		for(int i=0;i<15;i++){
+			color[i] = Color.WHITE;
+		}
+		//ArrayList<Vertex> list = algorithms.Greedy.selectionSort(graph.getVertices());
+		System.out.println(algorithms.Greedy.graphColoring(0, nb, color, graph.getVertices()));*/
+
 		try {
 			graph = Converter.mapToGraph("src/resources/USA.csv");
 			graph.setVerticesList(algorithms.Dsatur.dsatur(graph.getVertices()));
