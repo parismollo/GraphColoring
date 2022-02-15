@@ -25,11 +25,6 @@ public class WelshPowell {
     public static ArrayList<Vertex> welshPowell(ArrayList<Vertex>list){
         ArrayList<Vertex> temp = new ArrayList<Vertex>();
         temp = selectionSort(list);
-        /*
-        for(int i = 0 ; i < temp.size();i++){
-            System.out.println(temp.get(i).getVertices().size());
-        }
-        */
         Color tab [] = {Color.BLUE,Color.RED,Color.GREEN,Color.YELLOW, Color.PINK};
         int iterator = 0;
         while(iterator != tab.length) {

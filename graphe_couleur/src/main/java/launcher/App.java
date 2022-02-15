@@ -3,14 +3,10 @@ package launcher;
 import java.io.FileNotFoundException;
 
 import graphs.Graph;
-import graphs.Vertex;
+//import graphs.Vertex;
 import gui.GUI;
 import utils.Converter;
 
-/**
- * Hello world!
- *
- */
 public class App {
     public static void main( String[] args ){
         //testRoutine1();
@@ -31,7 +27,7 @@ public class App {
         }
     }
 
-    private static void testRoutine1() {
+    /*private static void testRoutine1() {
         System.out.println("Test Routine 1");
         Graph graph = Graph.randomGraph(10);
         System.out.println(graph);
@@ -42,5 +38,5 @@ public class App {
         System.out.println(graph);
         System.out.println(graph.getVertex(7));
         System.out.println(graph.getVertex(v));
-    }
+    }*/
 }
