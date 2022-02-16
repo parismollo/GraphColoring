@@ -31,6 +31,7 @@ public class MapView extends JPanel {
     }
 
     public MapView(Graph graph, final String url, boolean devMode) {
+        this.graph = graph;
         this.devMode = devMode;
         try {
             image = ImageIO.read(new File(url));
@@ -69,6 +70,13 @@ public class MapView extends JPanel {
                 repaint();
             }
         });
+
+        for(Vertex v : graph.getVertices()) {
+            if(v.getPosition() != null)
+                colorImage3(v.getX(), v.getY(),
+                    new boolean[image.getWidth()][image.getHeight()]);
+        }
+
     }
 
     public MapView(String url) {
