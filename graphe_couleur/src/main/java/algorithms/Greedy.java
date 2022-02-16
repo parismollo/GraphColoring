@@ -29,4 +29,14 @@ public class Greedy {
         }
         return false;
     }
-}
+    public static ArrayList<Vertex> greedy(ArrayList<Vertex> list, Color[] colors, Color[] memo){
+        if(graphColoring(0, colors, memo, list)){
+            for(Vertex v : list){
+                v.setColor(memo[v.getId()]);
+            }
+        }
+        return list;
+    }
+}// Le tableau de couleurs memo est normalement un tableau avec les couleurs que l'on veut sans importance 
+// de taille au moins le nombre de sommets dans le graph et on va lui associer les couleurs des vertex 
+//du graph aux id correspondant

@@ -2,11 +2,15 @@ package gui;
 
 import java.awt.Dimension;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 
 import javax.swing.JFrame;
 
 import graphs.Graph;
+import graphs.Vertex;
 import utils.Converter;
+
+import java.awt.Color;
 
 public class GUI extends JFrame {
 	private static final long serialVersionUID = 1L;
@@ -33,15 +37,21 @@ public class GUI extends JFrame {
 		//graph.setVerticesList(algorithms.WelshPowell.welshPowell(graph.getVertices()));
 		//System.out.println(graph);
 		
-		//Test pour Greedy : (qui retourne un boolean)
+		/*Test pour Greedy : (qui retourne un boolean)
 		
-		/*Color[] nb = {Color.blue};
+		Color[] nb = {Color.blue, Color.BLACK, Color.CYAN, Color.GREEN};
 		Color[] color = new Color[15];
+		
 		for(int i=0;i<15;i++){
 			color[i] = Color.WHITE;
 		}
-		//ArrayList<Vertex> list = algorithms.Greedy.selectionSort(graph.getVertices());
-		System.out.println(algorithms.Greedy.graphColoring(0, nb, color, graph.getVertices()));*/
+		
+		ArrayList<Vertex> list = algorithms.WelshPowell.selectionSort(graph.getVertices()); //Comme on test sur un graph random si je ne fais pas ça les id des sommets sont nuls et greedy ne marche pas (afficher un message d'erreur dans ce cas ?)
+		System.out.println(algorithms.Greedy.graphColoring(0, nb, color, list));
+		graph.setVerticesList(algorithms.Greedy.greedy(graph.getVertices(), nb, color));
+		System.out.println(graph);
+		
+		*/
 
 		try {
 			graph = Converter.mapToGraph("src/resources/USA.csv");
@@ -49,7 +59,7 @@ public class GUI extends JFrame {
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
-
+		
 		setGraphViewPage(graph);
 		
 		////// TEST: on clique sur le pays pour le dessiner
