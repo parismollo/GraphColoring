@@ -22,7 +22,7 @@ public class App {
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
                 }
-                gui.setMapPage(graph, "src/resources/USA.jpg", true);
+                gui.setMapPage(graph, "src/resources/USA.jpg", false);
             }
         }
     }
