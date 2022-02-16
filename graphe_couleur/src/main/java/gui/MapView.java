@@ -31,6 +31,7 @@ public class MapView extends JPanel {
     }
 
     public MapView(Graph graph, final String url, boolean devMode) {
+        this.devMode = devMode;
         try {
             image = ImageIO.read(new File(url));
         } catch (IOException e) {
