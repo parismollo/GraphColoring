@@ -70,14 +70,13 @@ public class GUI extends JFrame {
 		
 		*/
 		
-		try {
-			graph = Converter.mapToGraph("src/resources/USA.csv");
-			graph.setVerticesList(algorithms.Dsatur.dsatur(graph.getVertices()));
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
-		
-		setGraphViewPage(graph);
+		// try {
+		// 	graph = Converter.mapToGraph("src/resources/USA.csv");
+		// 	graph.setVerticesList(algorithms.Dsatur.dsatur(graph.getVertices()));
+		// } catch (FileNotFoundException e) {
+		// 	e.printStackTrace();
+		// }
+		setGraphViewPage("USA", "Dsatur");
 		
 		////// TEST: on clique sur le pays pour le dessiner
 		// Il faut commenter setGraphViewPage si vous voulez tester
@@ -102,11 +101,11 @@ public class GUI extends JFrame {
 		// TODO: Home page.
 	}
 
-	public void setGraphViewPage(Graph graph) {
+	public void setGraphViewPage(String name, String algo) {
 		this.getContentPane().removeAll();
 		this.setResizable(true);
 		//this.setExtendedState(JFrame.MAXIMIZED_BOTH);
-		GraphPlayView graphPlayView = new GraphPlayView(graph, width, height);
+		GraphPlayView graphPlayView = new GraphPlayView(name, width, height);
 		this.getContentPane().add(graphPlayView);
 		revalidate();
 		repaint();

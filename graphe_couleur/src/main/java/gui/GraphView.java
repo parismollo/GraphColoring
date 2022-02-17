@@ -6,6 +6,7 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,6 +14,7 @@ import javax.swing.JPanel;
 
 import graphs.Graph;
 import graphs.Vertex;
+import utils.Converter;
 
 public class GraphView extends JPanel {
     
@@ -23,6 +25,15 @@ public class GraphView extends JPanel {
 
     public GraphView(GraphPlayView graphPlayView, Graph graph, int width, int height) {
         this(graph, width, height);
+        this.graphPlayView = graphPlayView;
+    }
+
+    public GraphView(String name, int width, int height){
+        this(loadGraph(name), width, height);
+    }
+
+    public GraphView(GraphPlayView graphPlayView, String name, int width, int height){
+        this(name, width, height);
         this.graphPlayView = graphPlayView;
     }
 
@@ -38,6 +49,16 @@ public class GraphView extends JPanel {
 
         List<Vertex> vertices = graph.getVertices();
 
+        for (Vertex vertex : vertices) {
+            if(vertex.getPosition()!=null) {
+                VertexView vertexView = new VertexView(this, vertex);
+                verticesView.add(vertexView);
+                this.add(vertexView);
+                vertexView.setLocation(vertex.getPosition());
+            }
+        }
+
+        /*
         int maxLine = 7, maxColumn = 8;
         int coeffW = (int)getPreferredSize().getWidth() / maxColumn;
         int coeffH = (int)getPreferredSize().getHeight() / maxLine;
@@ -56,7 +77,8 @@ public class GraphView extends JPanel {
             else
                 x += coeffW;
         }
-        
+        */
+
     }
 
     public VertexView getVertexView(Vertex vertex) {
@@ -114,6 +136,14 @@ public class GraphView extends JPanel {
 
     public GraphPlayView getGraphPlayView() {
         return graphPlayView;
+    }
+
+    private static Graph loadGraph(String name) {
+        try {
+            return Converter.mapToGraph(MapView.RESOURCES_FOLDER+name+".csv");
+        } catch (FileNotFoundException e) {
+            return new Graph("Empty Graph");
+        }
     }
 
     /*
