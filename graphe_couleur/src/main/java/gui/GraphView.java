@@ -12,6 +12,10 @@ import java.util.List;
 
 import javax.swing.JPanel;
 
+import algorithms.Dsatur;
+import algorithms.Greedy;
+import algorithms.Kempe;
+import algorithms.WelshPowell;
 import graphs.Graph;
 import graphs.Vertex;
 import utils.Converter;
@@ -37,9 +41,18 @@ public class GraphView extends JPanel {
         this.graphPlayView = graphPlayView;
     }
 
+    public GraphView(GraphPlayView graphPlayView, String name, String algo, int width, int height){
+        setup(loadGraph(name), algo, width, height);
+        this.graphPlayView = graphPlayView;
+    }
+
     // On peut faire un GraphView sans forcement utiliser
     // un graphPlayView
     public GraphView(Graph graph, int width, int height) {
+        setup(graph, null, width, height);
+    }
+
+    private void setup(Graph graph, String algo, int width, int height) {
         this.graph = graph;
         this.verticesView = new ArrayList<VertexView>();
         
@@ -47,8 +60,17 @@ public class GraphView extends JPanel {
         this.setBackground(Color.WHITE);
         this.setPreferredSize(new Dimension(width, height));
 
+        if(algo != null)
+            applyAlgo(algo, graph);
+
         List<Vertex> vertices = graph.getVertices();
 
+        setupPosition(vertices);
+
+        // randomPosition(vertices);
+    }
+
+    private void setupPosition(List<Vertex> vertices) {
         for (Vertex vertex : vertices) {
             if(vertex.getPosition()!=null) {
                 VertexView vertexView = new VertexView(this, vertex);
@@ -57,8 +79,9 @@ public class GraphView extends JPanel {
                 vertexView.setLocation(vertex.getPosition());
             }
         }
+    }
 
-        /*
+    private void randomPosition(List<Vertex> vertices) {
         int maxLine = 7, maxColumn = 8;
         int coeffW = (int)getPreferredSize().getWidth() / maxColumn;
         int coeffH = (int)getPreferredSize().getHeight() / maxLine;
@@ -77,8 +100,6 @@ public class GraphView extends JPanel {
             else
                 x += coeffW;
         }
-        */
-
     }
 
     public VertexView getVertexView(Vertex vertex) {
@@ -155,5 +176,25 @@ public class GraphView extends JPanel {
         return (getWidth() - maxLine*size) / (maxLine-1);
     }
     */
+
+    public void applyAlgo(String algo, Graph graph) {
+        algo = algo.toUpperCase();
+        ArrayList<Vertex> vertices = graph.getVertices();
+        switch(algo) {
+            case "DSATUR":
+                vertices = Dsatur.dsatur(vertices);
+                break;
+            case "WELSHPOWELL":
+                vertices = WelshPowell.welshPowell(vertices);
+                break;
+            case "GREEDY":
+                //vertices = Greedy.greedy(list, colors, memo);
+                break;
+            case "KEMPE":
+                //vertices = Kempe.kempe(vertices);
+                break;
+        }
+        graph.setVerticesList(vertices);
+    }
 
 }

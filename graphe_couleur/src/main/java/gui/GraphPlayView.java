@@ -28,6 +28,13 @@ public class GraphPlayView extends JPanel {
         setupToolBar();
         this.add(new GraphView(this, name, width, height), BorderLayout.CENTER);
     }
+
+    public GraphPlayView(String name, String algo, int width, int height) {
+        this.setLayout(new BorderLayout());
+        setupToolBar();
+        this.add(new GraphView(this, name, algo, width, height), BorderLayout.CENTER);
+    }
+
     private class ColorButton extends JPanel {
 
         private int borderSize = 4;

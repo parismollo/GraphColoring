@@ -68,6 +68,13 @@ public class GUI extends JFrame {
 			e.printStackTrace();
 		}
 		
+			//////////////////////////////////////////////
+			//////////////////////////////////////////////
+			// OUBLIE PAS DE COMMENTER LE
+			// setGraphViewPage QUI EST EN BAS !!!
+			setGraphViewPage(graph);
+			//////////////////////////////////////////////
+			//////////////////////////////////////////////
 		*/
 		
 		// try {
@@ -76,7 +83,8 @@ public class GUI extends JFrame {
 		// } catch (FileNotFoundException e) {
 		// 	e.printStackTrace();
 		// }
-		setGraphViewPage("USA", "Dsatur");
+		
+		setGraphViewPage("USA", "WelshPowell");
 		
 		////// TEST: on clique sur le pays pour le dessiner
 		// Il faut commenter setGraphViewPage si vous voulez tester
@@ -101,11 +109,23 @@ public class GUI extends JFrame {
 		// TODO: Home page.
 	}
 
+	public void setGraphViewPage(Graph graph) {
+		setGraphViewPage(graph, null, null, true);
+	}
+	
 	public void setGraphViewPage(String name, String algo) {
+		setGraphViewPage(null, name, algo, false);
+	}
+
+	public void setGraphViewPage(Graph graph, String name, String algo, boolean isGraph) {
 		this.getContentPane().removeAll();
 		this.setResizable(true);
 		//this.setExtendedState(JFrame.MAXIMIZED_BOTH);
-		GraphPlayView graphPlayView = new GraphPlayView(name, width, height);
+		GraphPlayView graphPlayView;
+		if(isGraph)
+			graphPlayView = new GraphPlayView(graph, width, height);
+		else
+			graphPlayView = new GraphPlayView(name, algo, width, height);
 		this.getContentPane().add(graphPlayView);
 		revalidate();
 		repaint();
