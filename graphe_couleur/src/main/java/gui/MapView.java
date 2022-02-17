@@ -21,29 +21,38 @@ import utils.Converter;
 
 public class MapView extends JPanel {
     
+    public static String RESOURCES_FOLDER = "src/resources/";
+
     private Graph graph;
+    private final String name;
     private BufferedImage image;
-    private static Scanner sc = new Scanner(System.in);
+    public static Scanner sc;
     private boolean devMode;
 
-    public MapView(Graph graph, String url) {
-        this(graph, url, false);
+    public MapView(final String name) {
+        this(name, false);
     }
 
-    public MapView(Graph graph, final String url, boolean devMode) {
-        this.graph = graph;
+    public MapView(final String name, boolean devMode) {
+        this.name = name;
         this.devMode = devMode;
+
         try {
-            image = ImageIO.read(new File(url));
+            this.graph = Converter.mapToGraph(RESOURCES_FOLDER+name+".csv");
+            this.image = ImageIO.read(new File(RESOURCES_FOLDER+name+".png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        if(sc == null && devMode)
+            sc = new Scanner(System.in);
 
         this.addMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent e) {
                 super.mousePressed(e);
                 colorImage3(e.getX(), e.getY(),
-                    new boolean[image.getWidth()][image.getHeight()]);
+                    new boolean[image.getWidth()][image.getHeight()],
+                    Color.RED);
                /* if(graph != null) {
                     for(Vertex v : graph.getVertices()) {
                         if(!isWhite(v.getPosition()))
@@ -61,9 +70,8 @@ public class MapView extends JPanel {
                         Vertex v = MapView.this.graph.getVertex(sc.nextLine());
                         v.setPosition(e.getPoint());
                         System.out.println();
-                        Converter.writeCoordinates(v, url.substring(0, url.lastIndexOf("."))+".csv");
+                        Converter.writeCoordinates(v, RESOURCES_FOLDER+name+".csv");
                     } catch (Exception e1) {
-                        // TODO Auto-generated catch block
                         System.out.println("Vertex not found. Please insert a valid title");
                     }
                 }
@@ -74,17 +82,14 @@ public class MapView extends JPanel {
         for(Vertex v : graph.getVertices()) {
             if(v.getPosition() != null)
                 colorImage3(v.getX(), v.getY(),
-                    new boolean[image.getWidth()][image.getHeight()]);
+                    new boolean[image.getWidth()][image.getHeight()],
+                    Color.RED); // On mettra v.getColor() plus tard.
         }
 
     }
 
-    public MapView(String url) {
-        this(null, url);
-    }
-
     // Pour compter le nombre de recursivite ou de tours de boucle
-    static int count = 0;
+    // private static int count = 0;
 
     public boolean outOfBorders(int x, int y) {
         return (x < 0 || y < 0) || (x >= image.getWidth() || y >= image.getHeight());
@@ -149,8 +154,8 @@ public class MapView extends JPanel {
         }
         visited[x][y] = false;
     }
-
-    public void colorImage3(int x, int y, boolean[][] visited) {
+    
+    public void colorImage3(int x, int y, boolean[][] visited, Color color) {
         Stack<Point> s = new Stack<Point>();
         s.add(new Point(x, y));
         while(!s.empty()) {
@@ -164,12 +169,11 @@ public class MapView extends JPanel {
                 continue;
             Color c = new Color(image.getRGB(p.x, p.y));
             int min = 180;
-            if(c.getRed() < min || c.getGreen() < min || c.getBlue() < min)
+            if(c.getRed() < min || c.getGreen() < min || c.getBlue() < min ||
+               c == color)
                 continue;
-            if(c == Color.RED)
-               continue;
-            ////// On colorise le pip.xel
-            image.setRGB(p.x, p.y, Color.RED.getRGB());
+            ////// On colorise le pixel
+            image.setRGB(p.x, p.y, color.getRGB());
             //////
             visited[p.x][p.y] = true;
             int[] coords = {-1, 0, 0, 1, 0, -1, 1, 0};
@@ -177,7 +181,7 @@ public class MapView extends JPanel {
                 s.push(new Point(p.x+coords[i], p.y+coords[i+1]));
             }
 
-            //visited[p.x][p.y] = false;
+            //visited[p.x][p.y] = false; // ? Marche sans.
         }
     }
 
@@ -206,6 +210,10 @@ public class MapView extends JPanel {
 
     public Dimension getMapDim() {
         return new Dimension(image.getWidth(), image.getHeight());
+    }
+
+    public String getMapName() {
+        return name;
     }
 
 }

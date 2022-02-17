@@ -1,24 +1,21 @@
 package gui;
 
 import java.awt.Dimension;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
 
 import javax.swing.JFrame;
 
 import graphs.Graph;
-import graphs.Vertex;
 import utils.Converter;
-
-import java.awt.Color;
 
 public class GUI extends JFrame {
 	private static final long serialVersionUID = 1L;
 
 	private int width;
 	private int height;
-
-	// Pour l'instant la GUI prend un game en parametre.
+	
 	public GUI(int w, int h) {
 		this.setTitle("Graph");
 		this.width = w;
@@ -86,6 +83,18 @@ public class GUI extends JFrame {
 		// Il faut commenter setGraphViewPage si vous voulez tester
 		// setFillImagePage();
 		///////////
+
+		this.addWindowListener(new WindowAdapter()
+        {
+            @Override
+            public void windowClosing(WindowEvent e)
+            {
+				if(MapView.sc != null)
+					MapView.sc.close();
+				System.exit(0);
+            }
+        });
+
 		this.setVisible(true);
 	}
 	
@@ -104,10 +113,10 @@ public class GUI extends JFrame {
 	}
 	
 	/////////////// TEST ////////////
-	public void setMapPage(Graph graph, String mapURL, boolean devMode) {
+	public void setMapPage(String mapName, boolean devMode) {
 		this.getContentPane().removeAll();
 		this.setResizable(false);
-		MapView map = new MapView(graph, mapURL, devMode);
+		MapView map = new MapView(mapName, devMode);
 		this.setMinimumSize(map.getMapDim());
 		this.setSize(map.getMapDim());
 		

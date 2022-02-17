@@ -1,11 +1,7 @@
 package launcher;
 
-import java.io.FileNotFoundException;
-
-import graphs.Graph;
 //import graphs.Vertex;
 import gui.GUI;
-import utils.Converter;
 
 public class App {
     public static void main( String[] args ){
@@ -16,13 +12,7 @@ public class App {
         // java -cp target/appli.jar map
         if(args != null && args.length == 1) {
             if(args[0].toUpperCase().equals("MAP")) {
-                Graph graph = null;
-                try {
-                    graph = Converter.mapToGraph("src/resources/USA.csv");
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                }
-                gui.setMapPage(graph, "src/resources/USA.jpg", false);
+                gui.setMapPage("USA", true);
             }
         }
     }
