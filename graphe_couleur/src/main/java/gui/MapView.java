@@ -39,7 +39,7 @@ public class MapView extends JPanel {
 
         try {
             this.graph = Converter.mapToGraph(RESOURCES_FOLDER+name+".csv");
-            this.image = ImageIO.read(new File(RESOURCES_FOLDER+name+".png"));
+            this.image = ImageIO.read(new File(RESOURCES_FOLDER+name+".jpg"));
         } catch (IOException e) {
             e.printStackTrace();
         }
