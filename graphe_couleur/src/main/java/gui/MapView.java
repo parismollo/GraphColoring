@@ -79,6 +79,9 @@ public class MapView extends JPanel {
             }
         });
 
+        if(graph == null)
+            return;
+
         for(Vertex v : graph.getVertices()) {
             if(v.getPosition() != null)
                 colorImage3(v.getX(), v.getY(),

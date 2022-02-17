@@ -15,6 +15,13 @@ public class App {
                 gui.setMapPage("USA", true);
             }
         }
+
+        // POUR TESTER LE MAPCHOOSER :
+        // true -> developper mode,
+        // false -> on dessine juste pour tester
+        // gui.setMapChooser(false);
+        //////////////////////////////
+        
     }
 
     /*private static void testRoutine1() {

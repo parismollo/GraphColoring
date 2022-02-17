@@ -40,6 +40,8 @@ public class Converter {
 
         Scanner scanner = new Scanner(new File(filepath));
         scanner.useDelimiter("\n");
+        if(!scanner.hasNextLine())
+            return null;
         scanner.nextLine();
 
         while (scanner.hasNext()) {

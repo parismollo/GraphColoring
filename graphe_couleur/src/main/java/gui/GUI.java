@@ -3,12 +3,10 @@ package gui;
 import java.awt.Dimension;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.io.FileNotFoundException;
 
 import javax.swing.JFrame;
 
 import graphs.Graph;
-import utils.Converter;
 
 public class GUI extends JFrame {
 	private static final long serialVersionUID = 1L;
@@ -85,7 +83,7 @@ public class GUI extends JFrame {
 		// }
 		
 		setGraphViewPage("USA", "WelshPowell");
-		
+
 		////// TEST: on clique sur le pays pour le dessiner
 		// Il faut commenter setGraphViewPage si vous voulez tester
 		// setFillImagePage();
@@ -144,6 +142,15 @@ public class GUI extends JFrame {
 		repaint();
 	}
 	/////////////////////////////////
+
+	public void setMapChooser(boolean devMode) {
+		this.getContentPane().removeAll();
+		this.setResizable(false);
+		
+		this.getContentPane().add(new MapChooser(this, devMode));
+		revalidate();
+		repaint();
+	}
 
 	public void close() {
     	this.dispose();
