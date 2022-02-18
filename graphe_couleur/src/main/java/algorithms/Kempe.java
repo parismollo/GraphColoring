@@ -2,20 +2,23 @@ package algorithms;
 
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import graphs.Vertex;
 
 public class Kempe {
 
-    private ArrayList<Color> remainsColor;
+    private List<Color> remainsColor;
 
     private void initColor(){
-        remainsColor = new ArrayList<Color>();
-        remainsColor.add(Color.BLUE);
+        Color tab [] = {Color.BLUE,Color.RED,Color.GREEN,Color.YELLOW, Color.PINK};
+        remainsColor = Arrays.asList(tab); 
+        /*remainsColor.add(Color.BLUE);
         remainsColor.add(Color.RED);
         remainsColor.add(Color.GREEN);
         remainsColor.add(Color.YELLOW);
-        remainsColor.add(Color.PINK);
+        remainsColor.add(Color.PINK);*/
     }
 
     public boolean moreThanFiveVertices(Vertex v) {
@@ -44,7 +47,7 @@ public class Kempe {
         return numOfRemainsColor == 0;
     }
 
-    /*public ArrayList<Vertex> kempeChains(Vertex v1, Vertex v2){ 
+    public ArrayList<Vertex> kempeChains(Vertex v1, Vertex v2){ 
         boolean swapColor = false;
         ArrayList<Vertex> res = new ArrayList<Vertex>();
         res.add(v1);
@@ -74,5 +77,16 @@ public class Kempe {
             }
         }
         return res;
-    }*/
+    }
+
+    public void reverseKempeChain(ArrayList<Vertex> list){
+        for(int i = 0 ;i < list.size();i++){
+            if(list.get(i).getColor().equals(list.get(0).getColor())){
+                list.get(i).setColor(list.get(1).getColor());
+            }
+            else{
+                list.get(i).setColor(list.get(0).getColor());
+            }
+        }
+    }
 }
