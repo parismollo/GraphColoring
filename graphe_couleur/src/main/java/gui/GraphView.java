@@ -65,9 +65,10 @@ public class GraphView extends JPanel {
 
         List<Vertex> vertices = graph.getVertices();
 
-        setupPosition(vertices);
-
-        // randomPosition(vertices);
+        if(hasNoPositions(vertices))
+            randomPosition(vertices);
+        else
+            setupPosition(vertices);
     }
 
     private void setupPosition(List<Vertex> vertices) {
@@ -79,6 +80,14 @@ public class GraphView extends JPanel {
                 vertexView.setLocation(vertex.getPosition());
             }
         }
+    }
+
+    private boolean hasNoPositions(List<Vertex> vertices) {
+        for(Vertex v : vertices) {
+            if(v.getPosition() != null)
+                return false;
+        }
+        return true;
     }
 
     private void randomPosition(List<Vertex> vertices) {
