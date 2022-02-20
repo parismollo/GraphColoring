@@ -3,10 +3,13 @@ package gui;
 import java.awt.Dimension;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.FileNotFoundException;
 
 import javax.swing.JFrame;
+import java.awt.Color;
 
 import graphs.Graph;
+import utils.Converter;
 
 public class GUI extends JFrame {
 	private static final long serialVersionUID = 1L;
@@ -45,10 +48,10 @@ public class GUI extends JFrame {
 		System.out.println(algorithms.Greedy.graphColoring(0, nb, color, list));
 		graph.setVerticesList(algorithms.Greedy.greedy(graph.getVertices(), nb, color));
 		System.out.println(graph);
-		
+		*/
 		//Test greedy sur graph des usa
 		
-		Color[] nb = {Color.BLUE,Color.RED,Color.GREEN, Color.YELLOW, Color.MAGENTA};
+		Color[] nb = {Color.BLUE,Color.RED,Color.GREEN, Color.YELLOW};
 		Color[] color = new Color[60];
 		
 		for(int i=0;i<60;i++){
@@ -61,7 +64,7 @@ public class GUI extends JFrame {
 			//System.out.println(algorithms.Greedy.boolGraphColoringGreedy(0, nb, color, graph.getVertices()));
 			//Si j'appelle boolGraphColoringGreedy et greedy sans reinitialiser color alors je vais avoir des erreurs à l'affichage car le tableau passé en paramétre ne sera pas blanc et donc des voisins qui auraient du être blancs ne le seront pas
 			//Donc soit je laisse comme ça soit une solution peut être de reinitialiser a blanc toutes les cases du tableaux au début de ces fonctions.
-			graph.setVerticesList(algorithms.Greedy.greedy(graph.getVertices(), nb, color));
+			graph.setVerticesList(algorithms.Greedy.greedy(graph.getVertices(), nb));
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
@@ -73,7 +76,7 @@ public class GUI extends JFrame {
 			setGraphViewPage(graph);
 			//////////////////////////////////////////////
 			//////////////////////////////////////////////
-		*/
+		
 		
 		// try {
 		// 	graph = Converter.mapToGraph("src/resources/USA.csv");
@@ -82,7 +85,7 @@ public class GUI extends JFrame {
 		// 	e.printStackTrace();
 		// }
 		
-		setGraphViewPage("France", "WelshPowell");
+		//setGraphViewPage("France", "WelshPowell");
 
 		////// TEST: on clique sur le pays pour le dessiner
 		// Il faut commenter setGraphViewPage si vous voulez tester

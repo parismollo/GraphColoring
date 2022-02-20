@@ -6,33 +6,37 @@ import java.awt.Color;
 import graphs.Vertex;
 
 public class Greedy {
-    public static boolean boolGraphColoringGreedy(int id, Color[] nb, Color[] color, ArrayList<Vertex> list){
+    public static boolean boolGraphColoringGreedy(int id, Color[] nb, Color[] color_vertex, ArrayList<Vertex> list){
         if(id == list.size()){
             return true;
         }
         for(int c=0;c<nb.length;c++){
-            if(!containsColor(list.get(id).getVertices(), nb[c], color)){
-                color[list.get(id).getId()] = nb[c];                        //dans le cas où les vertex ne serait pas numérotés dans l'ordre d'id dans la list
-                if(boolGraphColoringGreedy(id+1, nb, color, list)){
+            if(!containsColor(list.get(id).getVertices(), nb[c], color_vertex)){
+                color_vertex[list.get(id).getId()] = nb[c];                        //dans le cas où les vertex ne serait pas numérotés dans l'ordre d'id dans la list
+                if(boolGraphColoringGreedy(id+1, nb, color_vertex, list)){
                     return true;
                 }
-                color[list.get(id).getId()] = Color.white;
+                color_vertex[list.get(id).getId()] = Color.white;
             }
         }
         return false;
     }
-    public static boolean containsColor(ArrayList<Vertex> vertices , Color c, Color[] tabCol){
+    public static boolean containsColor(ArrayList<Vertex> vertices , Color c, Color[] color_vertex){
         for(int i = 0 ; i < vertices.size();i++){
-            if(tabCol[vertices.get(i).getId()].equals(c)){
+            if(color_vertex[vertices.get(i).getId()].equals(c)){
                 return true;
             }
         }
         return false;
     }
-    public static ArrayList<Vertex> greedy(ArrayList<Vertex> list, Color[] colors, Color[] memo){
-        if(boolGraphColoringGreedy(0, colors, memo, list)){
+    public static ArrayList<Vertex> greedy(ArrayList<Vertex> list, Color[] colors){
+        Color[] color_vertex = new Color[list.size()+1];
+        for(int i=0;i<color_vertex.length;i++){
+            color_vertex[i] = Color.white;
+        }
+        if(boolGraphColoringGreedy(0, colors, color_vertex, list)){
             for(Vertex v : list){
-                v.setColor(memo[v.getId()]);
+                v.setColor(color_vertex[v.getId()]);
             }
         }
         return list;
