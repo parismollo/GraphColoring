@@ -14,7 +14,7 @@ import graphs.Vertex;
 
 public class VertexView extends JPanel {
     
-    public static int DEFAULT_SIZE = 70;
+    public static int DEFAULT_SIZE = 50;
 
     private GraphView graphView;
     private Vertex vertex;

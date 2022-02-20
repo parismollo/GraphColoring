@@ -82,7 +82,7 @@ public class GUI extends JFrame {
 		// 	e.printStackTrace();
 		// }
 		
-		setGraphViewPage("USA", "WelshPowell");
+		setGraphViewPage("France", "WelshPowell");
 
 		////// TEST: on clique sur le pays pour le dessiner
 		// Il faut commenter setGraphViewPage si vous voulez tester
