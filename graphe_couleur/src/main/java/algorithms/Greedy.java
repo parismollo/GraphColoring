@@ -6,7 +6,7 @@ import java.awt.Color;
 import graphs.Vertex;
 
 public class Greedy {
-    public static boolean boolGraphColoringGreedy(int id,Color[] nb, Color[] color, ArrayList<Vertex> list){
+    public static boolean boolGraphColoringGreedy(int id, Color[] nb, Color[] color, ArrayList<Vertex> list){
         if(id == list.size()){
             return true;
         }
@@ -37,7 +37,10 @@ public class Greedy {
         }
         return list;
     }
-    // Le tableau de couleurs memo est normalement un tableau avec les couleurs que l'on veut sans importance 
+    //Mettre un graph en param uniquement et initialisé tab color dedans et return void. 
+    //
+    //
+    //Le tableau de couleurs memo est normalement un tableau avec les couleurs que l'on veut sans importance 
     // mais il ne doit pas contenir des couleurs présentent dans nb (une solution est de mettre toutes les cases
     // en blanc au debut de la fonction) de taille au moins le nombre de sommets dans le graph et on va lui 
     //associer les couleurs des vertex du graph aux id correspondant

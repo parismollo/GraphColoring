@@ -52,6 +52,14 @@ public class Vertex {
         return this.vertices.remove(v);
     }
 
+    public String printId() {
+        String str = "Vertex Title: "+this.title+" "+this.getId()+" ----> {";
+        for(Vertex v : vertices)
+            str += v.getId()+" ";
+        str+="}";
+        return str;
+    }
+
     public String printInfo() {
         String str = "Vertex Title: "+this.title+" "+this.printPosition()+" ----> {";
         for(Vertex v : vertices)

@@ -150,6 +150,11 @@ public class Graph {
         return null;
     }
 
+    public void print() {
+        for(Vertex v : vertices)
+            System.out.println(v.printId());
+    }
+
     @Override
     public String toString() {
         String str = "<---------------GRAPH INFO--------------->";

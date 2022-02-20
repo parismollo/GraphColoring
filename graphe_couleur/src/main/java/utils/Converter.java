@@ -55,10 +55,10 @@ public class Converter {
             if(v == null) {
                 v = graph.addVertex(main);
             }
-            if(vertices.length == 3) {
+           /* if(vertices.length == 3) {
                 String[] points = vertices[2].replace("\"", "").split(",");
                 v.setPosition(Integer.parseInt(points[0]), Integer.parseInt(points[1]));
-            }
+            }*/
 
             for(String s : borders) {
                 s = s.strip();
