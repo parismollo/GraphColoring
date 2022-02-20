@@ -59,16 +59,16 @@ public class GUI extends JFrame {
 		}
 
 		try {
-			graph = Converter.mapToGraph("src/resources/USA.csv");
+			graph = Converter.mapToGraph("src/resources/France.csv");
 			//ArrayList<Vertex> list = algorithms.WelshPowell.selectionSort(graph.getVertices());
 			//System.out.println(algorithms.Greedy.boolGraphColoringGreedy(0, nb, color, graph.getVertices()));
 			//Si j'appelle boolGraphColoringGreedy et greedy sans reinitialiser color alors je vais avoir des erreurs à l'affichage car le tableau passé en paramétre ne sera pas blanc et donc des voisins qui auraient du être blancs ne le seront pas
 			//Donc soit je laisse comme ça soit une solution peut être de reinitialiser a blanc toutes les cases du tableaux au début de ces fonctions.
 			graph.setVerticesList(algorithms.Greedy.greedy(graph.getVertices(), nb));
+			graph.print();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
-		
 			//////////////////////////////////////////////
 			//////////////////////////////////////////////
 			// OUBLIE PAS DE COMMENTER LE
