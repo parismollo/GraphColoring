@@ -48,27 +48,56 @@ public class GUI extends JFrame {
 		System.out.println(algorithms.Greedy.graphColoring(0, nb, color, list));
 		graph.setVerticesList(algorithms.Greedy.greedy(graph.getVertices(), nb, color));
 		System.out.println(graph);
-		*/
+		
 		//Test greedy sur graph des usa
 		
-		Color[] nb = {Color.BLUE,Color.RED,Color.GREEN, Color.YELLOW};
-		Color[] color = new Color[60];
 		
-		for(int i=0;i<60;i++){
-			color[i] = Color.WHITE;
-		}
-
 		try {
 			graph = Converter.mapToGraph("src/resources/France.csv");
+			graph = Graph.randomGraph(11);
+			Color[] nb = {Color.BLUE,Color.RED,Color.GREEN, Color.YELLOW, Color.MAGENTA, Color.ORANGE};
+			Color[] color = new Color[graph.getVertices().size()+1];
+		
+			for(int i=0;i<color.length;i++){
+				color[i] = Color.WHITE;
+			}
+
+			Map<Color[],Integer> test = new HashMap<>();
+			test.put(nb, 6);
+			System.out.println(test.toString());
+			algorithms.Greedy.bestGraphColoringGreedy(0, nb, color, graph.getVertices(), test);
+			System.out.println(test.toString());
+			for(Entry<Color[], Integer> yes : test.entrySet()){
+				for(Color c : yes.getKey()){
+					System.out.println(c.toString());
+				}
+			}
+			
+			Color[] fnl = new Color[color.length];
+			for(Entry<Color[], Integer> yes : test.entrySet()){
+				fnl = yes.getKey().clone();
+			}
+			for(int i=1;i<=graph.getVertices().size();i++){
+				graph.getVertex(i).setColor(fnl[i]);
+			}
+			System.out.println(graph.getVertex(1).getColor());
+			System.out.println(graph);
+		} catch (FileNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		try {
+			graph = Converter.mapToGraph("src/resources/USA.csv");
 			//ArrayList<Vertex> list = algorithms.WelshPowell.selectionSort(graph.getVertices());
 			//System.out.println(algorithms.Greedy.boolGraphColoringGreedy(0, nb, color, graph.getVertices()));
 			//Si j'appelle boolGraphColoringGreedy et greedy sans reinitialiser color alors je vais avoir des erreurs à l'affichage car le tableau passé en paramétre ne sera pas blanc et donc des voisins qui auraient du être blancs ne le seront pas
 			//Donc soit je laisse comme ça soit une solution peut être de reinitialiser a blanc toutes les cases du tableaux au début de ces fonctions.
 			graph.setVerticesList(algorithms.Greedy.greedy(graph.getVertices(), nb));
-			graph.print();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
+		*/
 			//////////////////////////////////////////////
 			//////////////////////////////////////////////
 			// OUBLIE PAS DE COMMENTER LE
