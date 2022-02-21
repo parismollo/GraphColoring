@@ -5,20 +5,17 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import graphs.Graph;
 import graphs.Vertex;
 
 public class Kempe {
 
     private List<Color> remainsColor;
+    private Graph kempeCGraph = new Graph("Kempe Chain");
 
     private void initColor(){
         Color tab [] = {Color.BLUE,Color.RED,Color.GREEN,Color.YELLOW, Color.PINK};
         remainsColor = Arrays.asList(tab); 
-        /*remainsColor.add(Color.BLUE);
-        remainsColor.add(Color.RED);
-        remainsColor.add(Color.GREEN);
-        remainsColor.add(Color.YELLOW);
-        remainsColor.add(Color.PINK);*/
     }
 
     public boolean moreThanFiveVertices(Vertex v) {
@@ -47,36 +44,22 @@ public class Kempe {
         return numOfRemainsColor == 0;
     }
 
-    public ArrayList<Vertex> kempeChains(Vertex v1, Vertex v2){ 
-        boolean swapColor = false;
-        ArrayList<Vertex> res = new ArrayList<Vertex>();
-        res.add(v1);
-        Vertex current = v1;
-        while(current != null){
-            for(int i = 0 ; i < current.getVertices().size() ; i++){
-                if(swapColor == false){
-                    if(current.getVertices().get(i).getColor().equals(v2.getColor())){
-                        res.add(current.getVertices().get(i));
-                        current = current.getVertices().get(i);
-                        swapColor = true;
-                    }
-                    else{
-                        current = null;
-                    }
-                }
-                else{
-                    if(current.getVertices().get(i).getColor().equals(v1.getColor())){
-                        res.add(current.getVertices().get(i));
-                        current = current.getVertices().get(i);
-                        swapColor = false;
-                    }
-                    else{
-                        current = null;
-                    }
-                }
+    public Graph kempeChains(Vertex current, Color c1, Color c2){
+        if(!current.equals(kempeCGraph.getVertices().get(0))){
+            kempeCGraph.addVertex(current);
+        } 
+        for(int i = 0 ; i < current.getVertices().size() ; i++){
+            if(current.getColor().equals(c1) && 
+            current.getVertices().get(i).getColor().equals(c2) && 
+            !current.getVertices().contains(current.getVertices().get(i))){
+                return kempeChains(current.getVertices().get(i), c1, c2);
+            }
+            else if (current.getVertices().get(i).getColor().equals(c2) && 
+            !current.getVertices().contains(current.getVertices().get(i))){
+                    return kempeChains(current.getVertices().get(i), c1, c2);
             }
         }
-        return res;
+        return kempeCGraph;
     }
 
     public void reverseKempeChain(ArrayList<Vertex> list){
