@@ -14,7 +14,6 @@ import javax.swing.JPanel;
 
 import algorithms.Dsatur;
 import algorithms.Greedy;
-import algorithms.Kempe;
 import algorithms.WelshPowell;
 import graphs.Graph;
 import graphs.Vertex;
@@ -41,18 +40,18 @@ public class GraphView extends JPanel {
         this.graphPlayView = graphPlayView;
     }
 
-    public GraphView(GraphPlayView graphPlayView, String name, String algo, int width, int height){
-        setup(loadGraph(name), algo, width, height);
+    public GraphView(GraphPlayView graphPlayView, String name, String algo, int width, int height, Color[] colors){
+        setup(loadGraph(name), algo, width, height, colors);
         this.graphPlayView = graphPlayView;
     }
 
     // On peut faire un GraphView sans forcement utiliser
     // un graphPlayView
     public GraphView(Graph graph, int width, int height) {
-        setup(graph, null, width, height);
+        setup(graph, null, width, height, null);
     }
 
-    private void setup(Graph graph, String algo, int width, int height) {
+    private void setup(Graph graph, String algo, int width, int height, Color[] colors) {
         this.graph = graph;
         this.verticesView = new ArrayList<VertexView>();
         
@@ -61,7 +60,7 @@ public class GraphView extends JPanel {
         this.setPreferredSize(new Dimension(width, height));
 
         if(algo != null)
-            applyAlgo(algo, graph);
+            applyAlgo(algo, graph, colors);
 
         List<Vertex> vertices = graph.getVertices();
 
@@ -186,24 +185,26 @@ public class GraphView extends JPanel {
     }
     */
 
-    public void applyAlgo(String algo, Graph graph) {
+    public void applyAlgo(String algo, Graph graph, Color[] colors) {
         algo = algo.toUpperCase();
-        ArrayList<Vertex> vertices = graph.getVertices();
+        //ArrayList<Vertex> vertices = graph.getVertices();
         switch(algo) {
             case "DSATUR":
-                vertices = Dsatur.dsatur(vertices);
+                Dsatur.dsatur(graph, colors);
                 break;
             case "WELSHPOWELL":
-                vertices = WelshPowell.welshPowell(vertices);
+                WelshPowell.welshPowell(graph, colors);
                 break;
             case "GREEDY":
-                //vertices = Greedy.greedy(list, colors, memo);
+                Greedy.greedy(graph, colors);
                 break;
+            case "BESTGREEDY":
+                Greedy.bestGreedy(graph, colors);
             case "KEMPE":
                 //vertices = Kempe.kempe(vertices);
                 break;
         }
-        graph.setVerticesList(vertices);
+        //graph.setVerticesList(vertices);
     }
 
 }
