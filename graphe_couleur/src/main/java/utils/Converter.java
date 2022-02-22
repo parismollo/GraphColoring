@@ -7,6 +7,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Optional;
 import java.util.Scanner;
 
 import graphs.Graph;
@@ -26,7 +27,7 @@ public class Converter {
             String path = args[0];
             String fileName = args[1];
             graphName = fileName;
-            loadFile(path, fileName);
+            checkCSV(path, fileName);
             System.out.println(mapToGraph(saveFolder+fileName+".csv"));
         }
         
@@ -75,14 +76,13 @@ public class Converter {
 
 
 
-    public static void loadFile(String filepath, String filename) throws Exception{
+    public static void checkCSV(String filepath, String filename) throws Exception{
         /**
          * 1. Check if CSV file.
          * 2. Read and Load File into resources folder.
          * 3. Raise Error otherwise.
          */
-        int extension_len = 3; // csv
-        String extension = filepath.substring(filepath.length()-extension_len);
+        String extension = getExtension(filepath).get();
         if (!extension.equals("csv")) {
             throw new Exception("\n[LOG]: Extension \""+extension+"\" not supported. Please use a .csv file\n");
         }
@@ -91,19 +91,52 @@ public class Converter {
         boolean can_use_file = file.exists() && file.canRead();
         boolean saved = false;
 
-        saveFile(filename, file, can_use_file, saved);
+        saveFile(filename, file, can_use_file, saved, extension);
     }
 
-    private static void saveFile(String filename, File file, boolean can_use_file, boolean saved) throws Exception {
+    
+    public static void checkImage(String path, String filename) throws Exception {
+        /**
+         * 1. Check if Image file.
+         * 2. Read and Load File into resources folder.
+         * 3. Raise Error otherwise.
+         */
+        String[] allowed_extensions = {"png", "jpeg", "jpg"};
+        String extension = getExtension(path).get();
+        System.out.println(extension);
+        boolean extension_ok = false;
+
+        for (String ex : allowed_extensions) {
+            if(extension.equals(ex)) {
+                extension_ok = true;
+            }
+        }
+        if (!extension_ok) throw new Exception("[LOG]: Image Extension not valid. Please insert a png, jpeg or jpg image");
+
+        
+        File file = new File(path);
+        boolean can_use_file = file.exists() && file.canRead();
+        boolean saved = false;
+
+        saveFile(filename, file, can_use_file, saved, extension);
+    }
+
+    public static void saveFile(String filename, File file, boolean can_use_file, boolean saved, String extension) throws Exception {
+        File f = new File(saveFolder+filename+"."+extension);
+
         if(can_use_file) {
-            saved = file.renameTo(new File(saveFolder+filename+".csv"));
+            if (f.exists()) {
+                System.out.println("\n[LOG] File exists already, please delete file or rename file to save current file");
+            }else {
+                saved = file.renameTo(new File(saveFolder+filename+"."+extension));
+            }
         }
          else {
             throw new Exception("\n[LOG]: File not found or not readable. Please insert a valid file\n");
         }
 
         if(saved) {
-            System.out.println("\n[LOG]: File saved at resources folder resources/"+filename+".csv!\n");
+            System.out.println("\n[LOG]: File saved at resources folder resources/"+filename+"."+extension+"!\n");
 
         } else {
             throw new Exception("\n[LOG]: File could not be saved.\n");
@@ -133,6 +166,12 @@ public class Converter {
         BufferedWriter writer = new BufferedWriter(new FileWriter(filepath));
         writer.write(newStr);
         writer.close();
+    }
+
+    public static Optional<String> getExtension(String filename) {
+        return Optional.ofNullable(filename)
+          .filter(f -> f.contains("."))
+          .map(f -> f.substring(filename.lastIndexOf(".") + 1));
     }
 
 }

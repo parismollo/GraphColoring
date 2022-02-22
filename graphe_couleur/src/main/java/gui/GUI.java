@@ -161,7 +161,7 @@ public class GUI extends JFrame {
 		repaint();
 	}
 	
-	/////////////// TEST ////////////
+	
 	public void setMapPage(String mapName, boolean devMode) {
 		this.getContentPane().removeAll();
 		this.setResizable(false);
@@ -173,7 +173,6 @@ public class GUI extends JFrame {
 		revalidate();
 		repaint();
 	}
-	/////////////////////////////////
 
 	public void setMapChooser(boolean devMode) {
 		this.getContentPane().removeAll();

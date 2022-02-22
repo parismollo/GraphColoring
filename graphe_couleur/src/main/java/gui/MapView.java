@@ -39,7 +39,15 @@ public class MapView extends JPanel {
 
         try {
             this.graph = Converter.mapToGraph(RESOURCES_FOLDER+name+".csv");
-            this.image = ImageIO.read(new File(RESOURCES_FOLDER+name+".jpg"));
+            
+            BufferedImage a = ImageIO.read(new File(RESOURCES_FOLDER+name+".jpg"));
+            BufferedImage b = ImageIO.read(new File(RESOURCES_FOLDER+name+".png"));
+            BufferedImage c = ImageIO.read(new File(RESOURCES_FOLDER+name+".jpeg"));
+
+            if(a!=null) this.image = a;
+            if(b!=null) this.image = b;
+            if(c!=null) this.image = c;
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -63,7 +71,7 @@ public class MapView extends JPanel {
                 */
                 if(MapView.this.devMode) {
                     System.out.println(e.getPoint());
-                    System.out.print("Nom du lieu : ");
+                    System.out.print("Indicate the name of this place : ");
                    
                     
                     try {
@@ -88,7 +96,7 @@ public class MapView extends JPanel {
                     new boolean[image.getWidth()][image.getHeight()],
                     Color.RED); // On mettra v.getColor() plus tard.
         }
-
+        System.out.println(graph);
     }
 
     // Pour compter le nombre de recursivite ou de tours de boucle

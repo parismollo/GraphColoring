@@ -12,14 +12,14 @@ public class App {
         // java -cp target/appli.jar map
         if(args != null && args.length == 1) {
             if(args[0].toUpperCase().equals("MAP")) {
-                gui.setMapPage("USA", true);
+                gui.setMapPage("USA", false);
             }
         }
 
         // POUR TESTER LE MAPCHOOSER :
         // true -> developper mode,
         // false -> on dessine juste pour tester
-        // gui.setMapChooser(false);
+        // gui.setMapChooser(true);
         //////////////////////////////
         
     }
