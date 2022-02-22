@@ -18,23 +18,7 @@ import graphs.Vertex;
  */
 public class Converter {
     static String saveFolder = "src/resources/";
-    static String graphName;
-
-    public static void main(String[] args) throws Exception {
-        if(args.length !=2) {
-            throw new Exception("\n[LOG]: Please insert the file path. Only two arguments are accepted [filepath] [filename], e.g. java Converter USA.txt USA\n");
-        }else {
-            String path = args[0];
-            String fileName = args[1];
-            graphName = fileName;
-            checkCSV(path, fileName);
-            System.out.println(mapToGraph(saveFolder+fileName+".csv"));
-        }
-        
-        // Vertex v = new Vertex();
-        // v.setPosition(22, 220);
-        // writeCoordinates(v, "src/resources/USA.csv");
-    }
+    static public String graphName;
 
     public static Graph mapToGraph(String filepath) throws FileNotFoundException {
         Graph graph = new Graph(graphName);
@@ -57,9 +41,7 @@ public class Converter {
             }
             if(vertices.length == 3) {
                 String[] points = vertices[2].split(",");
-                //System.out.println("avant : "+Arrays.toString(points));
                 points = new String[] {getNumber(points[0]), getNumber(points[1])};
-                //System.out.println(Arrays.toString(points));
                 v.setPosition(Integer.parseInt(points[0]), Integer.parseInt(points[1]));
             }
 
@@ -111,7 +93,6 @@ public class Converter {
          */
         String[] allowed_extensions = {"png", "jpeg", "jpg"};
         String extension = getExtension(path).get();
-        System.out.println(extension);
         boolean extension_ok = false;
 
         for (String ex : allowed_extensions) {
