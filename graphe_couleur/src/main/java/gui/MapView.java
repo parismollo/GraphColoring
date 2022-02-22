@@ -7,6 +7,7 @@ import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
+import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.util.Scanner;
@@ -39,14 +40,7 @@ public class MapView extends JPanel {
 
         try {
             this.graph = Converter.mapToGraph(RESOURCES_FOLDER+name+".csv");
-            
-            BufferedImage a = ImageIO.read(new File(RESOURCES_FOLDER+name+".jpg"));
-            BufferedImage b = ImageIO.read(new File(RESOURCES_FOLDER+name+".png"));
-            BufferedImage c = ImageIO.read(new File(RESOURCES_FOLDER+name+".jpeg"));
-
-            if(a!=null) this.image = a;
-            if(b!=null) this.image = b;
-            if(c!=null) this.image = c;
+            this.image = getImage(name);
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -61,19 +55,9 @@ public class MapView extends JPanel {
                 colorImage3(e.getX(), e.getY(),
                     new boolean[image.getWidth()][image.getHeight()],
                     Color.RED);
-               /* if(graph != null) {
-                    for(Vertex v : graph.getVertices()) {
-                        if(!isWhite(v.getPosition()))
-                            System.out.println("aaaa");
-
-                    }
-                }
-                */
                 if(MapView.this.devMode) {
                     System.out.println(e.getPoint());
                     System.out.print("Indicate the name of this place : ");
-                   
-                    
                     try {
                         Vertex v = MapView.this.graph.getVertex(sc.nextLine());
                         v.setPosition(e.getPoint());
@@ -99,6 +83,17 @@ public class MapView extends JPanel {
         System.out.println(graph);
     }
 
+    private BufferedImage getImage(final String name){
+        String[] ext = {"png", "jpeg", "jpg"};
+        BufferedImage img = null;
+        for (String ex : ext) {
+            try {
+                img = ImageIO.read(new File(RESOURCES_FOLDER+name+"."+ex));
+                break;
+            } catch (IOException e) {}
+        }
+        return img;
+    }
     // Pour compter le nombre de recursivite ou de tours de boucle
     // private static int count = 0;
 

@@ -26,6 +26,7 @@ public class GraphCreator {
 
             Converter.checkCSV(csv_path, graph_name);
             Converter.checkImage(image_path, graph_name);
+            Converter.graphName = graph_name;
 
             GUI gui =  new GUI(1200, 800);
             gui.setMapPage(graph_name, true);

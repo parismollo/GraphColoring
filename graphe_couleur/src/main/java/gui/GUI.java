@@ -46,7 +46,7 @@ public class GUI extends JFrame {
 		//setGraphViewPage("France", "WelshPowell");
 		//testGreedyRandom();
 		//testGreedy();
-		testBestGreedy();
+		// testBestGreedy();
 		////// TEST: on clique sur le pays pour le dessiner
 		// Il faut commenter setGraphViewPage si vous voulez tester
 		// setFillImagePage();
