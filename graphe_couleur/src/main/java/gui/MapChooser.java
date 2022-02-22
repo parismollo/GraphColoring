@@ -1,7 +1,11 @@
 package gui;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -18,9 +22,9 @@ public class MapChooser extends JPanel {
     private GUI gui;
 
     private JLabel title;
-    private JButton previousBut = new JButton("<"),
-                    nextBut = new JButton(">"),
-                    selectBut = new JButton("Select");
+    private IconPanel previousBut = new IconPanel("left_arrow", 55),
+                      nextBut = new IconPanel("right_arrow", 55);
+    private JButton selectBut = new JButton("Select");
     private List<File> maps;
     private ImageView imageView;
     private boolean devMode;
@@ -28,25 +32,48 @@ public class MapChooser extends JPanel {
     public MapChooser(GUI gui, boolean devMode) {
         this.gui = gui;
         this.devMode = devMode;
-        title = new JLabel("Choose your map");
+        this.setBackground(Color.WHITE);
+        title = new JLabel("Choose your map : ");
         title.setFont(title.getFont().deriveFont(24.0f));
         title.setHorizontalAlignment(JLabel.CENTER);
 
         this.maps = getAllMaps();
         this.imageView = new ImageView(maps);
 
-        previousBut.addActionListener(e -> {
-            if(imageView.mapIndex > 0)
-                imageView.mapIndex--;
-            imageView.revalidate();
-            imageView.repaint();
+        if(maps != null && maps.size() >= 0) {
+            title.setText("Choose your map : "+getName(maps.get(0)));
+        }
+        
+        previousBut.setEnabled(false);
+
+        previousBut.addMouseListener(new MouseAdapter() {
+            public void mousePressed(MouseEvent e) {
+                if(imageView.mapIndex > 0) {
+                    if(!nextBut.isEnabled())
+                        nextBut.setEnabled(true);
+                    imageView.mapIndex--;
+                    title.setText("Choose your map : "+getName(maps.get(imageView.getMapIndex())));
+                    if(imageView.mapIndex <= 0)
+                        previousBut.setEnabled(false);
+                }
+                imageView.revalidate();
+                imageView.repaint();
+            }
         });
 
-        nextBut.addActionListener(e -> {
-            if(imageView.mapIndex < maps.size() - 1)
-                imageView.mapIndex++;
-            imageView.revalidate();
-            imageView.repaint();
+        nextBut.addMouseListener(new MouseAdapter() {
+            public void mousePressed(MouseEvent e) {
+                if(imageView.mapIndex < maps.size() - 1) {
+                    if(!previousBut.isEnabled())
+                        previousBut.setEnabled(true);
+                    imageView.mapIndex++;
+                    title.setText("Choose your map : "+getName(maps.get(imageView.getMapIndex())));
+                    if(imageView.mapIndex >= maps.size() - 1)
+                        nextBut.setEnabled(false);
+                }
+                imageView.revalidate();
+                imageView.repaint();
+            }
         });
 
         selectBut.addActionListener(e -> {
@@ -58,9 +85,17 @@ public class MapChooser extends JPanel {
 
         this.setLayout(new BorderLayout());
 
+        JPanel previousPan = new JPanel();
+        previousPan.setOpaque(false);
+        previousPan.add(previousBut);
+
+        JPanel nextPan = new JPanel();
+        nextPan.setOpaque(false);
+        nextPan.add(nextBut);
+
         this.add(title, BorderLayout.NORTH);
-        this.add(previousBut, BorderLayout.WEST);
-        this.add(nextBut, BorderLayout.EAST);
+        this.add(previousPan, BorderLayout.WEST);
+        this.add(nextPan, BorderLayout.EAST);
         this.add(selectBut, BorderLayout.SOUTH);
 
         this.add(imageView, BorderLayout.CENTER);
@@ -105,8 +140,18 @@ public class MapChooser extends JPanel {
         public void paintComponent(Graphics g) {
             super.paintComponent(g);
             if(mapsImg != null && mapIndex >= 0 && mapIndex < mapsImg.size()) {
-                g.drawImage(mapsImg.get(mapIndex), 0, 0, getWidth(), getHeight(), null);	
+                drawImg(mapsImg.get(mapIndex), g);	
             }
+        }
+
+        public void drawImg(BufferedImage img, Graphics g) {
+			if(img == null)
+                return;
+            Dimension dim = resize(img, getWidth(), getHeight());
+
+			g.drawImage(img, (this.getWidth()/2)-((int)dim.getWidth()/2), 
+				(this.getHeight()/2)-((int)dim.getHeight()/2), 
+				(int)dim.getWidth(), (int)dim.getHeight(), null);
         }
 
         public List<BufferedImage> getImages(List<File> list) {
@@ -117,6 +162,26 @@ public class MapChooser extends JPanel {
                 } catch (IOException e) {e.printStackTrace();}
             }
             return images;
+        }
+
+        public Dimension resize(BufferedImage pic, int w_max, int h_max) {
+            int w, h;
+            if(pic.getWidth(null) > w_max)
+                w = w_max;
+            else
+                w = pic.getWidth(null);
+            
+            h = pic.getHeight(null);
+            float coeff = (float)w / (float)pic.getWidth();
+            h *= coeff;
+            
+            if(h > h_max) {
+                coeff = (float)h_max / (float)h;
+                h = h_max;
+                w *= coeff;
+            }
+
+            return new Dimension(w, h);
         }
 
         public int getMapIndex() {
