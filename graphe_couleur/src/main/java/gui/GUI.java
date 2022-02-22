@@ -1,14 +1,20 @@
 package gui;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.FileNotFoundException;
-
-import javax.swing.JFrame;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.awt.Color;
 
+import javax.swing.JFrame;
+
 import graphs.Graph;
+import graphs.Vertex;
 import utils.Converter;
 
 public class GUI extends JFrame {
@@ -35,43 +41,55 @@ public class GUI extends JFrame {
 		//graph.setVerticesList(algorithms.WelshPowell.welshPowell(graph.getVertices()));
 		//System.out.println(graph);
 		
-		/*Test pour Greedy : (qui retourne un boolean)
-		
+		//Test pour Greedy : (qui retourne un boolean)
+		/* 1er test sur un graph random avec greedy et boolGraphColoringGreedy
 		Color[] nb = {Color.blue, Color.BLACK, Color.CYAN, Color.GREEN};
-		Color[] color = new Color[15];
+		Color[] color = new Color[graph.getVertices().size()+1];
 		
-		for(int i=0;i<15;i++){
+		for(int i=0;i<color.length;i++){
 			color[i] = Color.WHITE;
 		}
 		
-		ArrayList<Vertex> list = algorithms.WelshPowell.selectionSort(graph.getVertices()); //Comme on test sur un graph random si je ne fais pas ça les id des sommets sont nuls et greedy ne marche pas (afficher un message d'erreur dans ce cas ?)
-		System.out.println(algorithms.Greedy.graphColoring(0, nb, color, list));
-		graph.setVerticesList(algorithms.Greedy.greedy(graph.getVertices(), nb, color));
-		System.out.println(graph);
-		
-		//Test greedy sur graph des usa
-		
-		
+		//ArrayList<Vertex> list = algorithms.WelshPowell.selectionSort(graph.getVertices()); //Comme on test sur un graph random si je ne fais pas ça les id des sommets sont nuls et greedy ne marche pas (afficher un message d'erreur dans ce cas ?)
+		System.out.println(algorithms.Greedy.boolGraphColoringGreedy(0, nb, color, graph));
+		for(Color c : color){
+			System.out.println(c.toString());
+		}
+		graph = algorithms.Greedy.greedy(graph, nb);
+		graph.print();;
+		*/
+		//Test greedy sur graph de la France
+		/*
 		try {
+			Color[] nb = {Color.blue, Color.BLACK, Color.CYAN, Color.GREEN};
 			graph = Converter.mapToGraph("src/resources/France.csv");
-			graph = Graph.randomGraph(11);
-			Color[] nb = {Color.BLUE,Color.RED,Color.GREEN, Color.YELLOW, Color.MAGENTA, Color.ORANGE};
 			Color[] color = new Color[graph.getVertices().size()+1];
-		
 			for(int i=0;i<color.length;i++){
 				color[i] = Color.WHITE;
 			}
+			//ArrayList<Vertex> list = algorithms.WelshPowell.selectionSort(graph.getVertices());
+			System.out.println(algorithms.Greedy.boolGraphColoringGreedy(0, nb, color, graph));
+			graph = algorithms.Greedy.greedy(graph, nb);
+			graph.print();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		*/
+
+		//Test pour greedy de la fonction bestGraphColoringGreedy 
+		/* 
+		try {
+			graph = Converter.mapToGraph("src/resources/France.csv");// Il y a trop de sommets pour que ça fonctionne
+			graph = Graph.randomGraph(11);
+			Color[] nb = {Color.BLUE,Color.RED,Color.GREEN, Color.YELLOW, Color.MAGENTA, Color.ORANGE};
+			Color[] color = new Color[graph.getVertices().size()+1];
+			for(int i=0;i<color.length;i++){
+				color[i] = Color.white;
+			}
 
 			Map<Color[],Integer> test = new HashMap<>();
-			test.put(nb, 6);
-			System.out.println(test.toString());
-			algorithms.Greedy.bestGraphColoringGreedy(0, nb, color, graph.getVertices(), test);
-			System.out.println(test.toString());
-			for(Entry<Color[], Integer> yes : test.entrySet()){
-				for(Color c : yes.getKey()){
-					System.out.println(c.toString());
-				}
-			}
+			test.put(nb,6);//Important sinon ne marche pas
+			algorithms.Greedy.bestGraphColoringGreedy(0, nb, color, graph, test);
 			
 			Color[] fnl = new Color[color.length];
 			for(Entry<Color[], Integer> yes : test.entrySet()){
@@ -80,23 +98,14 @@ public class GUI extends JFrame {
 			for(int i=1;i<=graph.getVertices().size();i++){
 				graph.getVertex(i).setColor(fnl[i]);
 			}
-			System.out.println(graph.getVertex(1).getColor());
-			System.out.println(graph);
+			graph.print();;
 		} catch (FileNotFoundException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		
-		try {
-			graph = Converter.mapToGraph("src/resources/USA.csv");
-			//ArrayList<Vertex> list = algorithms.WelshPowell.selectionSort(graph.getVertices());
-			//System.out.println(algorithms.Greedy.boolGraphColoringGreedy(0, nb, color, graph.getVertices()));
-			//Si j'appelle boolGraphColoringGreedy et greedy sans reinitialiser color alors je vais avoir des erreurs à l'affichage car le tableau passé en paramétre ne sera pas blanc et donc des voisins qui auraient du être blancs ne le seront pas
-			//Donc soit je laisse comme ça soit une solution peut être de reinitialiser a blanc toutes les cases du tableaux au début de ces fonctions.
-			graph.setVerticesList(algorithms.Greedy.greedy(graph.getVertices(), nb));
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
+		
+			
 		*/
 			//////////////////////////////////////////////
 			//////////////////////////////////////////////
@@ -106,15 +115,15 @@ public class GUI extends JFrame {
 			//////////////////////////////////////////////
 			//////////////////////////////////////////////
 		
-		
-		// try {
-		// 	graph = Converter.mapToGraph("src/resources/USA.csv");
-		// 	graph.setVerticesList(algorithms.Dsatur.dsatur(graph.getVertices()));
-		// } catch (FileNotFoundException e) {
-		// 	e.printStackTrace();
-		// }
-		
-		//setGraphViewPage("France", "WelshPowell");
+		/*
+		 try {
+		 	graph = Converter.mapToGraph("src/resources/France.csv");
+		 	graph.setVerticesList(algorithms.Dsatur.dsatur(graph.getVertices()));
+		 } catch (FileNotFoundException e) {
+		 	e.printStackTrace();
+		 }
+		*/
+		setGraphViewPage("France", "WelshPowell");
 
 		////// TEST: on clique sur le pays pour le dessiner
 		// Il faut commenter setGraphViewPage si vous voulez tester
