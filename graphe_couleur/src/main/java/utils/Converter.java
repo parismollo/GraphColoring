@@ -48,7 +48,6 @@ public class Converter {
             // System.out.println(scanner.next());
             String line = scanner.next();
             String[] vertices = line.split(",\"");
-
             String main = vertices[0].strip();
             String[] borders = vertices[1].replace("\"", "").split(",");
             Vertex v = graph.getVertex(main);
@@ -56,7 +55,10 @@ public class Converter {
                 v = graph.addVertex(main);
             }
             if(vertices.length == 3) {
-                String[] points = vertices[2].replace("\"", "").split(",");
+                String[] points = vertices[2].split(",");
+                //System.out.println("avant : "+Arrays.toString(points));
+                points = new String[] {getNumber(points[0]), getNumber(points[1])};
+                //System.out.println(Arrays.toString(points));
                 v.setPosition(Integer.parseInt(points[0]), Integer.parseInt(points[1]));
             }
 
@@ -73,8 +75,14 @@ public class Converter {
         return graph;
     }
 
-
-
+    public static String getNumber(String nb) {
+    	String n = "";
+    	for(char c : nb.toCharArray())
+    		if(Character.isDigit(c))
+    			n += c;
+    	return n;
+    }
+    
     public static void loadFile(String filepath, String filename) throws Exception{
         /**
          * 1. Check if CSV file.

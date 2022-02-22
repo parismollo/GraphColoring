@@ -5,16 +5,13 @@ import java.awt.Dimension;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.awt.Color;
 
 import javax.swing.JFrame;
 
 import graphs.Graph;
-import graphs.Vertex;
 import utils.Converter;
 
 public class GUI extends JFrame {
@@ -30,6 +27,8 @@ public class GUI extends JFrame {
 		this.setMinimumSize(new Dimension(width+75, height));
 		this.setResizable(true);
 		this.setLocationRelativeTo(null);
+		this.setExtendedState(JFrame.MAXIMIZED_BOTH);
+		
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		setDefaultLookAndFeelDecorated(true);
