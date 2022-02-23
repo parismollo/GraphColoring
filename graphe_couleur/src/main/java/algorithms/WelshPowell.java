@@ -3,6 +3,7 @@ package algorithms;
 import java.awt.Color;
 import java.util.ArrayList;
 
+import graphs.Graph;
 import graphs.Vertex;
 
 public class WelshPowell {
@@ -22,13 +23,14 @@ public class WelshPowell {
         return list;
     }
 
-    public static ArrayList<Vertex> welshPowell(ArrayList<Vertex>list){
+    public static void welshPowell(Graph graph, Color[] colors){
+        ArrayList<Vertex> list = graph.getVertices();
         ArrayList<Vertex> temp = new ArrayList<Vertex>();
         temp = selectionSort(list);
-        Color tab [] = {Color.BLUE,Color.RED,Color.GREEN,Color.YELLOW, Color.PINK};
+        //Color tab [] = {Color.BLUE,Color.RED,Color.GREEN,Color.YELLOW, Color.PINK};
         int iterator = 0;
-        while(iterator != tab.length) {
-            Color current = tab[iterator];
+        while(iterator != colors.length) {
+            Color current = colors[iterator];
             for(int i = 0 ; i < temp.size();i++){
                 if(temp.get(i).getColor().equals(Color.WHITE) && containsColor(temp.get(i).getVertices(), current) == false){
                     temp.get(i).setColor(current);
@@ -36,7 +38,7 @@ public class WelshPowell {
             }
             iterator++;
         }
-        return temp;
+        graph.setVerticesList(temp);
     }
 
     public static boolean containsColor(ArrayList<Vertex> vertices , Color c){

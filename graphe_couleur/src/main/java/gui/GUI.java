@@ -4,15 +4,10 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.io.FileNotFoundException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Map.Entry;
 
 import javax.swing.JFrame;
 
 import graphs.Graph;
-import utils.Converter;
 
 public class GUI extends JFrame {
 	private static final long serialVersionUID = 1L;
@@ -34,12 +29,19 @@ public class GUI extends JFrame {
 		setDefaultLookAndFeelDecorated(true);
 
 		//setHomePage();
-
-		//setGraphViewPage("France", "WelshPowell");
-
+		
+		//Color[] colors = {Color.BLUE,Color.RED,Color.GREEN, Color.YELLOW, Color.MAGENTA, Color.ORANGE};
+		//setGraphViewPage("France", "WelshPowell", colors);
+		//setGraphViewPage("France", "Dsatur", colors);
+		//setGraphViewPage("France", "Greedy", colors);
+		//setGraphViewPage("France", "BestGreedy", colors);
 		//testGreedyRandom();
-		testGreedy();
-		//testBestGreedy();
+		testBestGreedy();
+		
+		////// TEST: on clique sur le pays pour le dessiner
+		// Il faut commenter setGraphViewPage si vous voulez tester
+		// setFillImagePage();
+		///////////
 
 		this.addWindowListener(new WindowAdapter()
         {
@@ -60,14 +62,14 @@ public class GUI extends JFrame {
 	}
 
 	public void setGraphViewPage(Graph graph) {
-		setGraphViewPage(graph, null, null, true);
+		setGraphViewPage(graph, null, null, null, true);
 	}
 	
-	public void setGraphViewPage(String name, String algo) {
-		setGraphViewPage(null, name, algo, false);
+	public void setGraphViewPage(String name, String algo, Color[] colors) {
+		setGraphViewPage(null, name, algo, colors, false);
 	}
 
-	public void setGraphViewPage(Graph graph, String name, String algo, boolean isGraph) {
+	public void setGraphViewPage(Graph graph, String name, String algo, Color[] colors, boolean isGraph) {
 		this.getContentPane().removeAll();
 		this.setResizable(true);
 		//this.setExtendedState(JFrame.MAXIMIZED_BOTH);
@@ -75,7 +77,7 @@ public class GUI extends JFrame {
 		if(isGraph)
 			graphPlayView = new GraphPlayView(graph, width, height);
 		else
-			graphPlayView = new GraphPlayView(name, algo, width, height);
+			graphPlayView = new GraphPlayView(name, algo, width, height, colors);
 		this.getContentPane().add(graphPlayView);
 		revalidate();
 		repaint();
@@ -113,51 +115,25 @@ public class GUI extends JFrame {
 
 		Graph graph = Graph.randomGraph(9);
 		
-		Color[] nb = {Color.blue, Color.BLACK, Color.CYAN, Color.GREEN};
-		Color[] color = new Color[graph.getVertices().size()+1];
-		for(int i=0;i<color.length;i++){
-			color[i] = Color.WHITE;
+		Color[] colors = {Color.blue, Color.BLACK, Color.CYAN, Color.GREEN};
+		Color[] graph_colors = new Color[graph.getVertices().size()+1];
+		for(int i=0;i<graph_colors.length;i++){
+			graph_colors[i] = Color.WHITE;
 		}
 		
-		//ArrayList<Vertex> list = algorithms.WelshPowell.selectionSort(graph.getVertices()); //Comme on test sur un graph random si je ne fais pas ça les id des sommets sont nuls et greedy ne marche pas (afficher un message d'erreur dans ce cas ?)
-		System.out.println(algorithms.Greedy.boolGraphColoringGreedy(0, nb, color, graph));
-		graph = algorithms.Greedy.greedy(graph, nb);
+		//ArrayList<Vertex> list = algorithms.WelshPowell.selectionSort(graph.getVertices());
+		System.out.println(algorithms.Greedy.boolGraphColoringGreedy(0, colors, graph_colors, graph.getVertices()));
+		algorithms.Greedy.greedy(graph, colors);
 		graph.print();
 		setGraphViewPage(graph);
-	}
-
-	public void testGreedy(){
-		try {
-			Graph graph = Converter.mapToGraph("src/resources/France.csv");
-			Color[] nb = {Color.BLUE,Color.RED,Color.GREEN, Color.YELLOW, Color.MAGENTA, Color.ORANGE};
-			//graph.setVerticesList(algorithms.WelshPowell.selectionSort(graph.getVertices()));
-			graph = algorithms.Greedy.greedy(graph, nb);
-			graph.print();
-			setGraphViewPage(graph);
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
 	}
 
 	public void testBestGreedy(){
 		//Test pour greedy de la fonction bestGraphColoringGreedy 
 		//La fonction bestGraphColoringGreedy ne fonctionne pas pour plus de 11 sommets environ, c'est trop long
-		Graph graph = Graph.randomGraph(10);
-		Color[] nb = {Color.BLUE,Color.RED,Color.GREEN, Color.YELLOW, Color.MAGENTA, Color.ORANGE};
-		Color[] color = new Color[graph.getVertices().size()+1];
-		for(int i=0;i<color.length;i++){
-			color[i] = Color.white;
-		}
-		Map<Color[],Integer> test = new HashMap<>();
-		test.put(nb,6);//Important sinon ne marche pas
-		algorithms.Greedy.bestGraphColoringGreedy(0, nb, color, graph, test);
-		Color[] fnl = new Color[color.length];
-		for(Entry<Color[], Integer> yes : test.entrySet()){
-			fnl = yes.getKey().clone();
-		}
-		for(int i=1;i<=graph.getVertices().size();i++){
-			graph.getVertex(i).setColor(fnl[i]);
-		}
+		Graph graph = Graph.randomGraph(8);
+		Color[] colors = {Color.BLUE,Color.RED,Color.GREEN, Color.YELLOW, Color.MAGENTA, Color.ORANGE};
+		algorithms.Greedy.bestGreedy(graph, colors);
 		graph.print();
 		setGraphViewPage(graph);
 	}

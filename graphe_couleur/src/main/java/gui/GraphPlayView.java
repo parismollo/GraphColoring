@@ -29,10 +29,10 @@ public class GraphPlayView extends JPanel {
         this.add(new GraphView(this, name, width, height), BorderLayout.CENTER);
     }
 
-    public GraphPlayView(String name, String algo, int width, int height) {
+    public GraphPlayView(String name, String algo, int width, int height, Color[] colors) {
         this.setLayout(new BorderLayout());
         setupToolBar();
-        this.add(new GraphView(this, name, algo, width, height), BorderLayout.CENTER);
+        this.add(new GraphView(this, name, algo, width, height, colors), BorderLayout.CENTER);
     }
 
     private class ColorButton extends JPanel {

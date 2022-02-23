@@ -3,6 +3,7 @@ package algorithms;
 import java.awt.Color;
 import java.util.ArrayList;
 
+import graphs.Graph;
 import graphs.Vertex;
 
 public class Dsatur {
@@ -21,19 +22,20 @@ public class Dsatur {
         return list;
     }
 
-    public static ArrayList<Vertex> dsatur(ArrayList<Vertex> list) {
+    public static void dsatur(Graph graph, Color[] colors) {
+        ArrayList<Vertex> list = graph.getVertices();
         ArrayList<Vertex> temp = new ArrayList<Vertex>();
         temp = selectionSort(list);
-        Color tab [] = {Color.BLUE,Color.RED,Color.GREEN,Color.YELLOW};
+        //Color tab [] = {Color.BLUE,Color.RED,Color.GREEN,Color.YELLOW};
         for (int i = 0; i < temp.size(); i++) {
-            for (int j = 0; j < tab.length; j++) {
-                if(temp.get(i).getColor().equals(Color.WHITE) && containsColor(temp.get(i).getVertices(), tab[j]) == false){
-                    temp.get(i).setColor(tab[j]);                    
+            for (int j = 0; j < colors.length; j++) {
+                if(temp.get(i).getColor().equals(Color.WHITE) && containsColor(temp.get(i).getVertices(), colors[j]) == false){
+                    temp.get(i).setColor(colors[j]);                    
                 }
             }
             //System.out.println(temp.get(i).getTitle() + " " + temp.get(i).getColor() + " " + temp.get(i).getVertices());//Pour tester
         }
-        return temp;
+        graph.setVerticesList(temp);
     }
 
     public static boolean containsColor(ArrayList<Vertex> vertices , Color c){
