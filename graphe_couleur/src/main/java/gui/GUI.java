@@ -34,23 +34,12 @@ public class GUI extends JFrame {
 		setDefaultLookAndFeelDecorated(true);
 
 		//setHomePage();
-		
-		/*
-		 try {
-		 	graph = Converter.mapToGraph("src/resources/France.csv");
-		 	graph.setVerticesList(algorithms.Dsatur.dsatur(graph.getVertices()));
-		 } catch (FileNotFoundException e) {
-		 	e.printStackTrace();
-		 }
-		*/
+
 		//setGraphViewPage("France", "WelshPowell");
+
 		//testGreedyRandom();
-		//testGreedy();
-		testBestGreedy();
-		////// TEST: on clique sur le pays pour le dessiner
-		// Il faut commenter setGraphViewPage si vous voulez tester
-		// setFillImagePage();
-		///////////
+		testGreedy();
+		//testBestGreedy();
 
 		this.addWindowListener(new WindowAdapter()
         {
@@ -92,19 +81,17 @@ public class GUI extends JFrame {
 		repaint();
 	}
 	
-	/////////////// TEST ////////////
 	public void setMapPage(String mapName, boolean devMode) {
 		this.getContentPane().removeAll();
-		this.setResizable(false);
+		//this.setResizable(false);
 		MapView map = new MapView(mapName, devMode);
-		this.setMinimumSize(map.getMapDim());
-		this.setSize(map.getMapDim());
+		//this.setMinimumSize(map.getMapDim());
+		//this.setSize(map.getMapDim());
 		
 		this.getContentPane().add(map);
 		revalidate();
 		repaint();
 	}
-	/////////////////////////////////
 
 	public void setMapChooser(boolean devMode) {
 		this.getContentPane().removeAll();
