@@ -30,20 +30,14 @@ public class GUI extends JFrame {
 
 		//setHomePage();
 		
-		//Color[] colors = {Color.BLUE,Color.RED,Color.GREEN, Color.YELLOW, Color.MAGENTA, Color.ORANGE};
+		Color[] colors = {Color.BLUE,Color.RED,Color.GREEN, Color.YELLOW, Color.MAGENTA, Color.ORANGE};
 		//setGraphViewPage("France", "WelshPowell", colors);
 		//setGraphViewPage("France", "Dsatur", colors);
-		//setGraphViewPage("France", "Greedy", colors);
+		setGraphViewPage("France", "Greedy", colors);
 		//setGraphViewPage("France", "BestGreedy", colors);
 		//testGreedyRandom();
 		//testGreedy();
 		// testBestGreedy();
-		testBestGreedy();
-		
-		////// TEST: on clique sur le pays pour le dessiner
-		// Il faut commenter setGraphViewPage si vous voulez tester
-		// setFillImagePage();
-		///////////
 
 		this.addWindowListener(new WindowAdapter()
         {
@@ -68,7 +62,7 @@ public class GUI extends JFrame {
 	}
 	
 	public void setGraphViewPage(String name, String algo, Color[] colors) {
-		setGraphViewPage(null, name, algo, colors, false);
+		setGraphViewPage(null, name, algo, colors, true);
 	}
 
 	public void setGraphViewPage(Graph graph, String name, String algo, Color[] colors, boolean isGraph) {
@@ -76,10 +70,10 @@ public class GUI extends JFrame {
 		this.setResizable(true);
 		//this.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		GraphPlayView graphPlayView;
-		if(isGraph)
+		if(graph != null)
 			graphPlayView = new GraphPlayView(graph, width, height);
 		else
-			graphPlayView = new GraphPlayView(name, algo, width, height, colors);
+			graphPlayView = new GraphPlayView(name, algo, width, height, colors, isGraph);
 		this.getContentPane().add(graphPlayView);
 		revalidate();
 		repaint();
