@@ -1,9 +1,22 @@
 package graphs;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class Graph {
+public class Graph implements Serializable {
+
+    private static final long serialVersionUID = 1077578369820L;   
+    
+
+
     private String title;
     private ArrayList<Vertex> vertices;
 
@@ -165,6 +178,27 @@ public class Graph {
             str += v.printInfo()+"\n";
         str+="<----------------------------------------->\n";
         return str;
+    }
+
+    public void save(String path) throws FileNotFoundException, IOException {
+        save(this, path);
+    }
+
+    public static void save(Graph graph, String path) throws FileNotFoundException, IOException {
+        File file = new File(path);
+        ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(file));
+        oos.writeObject(graph);
+        oos.close();
+    }
+
+    public static Graph load(String path) throws FileNotFoundException, IOException, ClassNotFoundException {
+        File file =  new File(path) ;
+
+        // ouverture d'un flux sur un fichier
+       ObjectInputStream ois =  new ObjectInputStream(new FileInputStream(file)) ;
+               
+        // désérialization de l'objet
+       return (Graph)ois.readObject();
     }
 
 }

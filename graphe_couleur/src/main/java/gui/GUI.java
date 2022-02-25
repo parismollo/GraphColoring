@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.IOException;
 
 import javax.swing.JFrame;
 
@@ -38,6 +39,14 @@ public class GUI extends JFrame {
 		//testGreedyRandom();
 		//testGreedy();
 		// testBestGreedy();
+		/*Graph random = Graph.randomGraph(11);
+		try {
+			random.save("src/resources/graphBebou.txt");
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}*/
+		testBebou("BESTGREEDY", colors);
+		
 
 		this.addWindowListener(new WindowAdapter()
         {
@@ -133,6 +142,35 @@ public class GUI extends JFrame {
 		algorithms.Greedy.bestGreedy(graph, colors);
 		graph.print();
 		setGraphViewPage(graph);
+	}
+
+	public void testBebou(String algo, Color[] colors){
+		algo = algo.toUpperCase();
+		Graph bebou = null;
+		try {
+			bebou = Graph.load("src/resources/graphBebou.txt");
+		} catch (ClassNotFoundException | IOException e1) {
+			e1.printStackTrace();
+		}
+		bebou.print();
+		switch(algo){
+			case "DSATUR":
+                algorithms.Dsatur.dsatur(bebou, colors);
+                break;
+            case "WELSHPOWELL":
+				algorithms.WelshPowell.welshPowell(bebou, colors);
+                break;
+            case "GREEDY":
+				algorithms.Greedy.greedy(bebou, colors);
+                break;
+            case "BESTGREEDY":
+				algorithms.Greedy.bestGreedy(bebou, colors);
+            case "KEMPE":
+                //vertices = Kempe.kempe(vertices);
+                break;
+		}
+		
+		setGraphViewPage(bebou);
 	}
 	
 }
