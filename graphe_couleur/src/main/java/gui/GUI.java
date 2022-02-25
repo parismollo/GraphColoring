@@ -4,11 +4,16 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import javax.swing.JFrame;
 
+import algorithms.Kempe;
+import algorithms.WelshPowell;
 import graphs.Graph;
+import graphs.Vertex;
+import utils.Converter;
 
 public class GUI extends JFrame {
 	private static final long serialVersionUID = 1L;
@@ -39,14 +44,33 @@ public class GUI extends JFrame {
 		//testGreedyRandom();
 		//testGreedy();
 		// testBestGreedy();
+		
+		// TEST GRAPH BEBOU
 		/*Graph random = Graph.randomGraph(11);
 		try {
 			random.save("src/resources/graphBebou.txt");
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}*/
-		testBebou("BESTGREEDY", colors);
-		
+		//testBebou("BESTGREEDY", colors);
+
+		 // TEST KEMPE
+		/*Graph graph = null;
+		Vertex v = null;
+		try {
+			graph = Converter.mapToGraph("src/resources/France.csv");
+			v = graph.getVertices().get(10);
+			System.out.println(v.getId());
+			WelshPowell.welshPowell(graph, colors);
+		} catch (FileNotFoundException e1) {
+			e1.printStackTrace();
+		}
+
+		graph = Kempe.kempeChain(v);
+		System.out.println(graph.getVertices());
+		Kempe.reverseKempeChain(graph);
+		setGraphViewPage(graph);
+		*/
 
 		this.addWindowListener(new WindowAdapter()
         {
