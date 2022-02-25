@@ -7,7 +7,6 @@ import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
-import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.util.Scanner;
@@ -24,6 +23,7 @@ public class MapView extends JPanel {
     
     public static String RESOURCES_FOLDER = "src/resources/";
 
+    private GraphPlayView graphPlayView;
     private Graph graph;
     private final String name;
     private BufferedImage image;
@@ -35,6 +35,11 @@ public class MapView extends JPanel {
     }
 
     public MapView(final String name, boolean devMode) {
+        this(null, name, devMode);
+    }
+
+    public MapView(GraphPlayView graphPlayView, final String name, boolean devMode) {
+        this.graphPlayView = graphPlayView;
         this.name = name;
         this.devMode = devMode;
 
@@ -52,9 +57,10 @@ public class MapView extends JPanel {
         this.addMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent e) {
                 super.mousePressed(e);
+                Color color = graphPlayView != null ? graphPlayView.getUserColor() : Color.RED;
                 colorImage3(e.getX(), e.getY(),
                     new boolean[image.getWidth()][image.getHeight()],
-                    Color.RED);
+                    color);
                 if(MapView.this.devMode) {
                     System.out.println(e.getPoint());
                     System.out.print("Indicate the name of this place : ");
@@ -75,10 +81,11 @@ public class MapView extends JPanel {
             return;
 
         for(Vertex v : graph.getVertices()) {
-            if(v.getPosition() != null)
+            if(v.getPosition() != null) {
                 colorImage3(v.getX(), v.getY(),
                     new boolean[image.getWidth()][image.getHeight()],
                     Color.RED); // On mettra v.getColor() plus tard.
+            }
         }
         System.out.println(graph);
     }
@@ -202,7 +209,7 @@ public class MapView extends JPanel {
         super.paintComponent(g);
         if(image == null)
             return;
-            g.drawImage(image, 0, 0, image.getWidth(), image.getHeight(), null);
+        g.drawImage(image, 0, 0, image.getWidth(), image.getHeight(), null);
         /*
         int imgW = 3*image.getWidth()/5;
         int imgH = 3*image.getHeight()/5;

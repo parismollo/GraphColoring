@@ -151,7 +151,7 @@ public class GraphPlayView extends JPanel {
     public void switchToMap() {
         this.removeAll();
         this.add(toolBar, BorderLayout.NORTH);
-        this.add(new MapView(name), BorderLayout.CENTER);
+        this.add(new MapView(this, name, false), BorderLayout.CENTER);
         if(isGraph) {
             isGraph = !isGraph;
             switchBut.setText(isGraph ? "See map" : "See graph");
