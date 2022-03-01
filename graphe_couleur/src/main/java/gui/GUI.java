@@ -4,10 +4,16 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
 import javax.swing.JFrame;
 
+import algorithms.Kempe;
+import algorithms.WelshPowell;
 import graphs.Graph;
+import graphs.Vertex;
+import utils.Converter;
 
 public class GUI extends JFrame {
 	private static final long serialVersionUID = 1L;
@@ -30,18 +36,41 @@ public class GUI extends JFrame {
 
 		//setHomePage();
 		
-		//Color[] colors = {Color.BLUE,Color.RED,Color.GREEN, Color.YELLOW, Color.MAGENTA, Color.ORANGE};
+		Color[] colors = {Color.BLUE,Color.RED,Color.GREEN, Color.YELLOW, Color.MAGENTA, Color.ORANGE};
 		//setGraphViewPage("France", "WelshPowell", colors);
 		//setGraphViewPage("France", "Dsatur", colors);
-		//setGraphViewPage("France", "Greedy", colors);
+		setGraphViewPage("France", "Greedy", colors);
 		//setGraphViewPage("France", "BestGreedy", colors);
 		//testGreedyRandom();
-		testBestGreedy();
+		//testGreedy();
+		// testBestGreedy();
 		
-		////// TEST: on clique sur le pays pour le dessiner
-		// Il faut commenter setGraphViewPage si vous voulez tester
-		// setFillImagePage();
-		///////////
+		// TEST GRAPH BEBOU
+		/*Graph random = Graph.randomGraph(11);
+		try {
+			random.save("src/resources/graphBebou.txt");
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}*/
+		//testBebou("BESTGREEDY", colors);
+
+		 // TEST KEMPE
+		/*Graph graph = null;
+		Vertex v = null;
+		try {
+			graph = Converter.mapToGraph("src/resources/France.csv");
+			v = graph.getVertices().get(10);
+			System.out.println(v.getId());
+			WelshPowell.welshPowell(graph, colors);
+		} catch (FileNotFoundException e1) {
+			e1.printStackTrace();
+		}
+
+		graph = Kempe.kempeChain(v);
+		System.out.println(graph.getVertices());
+		Kempe.reverseKempeChain(graph);
+		setGraphViewPage(graph);
+		*/
 
 		this.addWindowListener(new WindowAdapter()
         {
@@ -66,7 +95,7 @@ public class GUI extends JFrame {
 	}
 	
 	public void setGraphViewPage(String name, String algo, Color[] colors) {
-		setGraphViewPage(null, name, algo, colors, false);
+		setGraphViewPage(null, name, algo, colors, true);
 	}
 
 	public void setGraphViewPage(Graph graph, String name, String algo, Color[] colors, boolean isGraph) {
@@ -74,28 +103,27 @@ public class GUI extends JFrame {
 		this.setResizable(true);
 		//this.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		GraphPlayView graphPlayView;
-		if(isGraph)
+		if(graph != null)
 			graphPlayView = new GraphPlayView(graph, width, height);
 		else
-			graphPlayView = new GraphPlayView(name, algo, width, height, colors);
+			graphPlayView = new GraphPlayView(name, algo, width, height, colors, isGraph);
 		this.getContentPane().add(graphPlayView);
 		revalidate();
 		repaint();
 	}
 	
-	/////////////// TEST ////////////
+	
 	public void setMapPage(String mapName, boolean devMode) {
 		this.getContentPane().removeAll();
-		this.setResizable(false);
+		//this.setResizable(false);
 		MapView map = new MapView(mapName, devMode);
-		this.setMinimumSize(map.getMapDim());
-		this.setSize(map.getMapDim());
+		//this.setMinimumSize(map.getMapDim());
+		//this.setSize(map.getMapDim());
 		
 		this.getContentPane().add(map);
 		revalidate();
 		repaint();
 	}
-	/////////////////////////////////
 
 	public void setMapChooser(boolean devMode) {
 		this.getContentPane().removeAll();
@@ -138,6 +166,35 @@ public class GUI extends JFrame {
 		algorithms.Greedy.bestGreedy(graph, colors);
 		graph.print();
 		setGraphViewPage(graph);
+	}
+
+	public void testBebou(String algo, Color[] colors){
+		algo = algo.toUpperCase();
+		Graph bebou = null;
+		try {
+			bebou = Graph.load("src/resources/graphBebou.txt");
+		} catch (ClassNotFoundException | IOException e1) {
+			e1.printStackTrace();
+		}
+		bebou.print();
+		switch(algo){
+			case "DSATUR":
+                algorithms.Dsatur.dsatur(bebou, colors);
+                break;
+            case "WELSHPOWELL":
+				algorithms.WelshPowell.welshPowell(bebou, colors);
+                break;
+            case "GREEDY":
+				algorithms.Greedy.greedy(bebou, colors);
+                break;
+            case "BESTGREEDY":
+				algorithms.Greedy.bestGreedy(bebou, colors);
+            case "KEMPE":
+                //vertices = Kempe.kempe(vertices);
+                break;
+		}
+		
+		setGraphViewPage(bebou);
 	}
 	
 }

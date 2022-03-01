@@ -77,10 +77,11 @@ public class MapChooser extends JPanel {
         });
 
         selectBut.addActionListener(e -> {
-            MapChooser.this.gui.setMapPage(
+            MapChooser.this.gui.setGraphViewPage(null, getName(maps.get(imageView.mapIndex)), null, null, false);
+            /*MapChooser.this.gui.setMapPage(
                 getName(maps.get(imageView.mapIndex)), 
                 MapChooser.this.devMode
-            );
+            );*/
         });
 
         this.setLayout(new BorderLayout());

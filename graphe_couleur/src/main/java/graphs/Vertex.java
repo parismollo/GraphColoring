@@ -2,9 +2,13 @@ package graphs;
 
 import java.awt.Color;
 import java.awt.Point;
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Vertex {
+public class Vertex implements Serializable {
+
+    private static final long serialVersionUID = 1024578369820L;
+
     private static int counter = 1;
     private final int id;
     private Color color = Color.WHITE;

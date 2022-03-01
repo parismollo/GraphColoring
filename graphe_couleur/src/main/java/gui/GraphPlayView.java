@@ -7,6 +7,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 import javax.swing.BorderFactory;
+import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JToolBar;
 
@@ -15,24 +16,39 @@ import graphs.Graph;
 public class GraphPlayView extends JPanel {
     
     private ColorButton selectedColorBut;
+    private JButton switchBut;
     private JToolBar toolBar;
 
+    private String name, algo;
+    private int width, height;
+    private Color[] colors;
+
+    private boolean isGraph = true;
+
+    // ICI : isGraph = true.
     public GraphPlayView(Graph graph, int width, int height) {
         this.setLayout(new BorderLayout());
         setupToolBar();
         this.add(new GraphView(this, graph, width, height), BorderLayout.CENTER);
     }
 
-    public GraphPlayView(String name, int width, int height) {
-        this.setLayout(new BorderLayout());
-        setupToolBar();
-        this.add(new GraphView(this, name, width, height), BorderLayout.CENTER);
+    public GraphPlayView(String name, int width, int height, boolean isGraph) {
+        this(name, null, width, height, null, isGraph);
     }
 
-    public GraphPlayView(String name, String algo, int width, int height, Color[] colors) {
+    public GraphPlayView(String name, String algo, int width, int height, Color[] colors, boolean isGraph) {
+        this.name = name;
+        this.algo = algo;
+        this.width = width;
+        this.height = height;
+        this.colors = colors;
+        this.isGraph = isGraph;
         this.setLayout(new BorderLayout());
         setupToolBar();
-        this.add(new GraphView(this, name, algo, width, height, colors), BorderLayout.CENTER);
+        if(isGraph)
+            switchToGraph();
+        else
+            switchToMap();
     }
 
     private class ColorButton extends JPanel {
@@ -118,7 +134,42 @@ public class GraphPlayView extends JPanel {
                 toolBar.add(new ColorButton(colors[i]));
             toolBar.addSeparator();
         }
+        if(name != null) {
+            toolBar.addSeparator();
+            switchBut = new JButton(isGraph ? "See map" : "See graph");
+            switchBut.addActionListener(e -> {
+                if(isGraph)
+                    switchToMap();
+                else
+                    switchToGraph();
+            });
+            toolBar.add(switchBut);
+        }
         this.add(toolBar, BorderLayout.NORTH);
+    }
+
+    public void switchToMap() {
+        this.removeAll();
+        this.add(toolBar, BorderLayout.NORTH);
+        this.add(new MapView(this, name, false), BorderLayout.CENTER);
+        if(isGraph) {
+            isGraph = !isGraph;
+            switchBut.setText(isGraph ? "See map" : "See graph");
+        }
+        this.revalidate();
+        this.repaint();
+    }
+
+    public void switchToGraph() {
+        this.removeAll();
+        this.add(toolBar, BorderLayout.NORTH);
+        this.add(new GraphView(this, name, algo, width, height, GraphPlayView.this.colors), BorderLayout.CENTER);
+        if(!isGraph) {
+            isGraph = !isGraph;
+            switchBut.setText(isGraph ? "See map" : "See graph");
+        }
+        this.revalidate();
+        this.repaint();
     }
 
     public Color getUserColor() {
