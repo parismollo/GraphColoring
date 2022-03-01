@@ -1,0 +1,8 @@
+State,Borders
+Australie occidentale,"Territoire du Nord, Australie méridionale","152,158"
+Territoire du Nord,"Australie occidentale, Australie méridionale, Queensland","227,100"
+Australie méridionale,"Australie occidentale, Territoire du Nord, Queensland, Nouvelle Galles du Sud, Victoria","247,189"
+Queensland,"Territoire du Nord, Australie méridionale, Nouvelle Galles du Sud","316,146"
+Nouvelle Galles du Sud,"Australie méridionale, Queensland, Victoria","308,206"
+Victoria,"Nouvelle Galles du Sud","301,247"
+Tasmanie,"None","306,289"
