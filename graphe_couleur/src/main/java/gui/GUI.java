@@ -86,8 +86,17 @@ public class GUI extends JFrame {
 		this.setVisible(true);
 	}
 	
-	public void setHomePage() {
-		// TODO: Home page.
+	public void setHomeView() {
+		this.getContentPane().removeAll();
+		this.setResizable(true);
+		//this.setExtendedState(JFrame.MAXIMIZED_BOTH);
+		this.getContentPane().add(new HomeView(this));
+		revalidate();
+		repaint();
+	}
+
+	public void setRandomGraphView(int edges) {
+		setGraphViewPage(Graph.randomGraph(edges));
 	}
 
 	public void setGraphViewPage(Graph graph) {
