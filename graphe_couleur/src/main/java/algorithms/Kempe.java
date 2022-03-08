@@ -10,19 +10,55 @@ import graphs.Vertex;
 
 public class Kempe {
 
-    private List<Color> remainsColor;
     //private static Graph kempeCGraph = new Graph("Kempe Chain");
 
-    private void initColor(){
-        Color tab [] = {Color.BLUE,Color.RED,Color.GREEN,Color.YELLOW, Color.PINK};
-        remainsColor = Arrays.asList(tab); 
+    public static Graph kempe(Vertex exception ,Vertex v, int i , Color[] colors){
+
+        Graph graph = new Graph("Kempe graph");
+        kempeAux(graph, exception, exception.getVertices().get(0),colors,0);
+        if(noMoreColor(exception, colors)){
+            if(exception.getVertices().size() == 5){
+                Graph kempechain = kempeChain(exception);  
+                reverseKempeChain(kempechain);
+            }
+        }
+        else{
+            exception.setColor(lastColor(exception, colors));
+        }
+        return graph;
     }
 
-    public boolean moreThanFiveVertices(Vertex v) {
-        return v.getVertices().size() >= 5;
+    public static void kempeAux(Graph graph,Vertex evertex,Vertex current,Color[] colors,int colororder){
+        if(current.getColor() != Color.WHITE){
+            graph.addVertex(current);
+        }
+        else{
+            if(ifThisColor(colors[colororder], current.getVertices())){
+                kempeAux(graph, evertex, current, colors, ++colororder);
+            }
+            else{
+                current.setColor(colors[colororder]);
+                colororder++;
+                graph.addVertex(current);
+                for(Vertex v : current.getVertices()){
+                    if(!graph.getVertices().contains(v) && !v.equals(evertex)){
+                        kempeAux(graph, evertex, v, colors, colororder);
+                    }
+                }
+            }
+        }
+
     }
 
-    public boolean allColored(ArrayList<Vertex> list) {
+    public static boolean ifThisColor(Color c, ArrayList<Vertex> list){
+        for(Vertex v : list){
+            if(c == v.getColor())
+                return true;
+        }
+        return false;
+    }
+
+    public static boolean allColored(ArrayList<Vertex> list) {
         for (int i = 0; i < list.size(); i++) {
             if (list.get(i).getColor().equals(Color.WHITE))
                 return false;
@@ -30,23 +66,35 @@ public class Kempe {
         return true;
     }
 
-    public boolean noMoreColor(Vertex v){
-        this.initColor();
-        int numOfRemainsColor = remainsColor.size();
+    public static boolean noMoreColor(Vertex v , Color[] colors){
+        int numOfRemainsColor = colors.length;
         for(int i = 0 ; i < v.getVertices().size() ; i++){
-            for(int j = 0 ; j < numOfRemainsColor ;  j++){
-                if(v.getVertices().get(i).getColor().equals(remainsColor.get(j))){
-                    remainsColor.remove(j);
+            for(int j = 0 ; j < colors.length ;  j++){
+                if(v.getVertices().get(i).getColor().equals(colors[j])){
+                    colors[j] = null;
                     numOfRemainsColor -= 1;
                 }
             }
         }
         return numOfRemainsColor == 0;
     }
+  
+
+    public static Color lastColor(Vertex v, Color[] colors){
+        List<Color> temp = Arrays.asList(colors);
+        for(Vertex tmp : v.getVertices()){
+            for(Color c : temp){
+                if(tmp.getColor() == c ){
+                    temp.remove(c);
+                }
+            }
+        }
+        return temp.get(0);
+    }
     //Si je me trompe pas kempeChain renvoie un graph qui est la chaine de kempe pour un vertex donné 
     //et son 1er voisin en gros. Mais c'est pas ce qu'on veut je crois vu qu'on veut partir d'un vertex avec 
     //5 voisins, tous de col differentes et en prendre 2 non voisins entre eux et créer la chaine à partir de 
-    //ces 2 la. ??  
+    //ces 2 la. ?? 
     public static Graph kempeChain(Vertex current) {
         Graph graph = new Graph("Kempe chain");
         kempeChainAux(graph, current, null);
