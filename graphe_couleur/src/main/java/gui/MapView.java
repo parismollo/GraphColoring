@@ -45,6 +45,9 @@ public class MapView extends JPanel {
 
         try {
             this.graph = Converter.mapToGraph(RESOURCES_FOLDER+name+".csv");
+            if(graphPlayView.getAlgo() != null && graphPlayView.getColors() != null)
+                graph.applyAlgo(graphPlayView.getAlgo(), graphPlayView.getColors());
+
             this.image = getImage(name);
 
         } catch (IOException e) {
@@ -84,7 +87,7 @@ public class MapView extends JPanel {
             if(v.getPosition() != null) {
                 colorImage3(v.getX(), v.getY(),
                     new boolean[image.getWidth()][image.getHeight()],
-                    Color.RED); // On mettra v.getColor() plus tard.
+                    v.getColor() != null ? v.getColor() : Color.WHITE);
             }
         }
         System.out.println(graph);

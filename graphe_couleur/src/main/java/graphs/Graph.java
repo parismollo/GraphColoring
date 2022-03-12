@@ -1,5 +1,6 @@
 package graphs;
 
+import java.awt.Color;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -11,12 +12,14 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Random;
 
+import algorithms.Dsatur;
+import algorithms.Greedy;
+import algorithms.WelshPowell;
+
 public class Graph implements Serializable {
 
     private static final long serialVersionUID = 1077578369820L;   
     
-
-
     private String title;
     private ArrayList<Vertex> vertices;
 
@@ -195,10 +198,40 @@ public class Graph implements Serializable {
         File file =  new File(path) ;
 
         // ouverture d'un flux sur un fichier
-       ObjectInputStream ois =  new ObjectInputStream(new FileInputStream(file)) ;
-               
+        ObjectInputStream ois =  new ObjectInputStream(new FileInputStream(file));
+
         // désérialization de l'objet
-       return (Graph)ois.readObject();
+        Graph graph = (Graph)ois.readObject();
+
+        ois.close();
+        
+        return graph;
+    }
+
+    public void applyAlgo(String algo, Color[] colors) {
+        applyAlgo(algo, this, colors);
+    }
+
+    public static void applyAlgo(String algo, Graph graph, Color[] colors) {
+        algo = algo.toUpperCase();
+        //ArrayList<Vertex> vertices = graph.getVertices();
+        switch(algo) {
+            case "DSATUR":
+                Dsatur.dsatur(graph, colors);
+                break;
+            case "WELSHPOWELL":
+                WelshPowell.welshPowell(graph, colors);
+                break;
+            case "GREEDY":
+                Greedy.greedy(graph, colors);
+                break;
+            case "BESTGREEDY":
+                Greedy.bestGreedy(graph, colors);
+            case "KEMPE":
+                //vertices = Kempe.kempe(vertices);
+                break;
+        }
+        //graph.setVerticesList(vertices);
     }
 
 }

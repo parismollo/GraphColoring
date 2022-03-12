@@ -60,7 +60,7 @@ public class GraphView extends JPanel {
         this.setPreferredSize(new Dimension(width, height));
 
         if(algo != null)
-            applyAlgo(algo, graph, colors);
+            graph.applyAlgo(algo, colors);
 
         List<Vertex> vertices = graph.getVertices();
 
@@ -185,26 +185,6 @@ public class GraphView extends JPanel {
     }
     */
 
-    public void applyAlgo(String algo, Graph graph, Color[] colors) {
-        algo = algo.toUpperCase();
-        //ArrayList<Vertex> vertices = graph.getVertices();
-        switch(algo) {
-            case "DSATUR":
-                Dsatur.dsatur(graph, colors);
-                break;
-            case "WELSHPOWELL":
-                WelshPowell.welshPowell(graph, colors);
-                break;
-            case "GREEDY":
-                Greedy.greedy(graph, colors);
-                break;
-            case "BESTGREEDY":
-                Greedy.bestGreedy(graph, colors);
-            case "KEMPE":
-                //vertices = Kempe.kempe(vertices);
-                break;
-        }
-        //graph.setVerticesList(vertices);
-    }
+
 
 }

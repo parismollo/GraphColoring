@@ -172,6 +172,14 @@ public class GraphPlayView extends JPanel {
         this.repaint();
     }
 
+    public String getAlgo() {
+        return algo;
+    }
+
+    public Color[] getColors() {
+        return colors;
+    }
+
     public Color getUserColor() {
         return selectedColorBut == null ? null : selectedColorBut.getColor();
     }
