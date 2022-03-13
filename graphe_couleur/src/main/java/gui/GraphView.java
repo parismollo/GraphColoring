@@ -27,7 +27,7 @@ public class GraphView extends JPanel {
     private List<VertexView> verticesView = new ArrayList<VertexView>();;
 
     private static int nextId;
-    private boolean devMode;
+    private boolean devMode, lineMode;
     private VertexView actualVertex;
 
     public GraphView(GraphPlayView graphPlayView) {
@@ -250,6 +250,14 @@ public class GraphView extends JPanel {
         if(v1 == null || v2 == null)
             return;
         graph.addEdge(v1.getVertex(), v2.getVertex());
+    }
+
+    public void setLineMode(boolean lineMode) {
+        this.lineMode = lineMode;
+    }
+
+    public boolean isInLineMode() {
+        return lineMode;
     }
 
 }

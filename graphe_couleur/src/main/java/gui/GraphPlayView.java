@@ -3,11 +3,14 @@ package gui;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Graphics;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -20,6 +23,8 @@ import graphs.Graph;
 public class GraphPlayView extends JPanel {
     
     private ColorButton selectedColorBut;
+    private ImageButton selectedDrawBut;
+    private ImageButton moveBut, lineBut;
     private JButton switchBut, saveBut, openBut;
     private JToolBar toolBar;
 
@@ -107,7 +112,6 @@ public class GraphPlayView extends JPanel {
                 }
 
             });
-            
         }
 
         public void setSelected(boolean selected) {
@@ -135,10 +139,81 @@ public class GraphPlayView extends JPanel {
 
     }
 
+    private class ImageButton extends JPanel {
+        
+        private int borderSize = 4;
+
+        private String path;
+        private BufferedImage icon;
+    
+        public ImageButton(String path, int size) {
+            this.setMaximumSize(new Dimension(size, size));
+            setOpaque(false);
+            this.path = convertPath(path);
+            
+            try {
+                icon = ImageIO.read(new File(this.path));
+            }
+            catch(IOException e) {
+                e.printStackTrace();
+                System.out.println(this.path);
+            }
+            this.addMouseListener(new MouseAdapter() {
+                
+                public void mouseReleased(MouseEvent e) {
+                    super.mouseReleased(e);
+                    if(selectedDrawBut != null)
+                        selectedDrawBut.setSelected(false);
+                    selectedDrawBut = ImageButton.this;
+                    setSelected(true);
+                    if(ImageButton.this.path.contains("line")) {
+                        graphView.setLineMode(true);
+                    }
+                    else {
+                        graphView.setLineMode(false);
+                    }
+                }
+
+            });
+        }
+        
+        public String convertPath(String path) {
+            path = path.charAt(0)+path.substring(1).toLowerCase();
+            path = "src/resources/"+path+".png";
+            return path;
+        }
+        
+        @Override
+        public void setEnabled(boolean enabled) {
+            super.setEnabled(enabled);
+            revalidate();
+            repaint();
+        }
+        
+        @Override
+        public void paintComponent(Graphics g) {
+            super.paintComponent(g);
+            int space = 8;
+            if(icon != null) {
+                g.drawImage(icon, space, space, getWidth()-space*2, getHeight()-space*2, null);	
+            }
+        }
+
+        public void setSelected(boolean selected) {
+            if(selected)
+                this.setBorder(BorderFactory.createLineBorder(Color.RED, borderSize));
+            else 
+                this.setBorder(null);
+                revalidate();
+                repaint();
+        }
+
+    }
+
     public void setupToolBar(boolean devMode) {
         this.toolBar = new JToolBar();
         toolBar.setPreferredSize(new Dimension(toolBar.getWidth(), 60));
-        Color[] colors = {Color.BLUE, Color.RED, Color.GREEN, Color.YELLOW};
+        Color[] colors = {Color.WHITE, Color.BLUE, Color.RED, Color.GREEN, Color.YELLOW};
         this.selectedColorBut = new ColorButton(colors[0]);
         this.selectedColorBut.setSelected(true);
         for(int i=0;i<colors.length;i++) {
@@ -169,7 +244,15 @@ public class GraphPlayView extends JPanel {
             openBut.addActionListener(e -> {
                 openGraphDialog();
             });
+            moveBut = new ImageButton("move", 45);
+            selectedDrawBut = moveBut;
+            moveBut.setSelected(true);
+            lineBut = new ImageButton("line", 45);
+            toolBar.add(moveBut);
+            toolBar.add(lineBut);
+            toolBar.addSeparator();
             toolBar.add(saveBut);
+            toolBar.addSeparator();
             toolBar.add(openBut);
         }
         this.add(toolBar, BorderLayout.NORTH);

@@ -52,7 +52,7 @@ public class VertexView extends JPanel {
             public void mousePressed(MouseEvent e) {
                 super.mousePressed(e);
                 // Si on a un clic droit
-                if(devMode && e.isPopupTrigger()) {
+                if(devMode && (e.isPopupTrigger() || graphView.isInLineMode())) {
                     graphView.setActualVertex(VertexView.this);
                     lineMode = true;
                     repaint();
@@ -123,7 +123,6 @@ public class VertexView extends JPanel {
     }
 
     public boolean isOnMe(Point pos) {
-        System.out.println(pos+" "+getLocation());
         if(pos == null)
             return false;
         else if(!(pos.getX() >= getX() && pos.getX() <= getX()+getWidth()))
