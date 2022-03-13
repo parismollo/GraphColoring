@@ -185,7 +185,7 @@ public class MapView extends JPanel {
                 continue;
             Color c = new Color(image.getRGB(p.x, p.y));
             int min = 180;
-            if(c.getRed() < min || c.getGreen() < min || c.getBlue() < min ||
+            if(c.getRed() < min && c.getGreen() < min && c.getBlue() < min ||
                c == color)
                 continue;
             ////// On colorise le pixel

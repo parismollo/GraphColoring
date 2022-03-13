@@ -11,11 +11,16 @@ public class HomeView extends JPanel {
     
     private GUI gui;
 
-    private JButton mapChooser = new JButton("Choose Map"),
+    private JButton graphCreator = new JButton("Graph Creator"),
+                    mapChooser = new JButton("Choose Map"),
                     randomGraph = new JButton("Random Graph");
 
     public HomeView(GUI gui) {
         this.gui = gui;
+
+        graphCreator.addActionListener(e -> {
+            gui.setCreatorPage();
+        });
 
         mapChooser.addActionListener(e -> {
             gui.setMapChooser(false);
@@ -30,6 +35,7 @@ public class HomeView extends JPanel {
         centerPan.setOpaque(false);
         centerPan.setLayout(new GridLayout(2, 1));
 
+        centerPan.add(graphCreator);
         centerPan.add(mapChooser);
         centerPan.add(randomGraph);
 

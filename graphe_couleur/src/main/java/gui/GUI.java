@@ -99,6 +99,14 @@ public class GUI extends JFrame {
 		setGraphViewPage(Graph.randomGraph(edges));
 	}
 
+	public void setCreatorPage() {
+		this.getContentPane().removeAll();
+		this.setResizable(true);
+		this.getContentPane().add(new GraphPlayView());
+		revalidate();
+		repaint();
+	}
+
 	public void setGraphViewPage(Graph graph) {
 		setGraphViewPage(graph, null, null, null, true);
 	}

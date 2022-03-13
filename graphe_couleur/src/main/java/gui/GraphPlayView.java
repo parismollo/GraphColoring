@@ -5,19 +5,25 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
+import java.io.IOException;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JPanel;
 import javax.swing.JToolBar;
+import javax.swing.filechooser.FileSystemView;
 
 import graphs.Graph;
 
 public class GraphPlayView extends JPanel {
     
     private ColorButton selectedColorBut;
-    private JButton switchBut;
+    private JButton switchBut, saveBut, openBut;
     private JToolBar toolBar;
+
+    private GraphView graphView;
 
     private String name, algo;
     private int width, height;
@@ -25,11 +31,19 @@ public class GraphPlayView extends JPanel {
 
     private boolean isGraph = true;
 
+    public GraphPlayView() {
+        this.graphView = new GraphView(this);
+        this.setLayout(new BorderLayout());
+        setupToolBar(true); // devMode true
+        this.add(graphView, BorderLayout.CENTER);
+    }
+
     // ICI : isGraph = true.
     public GraphPlayView(Graph graph, int width, int height) {
+        this.graphView = new GraphView(this, graph, width, height);
         this.setLayout(new BorderLayout());
-        setupToolBar();
-        this.add(new GraphView(this, graph, width, height), BorderLayout.CENTER);
+        setupToolBar(false);
+        this.add(graphView, BorderLayout.CENTER);
     }
 
     public GraphPlayView(String name, int width, int height, boolean isGraph) {
@@ -44,7 +58,7 @@ public class GraphPlayView extends JPanel {
         this.colors = colors;
         this.isGraph = isGraph;
         this.setLayout(new BorderLayout());
-        setupToolBar();
+        setupToolBar(false);
         if(isGraph)
             switchToGraph();
         else
@@ -121,7 +135,7 @@ public class GraphPlayView extends JPanel {
 
     }
 
-    public void setupToolBar() {
+    public void setupToolBar(boolean devMode) {
         this.toolBar = new JToolBar();
         toolBar.setPreferredSize(new Dimension(toolBar.getWidth(), 60));
         Color[] colors = {Color.BLUE, Color.RED, Color.GREEN, Color.YELLOW};
@@ -145,6 +159,19 @@ public class GraphPlayView extends JPanel {
             });
             toolBar.add(switchBut);
         }
+        if(devMode) {
+            toolBar.addSeparator();
+            saveBut = new JButton("Save");
+            saveBut.addActionListener(e -> {
+                saveGraphDialog();
+            });
+            openBut = new JButton("Open");
+            openBut.addActionListener(e -> {
+                openGraphDialog();
+            });
+            toolBar.add(saveBut);
+            toolBar.add(openBut);
+        }
         this.add(toolBar, BorderLayout.NORTH);
     }
 
@@ -161,15 +188,54 @@ public class GraphPlayView extends JPanel {
     }
 
     public void switchToGraph() {
+        this.graphView = new GraphView(this, name, algo, width, height, GraphPlayView.this.colors);
         this.removeAll();
         this.add(toolBar, BorderLayout.NORTH);
-        this.add(new GraphView(this, name, algo, width, height, GraphPlayView.this.colors), BorderLayout.CENTER);
+        this.add(graphView, BorderLayout.CENTER);
         if(!isGraph) {
             isGraph = !isGraph;
             switchBut.setText(isGraph ? "See map" : "See graph");
         }
         this.revalidate();
         this.repaint();
+    }
+
+    public void saveGraphDialog() {
+        JFileChooser jfc = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
+		jfc.setDialogTitle("Save your graph");
+		jfc.setFileSelectionMode(JFileChooser.FILES_ONLY);
+
+        jfc.showSaveDialog(null);
+		if (jfc.getSelectedFile() != null) {
+			File file_path = jfc.getSelectedFile();
+            try {
+                graphView.getGraph().save(file_path.getAbsolutePath());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+		}
+    }
+
+    public void openGraphDialog() {
+        JFileChooser jfc = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
+		jfc.setDialogTitle("Open your graph");
+		jfc.setFileSelectionMode(JFileChooser.FILES_ONLY);
+
+        jfc.showOpenDialog(null);
+		if(jfc.getSelectedFile() != null) {
+			File file_path = jfc.getSelectedFile();
+            try {
+                Graph graph = Graph.load(file_path.getAbsolutePath());
+                this.graphView = new GraphView(this, graph);
+                this.removeAll();
+                this.add(toolBar, BorderLayout.NORTH);
+                this.add(graphView, BorderLayout.CENTER);
+                this.revalidate();
+                this.repaint();
+            }catch(Exception e) {
+                e.printStackTrace();
+            }
+		}
     }
 
     public String getAlgo() {
@@ -182,6 +248,10 @@ public class GraphPlayView extends JPanel {
 
     public Color getUserColor() {
         return selectedColorBut == null ? null : selectedColorBut.getColor();
+    }
+
+    public JToolBar getToolBar() {
+        return toolBar;
     }
 
 }

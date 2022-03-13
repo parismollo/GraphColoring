@@ -7,7 +7,8 @@ public class App {
     public static void main( String[] args ){
         //testRoutine1();
         GUI gui = new GUI(800, 600);
-        //gui.setHomeView();
+        //gui.setCreatorPage();
+        gui.setHomeView();
         // Pour tester la coloration d'une carte :
         // Vous pouvez mettre map en argument :
         // java -cp target/appli.jar map

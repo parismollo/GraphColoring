@@ -5,16 +5,16 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.RenderingHints;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JPanel;
 
-import algorithms.Dsatur;
-import algorithms.Greedy;
-import algorithms.WelshPowell;
 import graphs.Graph;
 import graphs.Vertex;
 import utils.Converter;
@@ -24,7 +24,21 @@ public class GraphView extends JPanel {
     private Graph graph;
 
     private GraphPlayView graphPlayView;
-    private List<VertexView> verticesView;
+    private List<VertexView> verticesView = new ArrayList<VertexView>();;
+
+    private static int nextId;
+    private boolean devMode;
+    private VertexView actualVertex;
+
+    public GraphView(GraphPlayView graphPlayView) {
+        this.graphPlayView = graphPlayView;
+        setup(null, null, -1, -1, null, true);
+    }
+
+    public GraphView(GraphPlayView graphPlayView, Graph graph) {
+        this.graphPlayView = graphPlayView;
+        setup(graph, null, -1, -1, null, true);
+    }
 
     public GraphView(GraphPlayView graphPlayView, Graph graph, int width, int height) {
         this(graph, width, height);
@@ -41,28 +55,52 @@ public class GraphView extends JPanel {
     }
 
     public GraphView(GraphPlayView graphPlayView, String name, String algo, int width, int height, Color[] colors){
-        setup(loadGraph(name), algo, width, height, colors);
+        setup(loadGraph(name), algo, width, height, colors, false);
         this.graphPlayView = graphPlayView;
     }
 
     // On peut faire un GraphView sans forcement utiliser
     // un graphPlayView
     public GraphView(Graph graph, int width, int height) {
-        setup(graph, null, width, height, null);
+        setup(graph, null, width, height, null, false);
     }
 
-    private void setup(Graph graph, String algo, int width, int height, Color[] colors) {
-        this.graph = graph;
-        this.verticesView = new ArrayList<VertexView>();
-        
+    private void setup(Graph graph, String algo, int width, int height, Color[] colors, boolean devMode) {
+        this.graph = graph == null ? new Graph("No title") : graph;
+        this.devMode = devMode;
+
         this.setLayout(null);
         this.setBackground(Color.WHITE);
-        this.setPreferredSize(new Dimension(width, height));
+
+        if(devMode) {
+            nextId = this.graph.getMaxId()+1;
+            // If devMode true
+            this.addMouseListener(new MouseAdapter() {
+                public void mousePressed(MouseEvent e) {
+                    super.mousePressed(e);
+                    if(e.isPopupTrigger())
+                        return;
+                    Vertex v = new Vertex(nextId++);
+                    GraphView.this.graph.addVertex(v);
+
+                    v.setPosition(getX()+e.getX()-VertexView.DEFAULT_SIZE/2, getY()+e.getY()-VertexView.DEFAULT_SIZE/2);
+                    VertexView vView = new VertexView(GraphView.this, v, true);
+                    vView.setLocation(v.getPosition());
+                    verticesView.add(vView);
+                    GraphView.this.add(vView);
+                    revalidate();
+                    repaint();
+                }
+            });
+        }
+
+        if(width != -1 && height != -1)
+            this.setPreferredSize(new Dimension(width, height));
 
         if(algo != null)
-            graph.applyAlgo(algo, colors);
+            this.graph.applyAlgo(algo, colors);
 
-        List<Vertex> vertices = graph.getVertices();
+        List<Vertex> vertices = this.graph.getVertices();
 
         if(hasNoPositions(vertices))
             randomPosition(vertices);
@@ -73,7 +111,7 @@ public class GraphView extends JPanel {
     private void setupPosition(List<Vertex> vertices) {
         for (Vertex vertex : vertices) {
             if(vertex.getPosition()!=null) {
-                VertexView vertexView = new VertexView(this, vertex);
+                VertexView vertexView = new VertexView(this, vertex, devMode);
                 verticesView.add(vertexView);
                 this.add(vertexView);
                 vertexView.setLocation(vertex.getPosition());
@@ -117,6 +155,13 @@ public class GraphView extends JPanel {
         return null;
     }
 
+    public VertexView getVertexView(Point pos) {
+        for(VertexView v : verticesView)
+            if(v.isOnMe(pos))
+                return v;
+        return null;
+    }
+
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -144,8 +189,14 @@ public class GraphView extends JPanel {
                 if(v2 == null)
                     continue;
                 g2d.drawLine(vertexView.getX()+center, vertexView.getY()+center,
-                           v2.getX()+center, v2.getY()+center);
+                             v2.getX()+center, v2.getY()+center);
             }
+        }
+        Point mouse = getMousePosition();
+        if(actualVertex != null && mouse != null) {
+            g2d.drawLine(actualVertex.getX()+actualVertex.getWidth()/2,
+                         actualVertex.getY()+actualVertex.getHeight()/2,
+                         getX()+(int)mouse.getX(), getY()+(int)mouse.getY());
         }
 
         /*
@@ -185,6 +236,20 @@ public class GraphView extends JPanel {
     }
     */
 
+    public VertexView getActualVertex() {
+        return actualVertex;
+    }
 
+    public void setActualVertex(VertexView actualVertex) {
+        this.actualVertex = actualVertex;
+    }
+
+    // On relie le vertex v1 a un second vertex a la position pos.
+    public void addEdge(VertexView v1, Point pos) {
+        VertexView v2 = getVertexView(pos);
+        if(v1 == null || v2 == null)
+            return;
+        graph.addEdge(v1.getVertex(), v2.getVertex());
+    }
 
 }

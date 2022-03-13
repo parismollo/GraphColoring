@@ -166,6 +166,15 @@ public class Graph implements Serializable {
         return null;
     }
 
+    public int getMaxId() {
+        int max = 0;
+        for(Vertex v : vertices) {
+            if(max < v.getId())
+                max = v.getId();
+        }
+        return max;
+    }
+
     public void print() {
         for(Vertex v : vertices)
             System.out.println(v.printId());
