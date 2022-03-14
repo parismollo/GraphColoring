@@ -83,7 +83,7 @@ public class GraphView extends JPanel {
                     Vertex v = new Vertex(nextId++);
                     GraphView.this.graph.addVertex(v);
 
-                    v.setPosition(getX()+e.getX()-VertexView.DEFAULT_SIZE/2, getY()+e.getY()-VertexView.DEFAULT_SIZE/2);
+                    v.setPosition(e.getX()-VertexView.DEFAULT_SIZE/2, e.getY()-VertexView.DEFAULT_SIZE/2);
                     VertexView vView = new VertexView(GraphView.this, v, true);
                     vView.setLocation(v.getPosition());
                     verticesView.add(vView);
@@ -196,7 +196,7 @@ public class GraphView extends JPanel {
         if(actualVertex != null && mouse != null) {
             g2d.drawLine(actualVertex.getX()+actualVertex.getWidth()/2,
                          actualVertex.getY()+actualVertex.getHeight()/2,
-                         getX()+(int)mouse.getX(), getY()+(int)mouse.getY());
+                         (int)mouse.getX(), (int)mouse.getY());
         }
 
         /*
