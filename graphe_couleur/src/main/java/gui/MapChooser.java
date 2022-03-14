@@ -77,6 +77,7 @@ public class MapChooser extends JPanel {
         });
 
         selectBut.addActionListener(e -> {
+            //Color[] colors = {Color.BLUE,Color.RED,Color.GREEN, Color.YELLOW, Color.MAGENTA};
             Color[] colors = {Color.BLUE,Color.RED,Color.GREEN, Color.YELLOW, Color.MAGENTA, Color.ORANGE};
             MapChooser.this.gui.setGraphViewPage(null, getName(maps.get(imageView.mapIndex)), "Greedy", colors, false);
             /*MapChooser.this.gui.setMapPage(

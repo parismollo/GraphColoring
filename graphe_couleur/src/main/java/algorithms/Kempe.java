@@ -12,7 +12,7 @@ public class Kempe {
 
     //private static Graph kempeCGraph = new Graph("Kempe Chain");
 
-    public static Graph kempe(Vertex exception ,Vertex v, int i , Color[] colors){
+    /*public static Graph kempe(Vertex exception ,Vertex v, int i , Color[] colors){
 
         Graph graph = new Graph("Kempe graph");
         kempeAux(graph, exception, exception.getVertices().get(0),colors,0);
@@ -37,7 +37,7 @@ public class Kempe {
                 kempeAux(graph, evertex, current, colors, ++colororder);
             }
             else{
-                current.setColor(colors[colororder]);
+                current.setColor(colors[colororder%colors.length]);
                 colororder++;
                 graph.addVertex(current);
                 for(Vertex v : current.getVertices()){
@@ -48,6 +48,39 @@ public class Kempe {
             }
         }
 
+    }*/
+
+    public static ArrayList<Vertex> coloringGraph(Graph g, Color[] color){
+        ArrayList<Vertex> list = new ArrayList<Vertex>();
+        list = coloringGraphAux(g, list);
+        int colorPos = 0;
+        for(Vertex v : list){
+            for(Vertex tmp : v.getVertices()){
+                if(tmp.getColor() == color[colorPos%color.length]){
+                    colorPos++;
+                }
+            }
+            v.setColor(color[colorPos%color.length]);
+            colorPos++;
+        }
+        return list;
+    }
+
+    public static ArrayList<Vertex> coloringGraphAux(Graph g,ArrayList<Vertex> list){
+        Graph current = g;
+        for(Vertex vertex : current.getVertices()){
+            if(vertex.getVertices().size() < 5){
+                list.add(vertex);
+                current.removeVertex(vertex);
+                return coloringGraphAux(current, list);
+            }
+        }
+        if(g.getVertices().size() > 0){ // On prend un vertex choisit arbitrairement (ici le premier)
+            list.add(g.getVertices().get(0));
+            current.removeVertex(g.getVertices().get(0));
+            coloringGraphAux(current, list);
+        }
+        return list;
     }
 
     public static boolean ifThisColor(Color c, ArrayList<Vertex> list){

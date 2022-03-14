@@ -14,6 +14,7 @@ import java.util.Random;
 
 import algorithms.Dsatur;
 import algorithms.Greedy;
+import algorithms.Kempe;
 import algorithms.WelshPowell;
 
 public class Graph implements Serializable {
@@ -238,6 +239,8 @@ public class Graph implements Serializable {
                 Greedy.bestGreedy(graph, colors);
             case "KEMPE":
                 //vertices = Kempe.kempe(vertices);
+                //Kempe.coloringGraph(graph,colors);
+                graph.setVerticesList(Kempe.coloringGraph(graph,colors));
                 break;
         }
         //graph.setVerticesList(vertices);

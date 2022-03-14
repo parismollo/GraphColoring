@@ -36,11 +36,13 @@ public class GUI extends JFrame {
 
 		//setHomePage();
 		
-		Color[] colors = {Color.BLUE,Color.RED,Color.GREEN, Color.YELLOW, Color.MAGENTA, Color.ORANGE};
+		//Color[] colors = {Color.BLUE,Color.RED,Color.GREEN, Color.YELLOW, Color.MAGENTA, Color.ORANGE};
+		Color[] colors = {Color.BLUE,Color.RED,Color.GREEN, Color.YELLOW, Color.MAGENTA};
 		//setGraphViewPage("France", "WelshPowell", colors);
 		//setGraphViewPage("France", "Dsatur", colors);
 		setGraphViewPage("France", "Greedy", colors);
 		//setGraphViewPage("France", "BestGreedy", colors);
+		//setGraphViewPage("France", "Kempe", colors);
 		//testGreedyRandom();
 		//testGreedy();
 		// testBestGreedy();
