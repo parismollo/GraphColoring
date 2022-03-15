@@ -240,7 +240,7 @@ public class Graph implements Serializable {
             case "KEMPE":
                 //vertices = Kempe.kempe(vertices);
                 //Kempe.coloringGraph(graph,colors);
-                graph.setVerticesList(Kempe.coloringGraph(graph,colors));
+                //graph.setVerticesList(Kempe.coloringGraph(graph,colors));
                 break;
         }
         //graph.setVerticesList(vertices);

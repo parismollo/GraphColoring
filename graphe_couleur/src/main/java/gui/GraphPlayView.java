@@ -22,6 +22,8 @@ import graphs.Graph;
 
 public class GraphPlayView extends JPanel {
     
+    private GUI gui;
+
     private ColorButton selectedColorBut;
     private ImageButton selectedDrawBut;
     private ImageButton moveBut, lineBut;
@@ -36,7 +38,8 @@ public class GraphPlayView extends JPanel {
 
     private boolean isGraph = true;
 
-    public GraphPlayView() {
+    public GraphPlayView(GUI gui) {
+        this.gui = gui;
         this.graphView = new GraphView(this);
         this.setLayout(new BorderLayout());
         setupToolBar(true); // devMode true
@@ -44,18 +47,20 @@ public class GraphPlayView extends JPanel {
     }
 
     // ICI : isGraph = true.
-    public GraphPlayView(Graph graph, int width, int height) {
+    public GraphPlayView(GUI gui, Graph graph, int width, int height) {
+        this.gui = gui;
         this.graphView = new GraphView(this, graph, width, height);
         this.setLayout(new BorderLayout());
         setupToolBar(false);
         this.add(graphView, BorderLayout.CENTER);
     }
 
-    public GraphPlayView(String name, int width, int height, boolean isGraph) {
-        this(name, null, width, height, null, isGraph);
+    public GraphPlayView(GUI gui, String name, int width, int height, boolean isGraph) {
+        this(gui, name, null, width, height, null, isGraph);
     }
 
-    public GraphPlayView(String name, String algo, int width, int height, Color[] colors, boolean isGraph) {
+    public GraphPlayView(GUI gui, String name, String algo, int width, int height, Color[] colors, boolean isGraph) {
+        this.gui = gui;
         this.name = name;
         this.algo = algo;
         this.width = width;
@@ -213,6 +218,16 @@ public class GraphPlayView extends JPanel {
     public void setupToolBar(boolean devMode) {
         this.toolBar = new JToolBar();
         toolBar.setPreferredSize(new Dimension(toolBar.getWidth(), 60));
+
+        IconPanel left_arrow = new IconPanel("return", 40);
+        toolBar.add(left_arrow);
+        toolBar.addSeparator();
+        left_arrow.addMouseListener(new MouseAdapter() {
+            public void mousePressed(MouseEvent e) {
+                super.mousePressed(e);
+                gui.setLastPage();
+            }
+        });
         Color[] colors = {Color.WHITE, Color.BLUE, Color.RED, Color.GREEN, Color.YELLOW};
         this.selectedColorBut = new ColorButton(colors[0]);
         this.selectedColorBut.setSelected(true);
@@ -254,6 +269,7 @@ public class GraphPlayView extends JPanel {
             toolBar.add(saveBut);
             toolBar.addSeparator();
             toolBar.add(openBut);
+            
         }
         this.add(toolBar, BorderLayout.NORTH);
     }

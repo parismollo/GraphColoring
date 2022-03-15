@@ -16,12 +16,14 @@ public class IconPanel extends JPanel {
 	
 	public IconPanel(BufferedImage icon, int width, int height) {
 		this.setPreferredSize(new Dimension(width, height));
+		this.setMaximumSize(new Dimension(width, height));
 		setOpaque(false);
 		this.icon = icon;
 	}
 
 	public IconPanel(String path, int size) {
 		this.setPreferredSize(new Dimension(size, size));
+		this.setMaximumSize(new Dimension(size, size));
 		setOpaque(false);
 		path = convertPath(path);
 		
