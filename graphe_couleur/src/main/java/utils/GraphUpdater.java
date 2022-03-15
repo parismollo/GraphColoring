@@ -30,6 +30,7 @@ public class GraphUpdater {
         for (String file : files) {
             if(selected.equals(file)) {
                 GUI gui =  new GUI(1200, 800);
+                System.out.println(selected.substring(0, selected.length()-4));
                 gui.setMapPage(selected.substring(0, selected.length()-4), true);
                 valid = true;
             }
