@@ -122,6 +122,15 @@ public class VertexView extends JPanel {
         size += 2*space;
     }
 
+    /* // Peut etre plus tard
+    @Override
+    public void setSize(int width, int height) {
+        super.setSize(width, height);
+        if(vertex != null)
+            vertex.changeSize(width, height);
+    }
+    */
+
     public boolean isOnMe(Point pos) {
         if(pos == null)
             return false;
