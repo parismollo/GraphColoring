@@ -14,6 +14,18 @@ import graphs.Graph;
 public class GUI extends JFrame {
 	private static final long serialVersionUID = 1L;
 
+	public static Color BACKGROUND_COLOR = new Color(41, 50, 65),
+						DARK_COLOR1 = new Color(61, 90, 128),
+						LIGHT_COLOR1 = new Color(152, 193, 217),
+						LIGHT_COLOR2 = new Color(224, 251, 252),
+						RED = new Color(238, 108, 77);
+/*
+	public static Color BACKGROUND_COLOR = new Color(0, 27, 46),
+						DARK_COLOR1 = new Color(41, 76, 96),
+						LIGHT_COLOR1 = new Color(173, 182, 196),
+						LIGHT_COLOR2 = new Color(255, 239, 211),
+						RED = new Color(238, 108, 77);
+*/
 	private JPanel lastPanel;
 
 	private int width;

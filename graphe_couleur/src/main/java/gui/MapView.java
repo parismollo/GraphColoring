@@ -42,14 +42,15 @@ public class MapView extends JPanel {
         this.graphPlayView = graphPlayView;
         this.name = name;
         this.devMode = devMode;
-
+        
         try {
             this.graph = Converter.mapToGraph(RESOURCES_FOLDER+name+".csv");
             if(graphPlayView != null && graphPlayView.getAlgo() != null && graphPlayView.getColors() != null)
                 graph.applyAlgo(graphPlayView.getAlgo(), graphPlayView.getColors());
 
             this.image = getImage(name);
-
+            if(this.image != null)
+                this.setPreferredSize(new Dimension(image.getWidth(), image.getHeight()));
         } catch (IOException e) {
             e.printStackTrace();
         }

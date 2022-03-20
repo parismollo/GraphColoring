@@ -24,7 +24,7 @@ public class GraphView extends JPanel {
     private Graph graph;
 
     private GraphPlayView graphPlayView;
-    private List<VertexView> verticesView = new ArrayList<VertexView>();;
+    private ArrayList<VertexView> verticesView = new ArrayList<VertexView>();;
 
     private static int nextId;
     private boolean devMode, lineMode;
@@ -258,6 +258,10 @@ public class GraphView extends JPanel {
 
     public boolean isInLineMode() {
         return lineMode;
+    }
+
+    public ArrayList<VertexView> getVerticesView() {
+        return verticesView;
     }
 
 }

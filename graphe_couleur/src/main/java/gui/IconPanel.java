@@ -43,6 +43,11 @@ public class IconPanel extends JPanel {
 		return path;
 	}
 	
+	public void changeSize(int size) {
+		this.setPreferredSize(new Dimension(size, size));
+		this.setMaximumSize(new Dimension(size, size));
+	}
+
 	@Override
 	public void setEnabled(boolean enabled) {
 		super.setEnabled(enabled);

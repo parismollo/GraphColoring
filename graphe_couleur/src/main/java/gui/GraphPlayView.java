@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.GridBagLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
@@ -15,7 +16,10 @@ import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JPanel;
+import javax.swing.JSlider;
 import javax.swing.JToolBar;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.filechooser.FileSystemView;
 
 import graphs.Graph;
@@ -37,7 +41,7 @@ public class GraphPlayView extends JPanel {
     private Color[] colors;
 
     private boolean isGraph = true;
-
+    
     public GraphPlayView(GUI gui) {
         this.gui = gui;
         this.graphView = new GraphView(this);
@@ -216,6 +220,9 @@ public class GraphPlayView extends JPanel {
     }
 
     public void setupToolBar(boolean devMode) {
+        //this.setBackground(GUI.BACKGROUND_COLOR);
+        this.setBackground(Color.WHITE);
+
         this.toolBar = new JToolBar();
         toolBar.setPreferredSize(new Dimension(toolBar.getWidth(), 60));
 
@@ -238,6 +245,19 @@ public class GraphPlayView extends JPanel {
                 toolBar.add(new ColorButton(colors[i]));
             toolBar.addSeparator();
         }
+        JSlider slider = getSlider(VertexView.DEFAULT_SIZE, 0, 300, 75, 75);
+        toolBar.add(slider);
+        slider.addChangeListener(new ChangeListener() {
+	        public void stateChanged(ChangeEvent event) {
+                if(graphView == null)
+                    return;
+                for(VertexView v : graphView.getVerticesView()) {
+                    v.setSize(slider.getValue(), slider.getValue());
+                    v.revalidate();
+                    v.repaint();
+                }
+	        }
+	    });
         if(name != null) {
             toolBar.addSeparator();
             switchBut = new JButton(isGraph ? "See map" : "See graph");
@@ -277,7 +297,11 @@ public class GraphPlayView extends JPanel {
     public void switchToMap() {
         this.removeAll();
         this.add(toolBar, BorderLayout.NORTH);
-        this.add(new MapView(this, name, false), BorderLayout.CENTER);
+        JPanel pan = new JPanel();
+        pan.setLayout(new GridBagLayout());
+        pan.add(new MapView(this, name, false));
+        pan.setOpaque(false);
+        this.add(pan, BorderLayout.CENTER);
         if(isGraph) {
             isGraph = !isGraph;
             switchBut.setText(isGraph ? "See map" : "See graph");
@@ -336,6 +360,22 @@ public class GraphPlayView extends JPanel {
             }
 		}
     }
+
+	public static JSlider getSlider(int value, int min, int max, int minorTick, int majorTick)
+	{
+		JSlider slider = new JSlider();
+	    slider.setMaximum(max);
+	    slider.setMinimum(min);
+	    slider.setValue(value);
+	    slider.setPaintTicks(true);
+	    slider.setPaintLabels(true);
+	    slider.setMinorTickSpacing(minorTick);
+	    slider.setMajorTickSpacing(majorTick); 
+	    
+	    slider.setMaximumSize(new Dimension(200, 60));
+
+	    return slider;
+	}
 
     public String getAlgo() {
         return algo;
