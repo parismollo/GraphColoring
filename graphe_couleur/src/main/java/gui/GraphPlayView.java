@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.GridBagLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
@@ -37,7 +38,7 @@ public class GraphPlayView extends JPanel {
     private Color[] colors;
 
     private boolean isGraph = true;
-
+    
     public GraphPlayView(GUI gui) {
         this.gui = gui;
         this.graphView = new GraphView(this);
@@ -216,6 +217,9 @@ public class GraphPlayView extends JPanel {
     }
 
     public void setupToolBar(boolean devMode) {
+        //this.setBackground(GUI.BACKGROUND_COLOR);
+        this.setBackground(Color.WHITE);
+
         this.toolBar = new JToolBar();
         toolBar.setPreferredSize(new Dimension(toolBar.getWidth(), 60));
 
@@ -277,7 +281,11 @@ public class GraphPlayView extends JPanel {
     public void switchToMap() {
         this.removeAll();
         this.add(toolBar, BorderLayout.NORTH);
-        this.add(new MapView(this, name, false), BorderLayout.CENTER);
+        JPanel pan = new JPanel();
+        pan.setLayout(new GridBagLayout());
+        pan.add(new MapView(this, name, false));
+        pan.setOpaque(false);
+        this.add(pan, BorderLayout.CENTER);
         if(isGraph) {
             isGraph = !isGraph;
             switchBut.setText(isGraph ? "See map" : "See graph");
