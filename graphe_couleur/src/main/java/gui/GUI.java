@@ -4,12 +4,15 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import algorithms.Kempe;
 import graphs.Graph;
+import utils.Converter;
 
 public class GUI extends JFrame {
 	private static final long serialVersionUID = 1L;
@@ -50,40 +53,25 @@ public class GUI extends JFrame {
 		Color[] colors = {Color.BLUE,Color.RED,Color.GREEN, Color.YELLOW, Color.MAGENTA};
 		//setGraphViewPage("France", "WelshPowell", colors);
 		//setGraphViewPage("France", "Dsatur", colors);
-		setGraphViewPage("France", "Greedy", colors);
+		//setGraphViewPage("France", "Greedy", colors);
 		//setGraphViewPage("France", "BestGreedy", colors);
-		//setGraphViewPage("France", "Kempe", colors);
+		setGraphViewPage("France", "Kempe", colors);
 		//testGreedyRandom();
 		//testGreedy();
-		// testBestGreedy();
+		//testBestGreedy();
+		//testKempeChain(colors);
+
 		
 		// TEST GRAPH BEBOU
-		/*Graph random = Graph.randomGraph(11);
+		/*
+		Graph random = Graph.randomGraph(11);
 		try {
 			random.save("src/resources/graphBebou.txt");
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}*/
-		//testBebou("BESTGREEDY", colors);
-
-		 // TEST KEMPE
-		/*Graph graph = null;
-		Vertex v = null;
-		try {
-			graph = Converter.mapToGraph("src/resources/France.csv");
-			v = graph.getVertices().get(10);
-			System.out.println(v.getId());
-			WelshPowell.welshPowell(graph, colors);
-		} catch (FileNotFoundException e1) {
-			e1.printStackTrace();
-		}
-
-		graph = Kempe.kempeChain(v);
-		System.out.println(graph.getVertices());
-		Kempe.reverseKempeChain(graph);
-		setGraphViewPage(graph);
-		*/
-
+		//testBebou("KEMPE", colors);
+		
 		this.addWindowListener(new WindowAdapter()
         {
             @Override
@@ -228,11 +216,28 @@ public class GUI extends JFrame {
             case "BESTGREEDY":
 				algorithms.Greedy.bestGreedy(bebou, colors);
             case "KEMPE":
-                //vertices = Kempe.kempe(vertices);
+                Kempe.kempe(bebou, colors);
                 break;
 		}
 		
 		setGraphViewPage(bebou);
+	}
+
+	public void testKempeChain(Color[] colors){
+		Graph graph = null;
+		
+		
+		try {
+			graph = Graph.load("src/resources/graphKempe.txt");
+		} catch (ClassNotFoundException e1) {
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}	
+		Kempe.kempe(graph, colors);
+		System.out.println();
+		graph.print();
+		setGraphViewPage(graph);
 	}
 	
 }

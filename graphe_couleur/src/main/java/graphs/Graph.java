@@ -237,10 +237,9 @@ public class Graph implements Serializable {
                 break;
             case "BESTGREEDY":
                 Greedy.bestGreedy(graph, colors);
+                break;
             case "KEMPE":
-                //vertices = Kempe.kempe(vertices);
-                //Kempe.coloringGraph(graph,colors);
-                //graph.setVerticesList(Kempe.coloringGraph(graph,colors));
+                Kempe.kempe(graph, colors);
                 break;
         }
         //graph.setVerticesList(vertices);

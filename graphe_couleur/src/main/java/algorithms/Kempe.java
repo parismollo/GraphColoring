@@ -2,14 +2,169 @@ package algorithms;
 
 import java.awt.Color;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Stack;
 
 import graphs.Graph;
 import graphs.Vertex;
 
 public class Kempe {
+
+    public static void reverseKempeChain(Graph graph) {
+        ArrayList<Vertex> vertices = graph.getVertices();
+        if(vertices.isEmpty())
+            return;
+        Color c1 = vertices.get(0).getColor();
+        ArrayList<Vertex> vertices2 = vertices.get(0).getVertices(); //probleme
+        Color c2 = Color.white;
+        if(vertices2.isEmpty())
+            return;
+        for(Vertex v : vertices2){
+            if(vertices.contains(v))
+                c2 = v.getColor();
+        }
+        if(c2.equals(Color.white))
+            return;
+        for(Vertex v : graph.getVertices())
+            v.setColor(v.getColor() == c1 ? c2 : c1);
+
+    }
+
+    public static Vertex minVertices(ArrayList<Vertex> vertices){
+        int minVertx = vertices.get(0).getVertices().size();
+        Vertex min = vertices.get(0);
+        for(Vertex v : vertices){
+            int nbVertx = v.getVertices().size();
+            if( nbVertx < minVertx){
+                minVertx = nbVertx;
+                min = v;
+            }
+        }
+        return min;
+    }
+
+    public static Graph kempeChain(Vertex current, int id){
+        ArrayList<Vertex> vertices = current.getVertices();
+        Graph kempe_graph = new Graph("Kempe chain");
+        Vertex v1 = null;
+        Vertex v2 = null;
+        if(id == 0){
+            v1 = vertices.get(0);
+            for(int i=1;i<vertices.size();i++){
+                v2 = vertices.get(i);
+                if(!v1.getVertices().contains(v2)){
+                    break;
+                }
+            }
+        } else {
+            for(Vertex v : vertices){
+                if(!(v.getId() == 0 || v.getId() == id)){
+                    v1 = v;
+                }
+            }
+            for(Vertex v : vertices){
+                if(!(v.getId() == 0 || v.getId() == id || v == v1)){
+                    if(!v1.getVertices().contains(v)){
+                        v2 = v;
+                    }
+                }
+            }
+        }
+        kempe_graph.addVertex(v1);
+        Color c1 = v1.getColor();
+        Color c2 = v2.getColor();
+         
+        kempe_graph(kempe_graph,v1,c1,c2);
+        if(kempe_graph.getVertices().contains(v2))
+            kempeChain(current, v2.getId());
+        kempe_graph.print();
+        return kempe_graph;
+    }
+    
+    public static void kempe_graph(Graph kempe_graph, Vertex current, Color c1, Color c2){
+        ArrayList<Vertex> vertices = current.getVertices();
+        for(Vertex v : vertices){
+            if((v.getColor().equals(c1) || v.getColor().equals(c2)) && !kempe_graph.getVertices().contains(v) ){
+                kempe_graph.addVertex(v);
+                kempe_graph(kempe_graph,v,c1,c2);
+            }
+        }
+    }
+    
+
+
+    public static void kempe(Graph graph, Color[] colors){
+        if(graph.getVertices().size() == 0){
+            return;
+        }
+        ArrayList<Vertex> verticesClone = (ArrayList<Vertex>)graph.getVertices().clone();
+        Stack<Integer> stack = new Stack<Integer>();
+        kempeAux(verticesClone, colors, stack);
+        kempeColoring(graph, colors, stack, 0);
+    }
+    
+    public static void kempeAux(ArrayList<Vertex> verticesClone, Color[] colors, Stack<Integer> stack){
+        if(verticesClone.size() == 0){
+            return;
+        }
+        Vertex min = minVertices(verticesClone);
+        stack.push(min.getId());
+        verticesClone.remove(min);
+        kempeAux(verticesClone, colors, stack);
+
+    }
+    //Faire en sorte qu'il puisse prendre en paramétre des graph partiellement coloriés pour imposer qu'il utilise les chaînes de Kempe.
+    public static void kempeColoring(Graph graph, Color[] colors, Stack<Integer> stack, int colorPos){
+        if(stack.empty())
+            return;
+        boolean colored = false;
+        Vertex current = graph.getVertex(stack.pop());
+        if(current.getColor().equals(Color.WHITE)){
+            for(Color c : colors){
+                if(!containsColor(current.getVertices(), c)){
+                    current.setColor(c);
+                    colored = true;
+                    break;
+                }
+            }
+        } else 
+            colored = true;
+        if(!colored){
+            reverseKempeChain(kempeChain(current, 0));
+            System.out.print("On utilise les chaines de kempe");
+            for(Color c : colors){
+                if(!containsColor(current.getVertices(), c)){
+                    current.setColor(c);
+                    break;
+                }
+            }
+        }
+        kempeColoring(graph, colors, stack, colorPos);
+    }
+
+    public static boolean containsColor(ArrayList<Vertex> vertices , Color c){
+        for(int i = 0 ; i < vertices.size();i++){
+            if(vertices.get(i).getColor().equals(c)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+    //Inutile et à supprimer je pense mais je les laisse la pour l'instant jusqu'a ce que je sois sûr qu'on peut les enlever
+
+
 
     //private static Graph kempeCGraph = new Graph("Kempe Chain");
 
@@ -153,23 +308,14 @@ public class Kempe {
                }
         }
     }
-    */
-
-    public static void reverseKempeChain(Graph graph) {
-        ArrayList<Vertex> vertices = graph.getVertices();
-        if(vertices.isEmpty())
-            return;
-        Color c1 = vertices.get(0).getColor();
-        vertices = vertices.get(0).getVertices();
-        if(vertices.isEmpty())
-            return;
-        Color c2 = vertices.get(0).getColor();
-
-        for(Vertex v : graph.getVertices())
-            v.setColor(v.getColor() == c1 ? c2 : c1);
-
+    public static Graph beginKempe(Graph graph){
+        int idmin = isKempe(graph);
+        if(idmin == -1)
+            return graph;//on return le même graph mais en soit faudrait le colorier avec 5 couleurs ducoup c'est tt
+        Vertex v = graph.getVertex(idmin);
+        return kempeChain2(v, 0);
     }
-    /*
+
     //retourne l'id du vertex avec le moins de voisins dans un graph si il a 5 voisins
     //Rm : il faudrait faire fct qui verifie qu'un graph est planaire avant d'appeler cette fct.
     public static int isKempe(Graph graph){
@@ -188,136 +334,5 @@ public class Kempe {
         return idmin;
     }
     */
-
-    public static Vertex minVertices(ArrayList<Vertex> vertices){
-        int minVertx = vertices.get(0).getVertices().size();
-        Vertex min = vertices.get(0);
-        for(Vertex v : vertices){
-            int nbVertx = v.getVertices().size();
-            if( nbVertx < minVertx){
-                minVertx = nbVertx;
-                min = v;
-            }
-        }
-        return min;
-    }
-    /*
-    public static Graph beginKempe(Graph graph){
-        int idmin = isKempe(graph);
-        if(idmin == -1)
-            return graph;//on return le même graph mais en soit faudrait le colorier avec 5 couleurs ducoup c'est tt
-        Vertex v = graph.getVertex(idmin);
-        return kempeChain2(v, 0);
-    }
-    */
-
-    public static Graph kempeChain2(Vertex current, int id){
-        System.out.println("KEmpeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
-        ArrayList<Vertex> vertices = current.getVertices();
-        Graph kempe_graph = new Graph("Kempe chain");
-        Vertex v1 = null;
-        Vertex v2 = null;
-        if(id == 0){
-            v1 = vertices.get(0);
-            for(int i=1;i<vertices.size();i++){
-                v2 = vertices.get(i);
-                if(!v1.getVertices().contains(v2)){
-                    break;
-                }
-            }
-        } else {
-            for(Vertex v : vertices){
-                if(!(v.getId() == 0 || v.getId() == id)){
-                    v1 = v;
-                }
-            }
-            for(Vertex v : vertices){
-                if(!(v.getId() == 0 || v.getId() == id || v == v1)){
-                    if(!v1.getVertices().contains(v)){
-                        v2 = v;
-                    }
-                }
-            }
-        }
-        kempe_graph.addVertex(v1);
-        Color c1 = v1.getColor();
-        Color c2 = v2.getColor();
-         
-        kempe_graph(kempe_graph,v1,c1,c2);
-        if(kempe_graph.getVertices().contains(v2))
-            kempeChain2(current, v2.getId());
-
-        return kempe_graph;
-    }
-    
-    public static void kempe_graph(Graph kempe_graph, Vertex current, Color c1, Color c2){
-        ArrayList<Vertex> vertices = current.getVertices();
-        for(Vertex v : vertices){
-            if(v.getColor() == c1 || v.getColor() == c2){
-                kempe_graph.addVertex(v);
-                kempe_graph(kempe_graph,v,c1,c2);
-            }
-        }
-    }
-    
-
-
-    public static void testKempe(Graph graph, Color[] colors){
-        if(graph.getVertices().size() == 0){
-            return;
-        }
-        ArrayList<Vertex> verticesClone = (ArrayList<Vertex>)graph.getVertices().clone();
-        Stack<Integer> stack = new Stack<Integer>();
-        testKempeAux(verticesClone, colors, stack);
-        kempeColoring(graph, colors, stack, 0);
-    }
-    
-    public static void testKempeAux(ArrayList<Vertex> verticesClone, Color[] colors, Stack<Integer> stack){
-        if(verticesClone.size() == 0){
-            return;
-        }
-        Vertex min = minVertices(verticesClone);
-        stack.push(min.getId());
-        verticesClone.remove(min);
-        testKempeAux(verticesClone, colors, stack);
-
-    }
-    //Faire en sorte qu'il puisse prendre en paramétre des graph partiellement coloriés pour imposer qu'il utilise les chaînes de Kempe.
-    public static void kempeColoring(Graph graph, Color[] colors, Stack<Integer> stack, int colorPos){
-        if(stack.empty())
-            return;
-        boolean colored = false;
-        Vertex current = graph.getVertex(stack.pop());
-        /*
-        for(Vertex v : current.getVertices()){
-            if(v.getColor() == colors[colorPos%colors.length]){
-                colorPos++;
-            }
-        }
-        current.setColor(colors[colorPos%colors.length]);
-        colored = true;
-        colorPos++;
-        */
-        for(Color c : colors){
-            if(!containsColor(current.getVertices(), c)){
-                current.setColor(c);
-                colored = true;
-            }
-        }
-        
-        if(!colored){
-            reverseKempeChain(kempeChain2(current, 0));
-        }
-        kempeColoring(graph, colors, stack, colorPos);
-    }
-
-    public static boolean containsColor(ArrayList<Vertex> vertices , Color c){
-        for(int i = 0 ; i < vertices.size();i++){
-            if(vertices.get(i).getColor().equals(c)){
-                return true;
-            }
-        }
-        return false;
-    }
     
   }

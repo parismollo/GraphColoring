@@ -235,7 +235,7 @@ public class GraphPlayView extends JPanel {
                 gui.setLastPage();
             }
         });
-        Color[] colors = {Color.WHITE, Color.BLUE, Color.RED, Color.GREEN, Color.YELLOW};
+        Color[] colors = {Color.WHITE, Color.BLUE, Color.RED, Color.GREEN, Color.YELLOW, Color.MAGENTA};
         this.selectedColorBut = new ColorButton(colors[0]);
         this.selectedColorBut.setSelected(true);
         for(int i=0;i<colors.length;i++) {
