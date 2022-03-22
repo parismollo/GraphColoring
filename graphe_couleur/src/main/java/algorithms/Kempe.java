@@ -6,8 +6,10 @@ import java.util.Stack;
 
 import graphs.Graph;
 import graphs.Vertex;
+import utils.Complexity;
 
 public class Kempe {
+    static int operations = 0;
 
     public static void reverseKempeChain(Graph graph) {
         ArrayList<Vertex> vertices = graph.getVertices();
@@ -19,20 +21,24 @@ public class Kempe {
         if(vertices2.isEmpty())
             return;
         for(Vertex v : vertices2){
+            Kempe.operations++;
             if(vertices.contains(v))
                 c2 = v.getColor();
         }
         if(c2.equals(Color.white))
             return;
-        for(Vertex v : graph.getVertices())
+        for(Vertex v : graph.getVertices()) {
+            Kempe.operations++;
             v.setColor(v.getColor() == c1 ? c2 : c1);
-
+        }
+          
     }
 
     public static Vertex minVertices(ArrayList<Vertex> vertices){
         int minVertx = vertices.get(0).getVertices().size();
         Vertex min = vertices.get(0);
         for(Vertex v : vertices){
+            Kempe.operations++;
             int nbVertx = v.getVertices().size();
             if( nbVertx < minVertx){
                 minVertx = nbVertx;
@@ -50,6 +56,7 @@ public class Kempe {
         if(id == 0){
             v1 = vertices.get(0);
             for(int i=1;i<vertices.size();i++){
+                Kempe.operations++;
                 v2 = vertices.get(i);
                 if(!v1.getVertices().contains(v2)){
                     break;
@@ -57,11 +64,13 @@ public class Kempe {
             }
         } else {
             for(Vertex v : vertices){
+                Kempe.operations++;
                 if(!(v.getId() == 0 || v.getId() == id)){
                     v1 = v;
                 }
             }
             for(Vertex v : vertices){
+                Kempe.operations++;
                 if(!(v.getId() == 0 || v.getId() == id || v == v1)){
                     if(!v1.getVertices().contains(v)){
                         v2 = v;
@@ -83,6 +92,7 @@ public class Kempe {
     public static void kempe_graph(Graph kempe_graph, Vertex current, Color c1, Color c2){
         ArrayList<Vertex> vertices = current.getVertices();
         for(Vertex v : vertices){
+            Kempe.operations++;
             if((v.getColor().equals(c1) || v.getColor().equals(c2)) && !kempe_graph.getVertices().contains(v) ){
                 kempe_graph.addVertex(v);
                 kempe_graph(kempe_graph,v,c1,c2);
@@ -93,6 +103,7 @@ public class Kempe {
 
 
     public static void kempe(Graph graph, Color[] colors){
+        long start = System.nanoTime();
         if(graph.getVertices().size() == 0){
             return;
         }
@@ -100,6 +111,12 @@ public class Kempe {
         Stack<Integer> stack = new Stack<Integer>();
         kempeAux(verticesClone, colors, stack);
         kempeColoring(graph, colors, stack, 0);
+
+        long end = System.nanoTime();
+        int elapsedTime = (int) (end - start);
+
+        Complexity.runTime = elapsedTime;
+        Complexity.timeCommplexity = Kempe.operations;
     }
     
     public static void kempeAux(ArrayList<Vertex> verticesClone, Color[] colors, Stack<Integer> stack){
@@ -120,6 +137,7 @@ public class Kempe {
         Vertex current = graph.getVertex(stack.pop());
         if(current.getColor().equals(Color.WHITE)){
             for(Color c : colors){
+                Kempe.operations++;
                 if(!containsColor(current.getVertices(), c)){
                     current.setColor(c);
                     colored = true;
@@ -132,6 +150,7 @@ public class Kempe {
             reverseKempeChain(kempeChain(current, 0));
             System.out.print("On utilise les chaines de kempe");
             for(Color c : colors){
+                Kempe.operations++;
                 if(!containsColor(current.getVertices(), c)){
                     current.setColor(c);
                     break;
@@ -143,6 +162,7 @@ public class Kempe {
 
     public static boolean containsColor(ArrayList<Vertex> vertices , Color c){
         for(int i = 0 ; i < vertices.size();i++){
+            Kempe.operations++;
             if(vertices.get(i).getColor().equals(c)){
                 return true;
             }

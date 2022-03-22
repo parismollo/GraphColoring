@@ -2,6 +2,7 @@ package utils;
 
 import algorithms.Dsatur;
 import algorithms.Greedy;
+import algorithms.Kempe;
 import algorithms.WelshPowell;
 import graphs.Graph;
 import java.awt.Color;
@@ -19,6 +20,9 @@ public class Complexity {
     public static int inputSize;
     public static Color[] colors = {Color.BLUE,Color.RED,Color.GREEN, Color.YELLOW, Color.MAGENTA};
 
+    public static int a = 0;
+    public static int b = 0;
+
 
     public static void runComplexity(int iterations, int VoronoiDensity, boolean eucliedian) {
         /**
@@ -26,26 +30,36 @@ public class Complexity {
          */
 
          for(int i=0; i<iterations; i++) {
-            Complexity.g = Voronoi.runVoronoi(VoronoiDensity, eucliedian, false, 1000);
+            Complexity.g = Voronoi.runVoronoi(VoronoiDensity, eucliedian, false, 500);
             Complexity.inputSize = VoronoiDensity;
 
             Dsatur.dsatur(g, colors);
             Complexity.info("Dsatur");
 
-            Complexity.info("Greedy");
             Greedy.greedy(g, colors);
+            Complexity.info("Greedy");
 
             WelshPowell.welshPowell(g, colors);
-            Complexity.info("WelshPower");
+            Complexity.info("WelshPowell");
+
+            Kempe.kempe(g, colors);
+            Complexity.info("Kempe");
+
          }
     }
 
     public static void info(String title) {
+        System.out.println("\n--------------------------------------------------------");
         System.out.println("Complexity Analysis of ["+title+"]\n");
         System.out.println("Size of input (n° of vertices): "+Complexity.inputSize+" vertices\n");
         System.out.println("Time Complexity: "+Complexity.timeCommplexity+" operations\n");
         System.out.println("Space Complexity: "+Complexity.spaceComplexity+" bytes\n");
-        System.out.println("Runtime: "+Complexity.runTime+"seconds \n");
+        System.out.println("Runtime: "+Complexity.runTime+" nanoseconds \n");
+        // System.out.println("\n--------------------------------------------------------");
 
+    }
+
+    public static void main(String[] args) {
+        Complexity.runComplexity(100, 50, true);
     }
 }

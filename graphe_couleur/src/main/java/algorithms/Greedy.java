@@ -42,7 +42,7 @@ public class Greedy {
         return false;
     }
     public static void greedy(Graph graph, Color[] colors){
-        long start = System.currentTimeMillis();
+        long start = System.nanoTime();
 
         ArrayList<Vertex> list = graph.getVertices();
         Color[] color_vertex = new Color[list.size()+1];
@@ -56,10 +56,10 @@ public class Greedy {
                 v.setColor(color_vertex[v.getId()]);
             }
         }
-        long end = System.currentTimeMillis();
-        int elapsedTime = (int) (end - start) / 1000;
+        long end = System.nanoTime();
+        int elapsedTime = (int) (end - start);
 
-        Complexity.timeCommplexity = operations;
+        Complexity.timeCommplexity = Greedy.operations;
         Complexity.runTime = elapsedTime;
     }
 

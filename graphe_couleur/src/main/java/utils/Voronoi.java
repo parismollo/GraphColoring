@@ -11,6 +11,7 @@ import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 
 import graphs.Graph;
+import graphs.Vertex;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -30,7 +31,7 @@ public class Voronoi extends JFrame {
     static int px[], py[]; 
     static int color[], cells, size;
     static BufferedImage I; 
-    static int SHIFT_MARGIN = 10;
+    static int SHIFT_MARGIN = 5;
     static Graph graph;
     static boolean euclidien;
 
@@ -45,6 +46,7 @@ public class Voronoi extends JFrame {
         setTitle("Voronoi Diagram");
         setBounds(0, 0, size, size);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
+        this.dispose();
         /**
          * (1) Image for display and drawing.
          * (2) x and y coordinates of vertices. 
@@ -65,7 +67,7 @@ public class Voronoi extends JFrame {
          * (2) Set color for each vertice. 
          */
         for(int i=0; i<cells; i++) {
-            px[i] = rand.nextInt(size);
+            px[i] = rand.nextInt(size); 
             py[i] = rand.nextInt(size);
             color[i] = rand.nextInt(16777215);
             Voronoi.graph.addVertex(Integer.toString(i));
@@ -93,8 +95,9 @@ public class Voronoi extends JFrame {
         Graphics2D graphics = I.createGraphics();
         graphics.setColor(Color.BLACK);
         for(int i=0; i<cells; i++) {
-            graphics.fill(new Ellipse2D .Double(px[i]-2.5, py[i]-2.5, 5, 5));
-            graphics.drawString(Integer.toString(i), px[i]+2, py[i]+2);
+            graphics.fill(new Ellipse2D .Double(px[i]-2.5, py[i]-2.5, 2, 2));
+            graphics.drawString(Integer.toString(i), px[i], py[i]);
+            // System.out.println("i: "+i+" px: "+px[i]+" py: "+py[i]);
         }
 
         /**
@@ -108,11 +111,11 @@ public class Voronoi extends JFrame {
 
 
         Voronoi.findNeighbors(Voronoi.graph);
-        System.out.println(Voronoi.graph);
+        // System.out.println(Voronoi.graph);
 
     }
     public void paint(Graphics g) {
-        g.drawImage(I, 0, 0,  this);
+        g.drawImage(I, 0, 0,  getContentPane());
     }
 
     /**
@@ -136,58 +139,86 @@ public class Voronoi extends JFrame {
          *  - top, bottom, left, right, top right, top left, bottom left, bottom right. 
          *  - for each pixel, if color changes from original center, add egde if it have not been added already.   
          */
-        for(int n=0; n<Voronoi.color.length; n++) {
+        for(int n=0; n<cells; n++) {
             checkTop(n, graph);
             checkBottom(n, graph);
             checkLeft(n, graph);
             checkRight(n, graph);
             checkBottomLeft(n, graph);
-            checkBottomRight(n, graph);
             checkTopLeft(n, graph);
+            checkBottomRight(n, graph);
             checkTopRight(n, graph);
         }
 
 
     }
 
+    static int getColor(int n) {
+        int rgb = 0;
+        int[] shifts = {SHIFT_MARGIN, 0, -SHIFT_MARGIN, 0, 0, SHIFT_MARGIN, 0, -SHIFT_MARGIN};
+        for(int i=0; i<shifts.length; i+=2) {
+            try {
+                rgb = I.getRGB(px[n]+shifts[i], py[n]+shifts[i+1]);
+                return rgb;
+            } catch(Exception e) {}
+        }
+        return -1;
+    }
+
+    // static int setRGB() {
+    //     return I.setRGB(x, y, rgb);
+    // }
     static void checkTop(int n, Graph graph) {
-        int rgb = I.getRGB(px[n], py[n]);
+        int rgb = getColor(n);
         int x = px[n];
         int y = py[n];
 
-        while (x < Voronoi.size-SHIFT_MARGIN&& y < Voronoi.size-SHIFT_MARGIN&& I.getRGB(x+2, y+2) == rgb ) {
+        while (y < Voronoi.size-1 && I.getRGB(x, y) == rgb ) {
             y++;
         };
-        if (x < Voronoi.size-SHIFT_MARGIN && y < Voronoi.size-SHIFT_MARGIN && I.getRGB(x+2, y+2) != rgb) {
-            graph.addEdge(graph.getVertex(n), graph.getVertex(findVertex(I.getRGB(x, y))));
+        if (I.getRGB(x, y) != rgb) {
+            // System.out.println("*");
+            // System.out.println(graph.getVertex(n));
+            // System.out.println(findVertex(I.getRGB(x, y)));
+            String title = Integer.toString(n);
+            graph.addEdge(graph.getVertex(title), graph.getVertex(findVertex(I.getRGB(x, y))));
         }
+
+        // System.out.println("Vertex: "+n+" Color: "+rgb);
 
     }
 
     static void checkBottom(int n, Graph graph) {
-        int rgb = I.getRGB(px[n], py[n]);
+        int rgb = getColor(n);
         int x = px[n];
         int y = py[n];
-
-        while (x < Voronoi.size-SHIFT_MARGIN && y < Voronoi.size-SHIFT_MARGIN && I.getRGB(x+2, y+2) == rgb) {
+        while (y > 0 && I.getRGB(x, y) == rgb) {
             y--;
-        };
-        if (x < Voronoi.size-SHIFT_MARGIN && y < Voronoi.size-SHIFT_MARGIN && I.getRGB(x+2, y+2) != rgb) {
-            graph.addEdge(graph.getVertex(n), graph.getVertex(findVertex(I.getRGB(x, y))));
+        }
+        if (I.getRGB(x, y) != rgb) {
+            // System.out.println("**");
+            // System.out.println(graph.getVertex(n));
+            // System.out.println(findVertex(I.getRGB(x, y)));
+            String title = Integer.toString(n);
+            graph.addEdge(graph.getVertex(title), graph.getVertex(findVertex(I.getRGB(x, y))));
         }
 
     }
 
     static void checkLeft(int n, Graph graph) {
-        int rgb = I.getRGB(px[n], py[n]);
+        int rgb = getColor(n);
         int x = px[n];
         int y = py[n];
 
-        while (x < Voronoi.size-SHIFT_MARGIN && y < Voronoi.size-SHIFT_MARGIN && I.getRGB(x+2, y+2) == rgb) {
+        while (x > 0 && I.getRGB(x, y) == rgb) {
             x--;
-        };
-        if (x < Voronoi.size-SHIFT_MARGIN && y < Voronoi.size-SHIFT_MARGIN && I.getRGB(x+2, y+2) != rgb) {
-            graph.addEdge(graph.getVertex(n), graph.getVertex(findVertex(I.getRGB(x, y))));
+        }
+        if (I.getRGB(x, y) != rgb) {
+            // System.out.println("***");
+            // System.out.println(graph.getVertex(n));
+            // System.out.println(findVertex(I.getRGB(x, y)));
+            String title = Integer.toString(n);
+            graph.addEdge(graph.getVertex(title), graph.getVertex(findVertex(I.getRGB(x, y))));
         }
 
     }
@@ -198,82 +229,104 @@ public class Voronoi extends JFrame {
         int x = px[n];
         int y = py[n];
 
-        while (x < Voronoi.size-SHIFT_MARGIN && y < Voronoi.size-SHIFT_MARGIN && I.getRGB(x+2, y+2) == rgb) {
+        while (x < Voronoi.size-1 && I.getRGB(x, y) == rgb) {
             x++;
-        };
-        if (x < Voronoi.size-SHIFT_MARGIN && y < Voronoi.size-SHIFT_MARGIN && I.getRGB(x+2, y+2) != rgb) {
-            graph.addEdge(graph.getVertex(n), graph.getVertex(findVertex(I.getRGB(x, y))));
+        }
+        if (I.getRGB(x, y) != rgb) {
+            // System.out.println("****");
+            // System.out.println(graph.getVertex(n));
+            // System.out.println(findVertex(I.getRGB(x, y)));
+            String title = Integer.toString(n);
+            graph.addEdge(graph.getVertex(title), graph.getVertex(findVertex(I.getRGB(x, y))));
         }
 
     }
 
     static void checkBottomLeft(int n, Graph graph) {
-        int rgb = I.getRGB(px[n], py[n]);
+        int rgb = getColor(n);
         int x = px[n];
         int y = py[n];
 
-        while (x < Voronoi.size-SHIFT_MARGIN && y < Voronoi.size-SHIFT_MARGIN && I.getRGB(x+2, y+2) == rgb) {
+        while (x > 0 && y > 0 && I.getRGB(x, y) == rgb) {
             x--;
             y--;
-        };
-        if (x < Voronoi.size-SHIFT_MARGIN && y < Voronoi.size-SHIFT_MARGIN && I.getRGB(x+2, y+2) != rgb) {
-            graph.addEdge(graph.getVertex(n), graph.getVertex(findVertex(I.getRGB(x, y))));
+        }
+        if (I.getRGB(x, y) != rgb) {
+            // System.out.println("*****");
+            // System.out.println(graph.getVertex(n));
+            // System.out.println(findVertex(I.getRGB(x, y)));
+            String title = Integer.toString(n);
+            graph.addEdge(graph.getVertex(title), graph.getVertex(findVertex(I.getRGB(x, y))));
         }
 
     }
 
 
     static void checkTopLeft(int n, Graph graph) {
-        int rgb = I.getRGB(px[n], py[n]);
+        int rgb = getColor(n);
         int x = px[n];
         int y = py[n];
 
-        while (x < Voronoi.size-SHIFT_MARGIN && y < Voronoi.size-SHIFT_MARGIN && I.getRGB(x+2, y+2) == rgb) {
+        while (x > 0 && y < Voronoi.size-1 && I.getRGB(x, y) == rgb) {
             x--;
             y++;
-        };
-        if (x < Voronoi.size-SHIFT_MARGIN && y < Voronoi.size-SHIFT_MARGIN && I.getRGB(x+2, y+2) != rgb) {
-            graph.addEdge(graph.getVertex(n), graph.getVertex(findVertex(I.getRGB(x, y))));
+        }
+        if (I.getRGB(x, y) != rgb) {
+            // System.out.println("******");
+            // System.out.println(graph.getVertex(n));
+            // System.out.println(findVertex(I.getRGB(x, y)));
+            String title = Integer.toString(n);
+            graph.addEdge(graph.getVertex(title), graph.getVertex(findVertex(I.getRGB(x, y))));
         }
 
     }
 
     static void checkBottomRight(int n, Graph graph) {
-        int rgb = I.getRGB(px[n], py[n]);
+        int rgb = getColor(n);
         int x = px[n];
         int y = py[n];
 
-        while (x < Voronoi.size-SHIFT_MARGIN && y < Voronoi.size-SHIFT_MARGIN && I.getRGB(x+2, y+2) == rgb) {
+        while (x < Voronoi.size-1 && y > 0 && I.getRGB(x, y) == rgb) {
             x++;
             y--;
-        };
-        if (x < Voronoi.size-SHIFT_MARGIN && y < Voronoi.size-SHIFT_MARGIN && I.getRGB(x+2, y+2) != rgb) {
-            graph.addEdge(graph.getVertex(n), graph.getVertex(findVertex(I.getRGB(x, y))));
+        }
+        if (I.getRGB(x, y) != rgb) {
+            // System.out.println("*******");
+            // System.out.println(graph.getVertex(n));
+            // System.out.println(findVertex(I.getRGB(x, y)));
+            String title = Integer.toString(n);
+            graph.addEdge(graph.getVertex(title), graph.getVertex(findVertex(I.getRGB(x, y))));
         }
 
     }
 
     static void checkTopRight(int n, Graph graph) {
-        int rgb = I.getRGB(px[n], py[n]);
+        int rgb = getColor(n);
         int x = px[n];
         int y = py[n];
 
-        while (x < Voronoi.size-SHIFT_MARGIN && y < Voronoi.size-SHIFT_MARGIN && I.getRGB(x+2, y+2) == rgb) {
+        while (x < Voronoi.size-1 && y < Voronoi.size-1 && I.getRGB(x, y) == rgb) {
             x++;
             y++;
-        };
-        if (x < Voronoi.size-SHIFT_MARGIN && y < Voronoi.size-SHIFT_MARGIN && I.getRGB(x+2, y+2) != rgb) {
-            graph.addEdge(graph.getVertex(n), graph.getVertex(findVertex(I.getRGB(x, y))));
+        }
+        if (I.getRGB(x, y) != rgb) {
+            // System.out.println(graph.getVertex(n));
+            // System.out.println(findVertex(I.getRGB(x, y)));
+            String title = Integer.toString(n);
+            graph.addEdge(graph.getVertex(title), graph.getVertex(findVertex(I.getRGB(x, y))));
         }
 
     }
 
-    static int findVertex(int rgb) {
-        int z = 0;
-        for(int i=0; i<color.length; i++) {
-            if (color[i] == rgb) {z = i;}
+    static String findVertex(int rgb) {
+        for(int i=0; i<cells; i++) {
+            // System.out.println("getColor("+i+"): "+getColor(i)+" rgb: "+rgb);
+            if (getColor(i) == rgb) {
+                // System.out.println("*");
+                return Integer.toString(i);
+            }
         }
-        return z;
+        return "-1";
     }
 
     static Graph getVoronoiGraph() {
@@ -291,13 +344,13 @@ public class Voronoi extends JFrame {
     }
 
     public static Graph runVoronoi(int cells, boolean eucliedian, boolean saveImage, int screenRes) {
-        new Voronoi(100, true, false, 300).setVisible(true);
-        System.out.println(Voronoi.info());
+        new Voronoi(cells, eucliedian, saveImage, screenRes).setVisible(true);
+        // System.out.println(Voronoi.info());
         return Voronoi.graph;
     }
 
     public static void main(String[] args) {
-        new Voronoi(100, true, false, 1000).setVisible(true);
-        System.out.println(Voronoi.info());
+        new Voronoi(20, false, false, 500).setVisible(true);
+        // System.out.println(Voronoi.info());
     }
 }

@@ -13,11 +13,12 @@ public class WelshPowell {
     
     public static ArrayList<Vertex> selectionSort(ArrayList<Vertex> list) {
         for(int i = 0 ; i < list.size() -1 ; i ++) {
+            WelshPowell.operations++;
             int index = i;
             for(int j = i + 1 ; j < list.size() ; j++) {
+                WelshPowell.operations++;
                 if(list.get(j).getVertices().size() > list.get(index).getVertices().size() ) {
                     index = j;
-                    WelshPowell.operations++;
                 }
             }
             Vertex tmp = list.get(index);
@@ -28,7 +29,7 @@ public class WelshPowell {
     }
 
     public static void welshPowell(Graph graph, Color[] colors){
-        long start = System.currentTimeMillis();
+        long start = System.nanoTime();
 
         ArrayList<Vertex> list = graph.getVertices();
         ArrayList<Vertex> temp = new ArrayList<Vertex>();
@@ -36,27 +37,28 @@ public class WelshPowell {
         //Color tab [] = {Color.BLUE,Color.RED,Color.GREEN,Color.YELLOW, Color.PINK};
         int iterator = 0;
         while(iterator != colors.length) {
+            WelshPowell.operations++;
             Color current = colors[iterator];
             for(int i = 0 ; i < temp.size();i++){
+                WelshPowell.operations++;
                 if(temp.get(i).getColor().equals(Color.WHITE) && containsColor(temp.get(i).getVertices(), current) == false){
                     temp.get(i).setColor(current);
-                    WelshPowell.operations++;
                 }
             }
             iterator++;
         }
         graph.setVerticesList(temp);
-        long end = System.currentTimeMillis();
-        int elapsedTime = (int) (end - start) / 1000;
+        long end = System.nanoTime();
+        int elapsedTime = (int) (end - start);
 
         Complexity.runTime = elapsedTime;
-        Complexity.timeCommplexity = Dsatur.operations;
+        Complexity.timeCommplexity = WelshPowell.operations;
     }
 
     public static boolean containsColor(ArrayList<Vertex> vertices , Color c){
         for(int i = 0 ; i < vertices.size();i++){
+            WelshPowell.operations++;
             if(vertices.get(i).getColor().equals(c)){
-                WelshPowell.operations++;
                 return true;
             }
         }

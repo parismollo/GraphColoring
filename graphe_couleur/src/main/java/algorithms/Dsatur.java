@@ -27,7 +27,7 @@ public class Dsatur {
     }
 
     public static void dsatur(Graph graph, Color[] colors) {
-        long start = System.currentTimeMillis();
+        long start = System.nanoTime();
         
         ArrayList<Vertex> list = graph.getVertices();
         ArrayList<Vertex> temp = new ArrayList<Vertex>();
@@ -43,8 +43,8 @@ public class Dsatur {
             //System.out.println(temp.get(i).getTitle() + " " + temp.get(i).getColor() + " " + temp.get(i).getVertices());//Pour tester
         }
         graph.setVerticesList(temp);
-        long end = System.currentTimeMillis();
-        int elapsedTime = (int) (end - start) / 1000;
+        long end = System.nanoTime();
+        int elapsedTime = (int) (end - start);
 
         Complexity.runTime = elapsedTime;
         Complexity.timeCommplexity = Dsatur.operations;
