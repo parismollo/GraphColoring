@@ -2,12 +2,14 @@ package gui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.RenderingHints;
+import java.awt.Toolkit;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
@@ -67,25 +69,31 @@ public class HomeView extends JPanel {
         this.setLayout(new BorderLayout());
         this.add(pan, BorderLayout.CENTER);
 
+        resize(pan, centerPan);
         gui.addComponentListener(new ComponentAdapter() {
             public void componentResized(ComponentEvent e) {
-                int w = 1920, h = 1010;
-                int top = (getWidth() * 170) / w;
-                int left = (getHeight() * 500) / h;
-                pan.setBorder(new EmptyBorder(top, left, top, left));
-                int iconSize = 128, textSize = 32;
-                int s1 = (getHeight() * iconSize) / h;
-                int s2 = (getWidth() * iconSize) / w;
-                s1 = s1 < s2 ? s1 : s2;
-                int text = (getWidth() * textSize) / w;
-                for(CenterPan.CustomButton cB : centerPan.buttons) {
-                    cB.changeIconSize(s1);
-                    cB.changeTextSize(text);
-                }
+            	resize(pan, centerPan);
             }
         });
     }
 
+    public void resize(JPanel pan, CenterPan centerPan) {
+    	Dimension screen = gui.getSize();
+        int w = 1920, h = 1010;
+        int top = ((int)screen.getWidth() * 170) / w;
+        int left = ((int)screen.getHeight() * 500) / h;
+        pan.setBorder(new EmptyBorder(top, left, top, left));
+        int iconSize = 128, textSize = 32;
+        int s1 = ((int)screen.getHeight() * iconSize) / h;
+        int s2 = ((int)screen.getWidth() * iconSize) / w;
+        s1 = s1 < s2 ? s1 : s2;
+        int text = ((int)screen.getWidth() * textSize) / w;
+        for(CenterPan.CustomButton cB : centerPan.buttons) {
+            cB.changeIconSize(s1);
+            cB.changeTextSize(text);
+        }
+    }
+    
     private class CenterPan extends JPanel {
 
         private CustomButton[] buttons;

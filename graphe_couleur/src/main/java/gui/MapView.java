@@ -42,6 +42,7 @@ public class MapView extends JPanel {
         this.graphPlayView = graphPlayView;
         this.name = name;
         this.devMode = devMode;
+        setOpaque(false);
         
         try {
             this.graph = Converter.mapToGraph(RESOURCES_FOLDER+name+".csv");
@@ -49,8 +50,9 @@ public class MapView extends JPanel {
                 graph.applyAlgo(graphPlayView.getAlgo(), graphPlayView.getColors());
 
             this.image = getImage(name);
-            if(this.image != null)
+            if(this.image != null) {
                 this.setPreferredSize(new Dimension(image.getWidth(), image.getHeight()));
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -223,6 +225,7 @@ public class MapView extends JPanel {
         spaceY /= 2;
         g.drawImage(image, spaceX, spaceY, imgW, imgH, null);
         */
+        //System.out.println(getSize());
     }
 
     public Dimension getMapDim() {
