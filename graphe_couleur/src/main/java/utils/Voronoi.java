@@ -11,7 +11,6 @@ import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 
 import graphs.Graph;
-import graphs.Vertex;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -70,7 +69,9 @@ public class Voronoi extends JFrame {
             px[i] = rand.nextInt(size); 
             py[i] = rand.nextInt(size);
             color[i] = rand.nextInt(16777215);
-            Voronoi.graph.addVertex(Integer.toString(i));
+            String title = Integer.toString(i);
+            Voronoi.graph.addVertex(title);
+            Voronoi.graph.getVertex(title).setPosition(px[i], py[i]);
         }
 
         /**

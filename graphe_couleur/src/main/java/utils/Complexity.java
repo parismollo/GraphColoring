@@ -5,8 +5,11 @@ import algorithms.Greedy;
 import algorithms.Kempe;
 import algorithms.WelshPowell;
 import graphs.Graph;
+import gui.GUI;
+
 import java.awt.Color;
 public class Complexity {
+
         /**
      * (1) This program allows you to test the complexity (time and space) of each coloring algorithm.
      * (2) Details: size of n, time complexity (number of elementary operations), space complexity (auxiliary memory in bytes), runtime (in seconds) and algorithm perfomance (number of colors).
@@ -25,6 +28,7 @@ public class Complexity {
 
 
     public static void runComplexity(int iterations, int VoronoiDensity, boolean eucliedian) {
+        GUI gui = new GUI(500, 500);
         /**
          * For each Voronoi iteration run each algorithm and ouput perfomance.
          */
@@ -32,9 +36,11 @@ public class Complexity {
          for(int i=0; i<iterations; i++) {
             Complexity.g = Voronoi.runVoronoi(VoronoiDensity, eucliedian, false, 500);
             Complexity.inputSize = VoronoiDensity;
+            gui.setGraphViewPage(g);
 
             Dsatur.dsatur(g, colors);
             Complexity.info("Dsatur");
+            
 
             Greedy.greedy(g, colors);
             Complexity.info("Greedy");
@@ -60,6 +66,6 @@ public class Complexity {
     }
 
     public static void main(String[] args) {
-        Complexity.runComplexity(100, 50, true);
+        Complexity.runComplexity(1, 10, false);
     }
 }
