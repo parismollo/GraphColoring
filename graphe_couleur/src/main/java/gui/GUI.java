@@ -8,15 +8,28 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 
 import algorithms.Kempe;
-import algorithms.WelshPowell;
 import graphs.Graph;
-import graphs.Vertex;
 import utils.Converter;
 
 public class GUI extends JFrame {
 	private static final long serialVersionUID = 1L;
+
+	public static Color BACKGROUND_COLOR = new Color(41, 50, 65),
+						DARK_COLOR1 = new Color(61, 90, 128),
+						LIGHT_COLOR1 = new Color(152, 193, 217),
+						LIGHT_COLOR2 = new Color(224, 251, 252),
+						RED = new Color(238, 108, 77);
+/*
+	public static Color BACKGROUND_COLOR = new Color(0, 27, 46),
+						DARK_COLOR1 = new Color(41, 76, 96),
+						LIGHT_COLOR1 = new Color(173, 182, 196),
+						LIGHT_COLOR2 = new Color(255, 239, 211),
+						RED = new Color(238, 108, 77);
+*/
+	private JPanel lastPanel;
 
 	private int width;
 	private int height;
@@ -36,42 +49,29 @@ public class GUI extends JFrame {
 
 		//setHomePage();
 		
-		Color[] colors = {Color.BLUE,Color.RED,Color.GREEN, Color.YELLOW, Color.MAGENTA, Color.ORANGE};
+		//Color[] colors = {Color.BLUE,Color.RED,Color.GREEN, Color.YELLOW, Color.MAGENTA, Color.ORANGE};
+		Color[] colors = {Color.BLUE,Color.RED,Color.GREEN, Color.YELLOW, Color.MAGENTA};
 		//setGraphViewPage("France", "WelshPowell", colors);
 		//setGraphViewPage("France", "Dsatur", colors);
-		setGraphViewPage("France", "Greedy", colors);
+		//setGraphViewPage("France", "Greedy", colors);
 		//setGraphViewPage("France", "BestGreedy", colors);
+		setGraphViewPage("France", "Kempe", colors);
 		//testGreedyRandom();
 		//testGreedy();
-		// testBestGreedy();
+		//testBestGreedy();
+		//testKempeChain(colors);
+
 		
 		// TEST GRAPH BEBOU
-		/*Graph random = Graph.randomGraph(11);
+		/*
+		Graph random = Graph.randomGraph(11);
 		try {
 			random.save("src/resources/graphBebou.txt");
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}*/
-		//testBebou("BESTGREEDY", colors);
-
-		 // TEST KEMPE
-		/*Graph graph = null;
-		Vertex v = null;
-		try {
-			graph = Converter.mapToGraph("src/resources/France.csv");
-			v = graph.getVertices().get(10);
-			System.out.println(v.getId());
-			WelshPowell.welshPowell(graph, colors);
-		} catch (FileNotFoundException e1) {
-			e1.printStackTrace();
-		}
-
-		graph = Kempe.kempeChain(v);
-		System.out.println(graph.getVertices());
-		Kempe.reverseKempeChain(graph);
-		setGraphViewPage(graph);
-		*/
-
+		//testBebou("KEMPE", colors);
+		
 		this.addWindowListener(new WindowAdapter()
         {
             @Override
@@ -90,7 +90,8 @@ public class GUI extends JFrame {
 		this.getContentPane().removeAll();
 		this.setResizable(true);
 		//this.setExtendedState(JFrame.MAXIMIZED_BOTH);
-		this.getContentPane().add(new HomeView(this));
+		lastPanel = new HomeView(this);
+		this.getContentPane().add(lastPanel);
 		revalidate();
 		repaint();
 	}
@@ -102,7 +103,7 @@ public class GUI extends JFrame {
 	public void setCreatorPage() {
 		this.getContentPane().removeAll();
 		this.setResizable(true);
-		this.getContentPane().add(new GraphPlayView());
+		this.getContentPane().add(new GraphPlayView(this));
 		revalidate();
 		repaint();
 	}
@@ -121,14 +122,13 @@ public class GUI extends JFrame {
 		//this.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		GraphPlayView graphPlayView;
 		if(graph != null)
-			graphPlayView = new GraphPlayView(graph, width, height);
+			graphPlayView = new GraphPlayView(this, graph, width, height);
 		else
-			graphPlayView = new GraphPlayView(name, algo, width, height, colors, isGraph);
+			graphPlayView = new GraphPlayView(this, name, algo, width, height, colors, isGraph);
 		this.getContentPane().add(graphPlayView);
 		revalidate();
 		repaint();
 	}
-	
 	
 	public void setMapPage(String mapName, boolean devMode) {
 		this.getContentPane().removeAll();
@@ -136,7 +136,6 @@ public class GUI extends JFrame {
 		MapView map = new MapView(mapName, devMode);
 		//this.setMinimumSize(map.getMapDim());
 		//this.setSize(map.getMapDim());
-		
 		this.getContentPane().add(map);
 		revalidate();
 		repaint();
@@ -145,8 +144,18 @@ public class GUI extends JFrame {
 	public void setMapChooser(boolean devMode) {
 		this.getContentPane().removeAll();
 		this.setResizable(true);
-		
-		this.getContentPane().add(new MapChooser(this, devMode));
+		lastPanel = new MapChooser(this, devMode);
+		this.getContentPane().add(lastPanel);
+		revalidate();
+		repaint();
+	}
+
+	public void setLastPage() {
+		if(lastPanel == null)
+			return;
+		this.getContentPane().removeAll();
+		this.setResizable(true);
+		this.getContentPane().add(lastPanel);
 		revalidate();
 		repaint();
 	}
@@ -207,11 +216,28 @@ public class GUI extends JFrame {
             case "BESTGREEDY":
 				algorithms.Greedy.bestGreedy(bebou, colors);
             case "KEMPE":
-                //vertices = Kempe.kempe(vertices);
+                Kempe.kempe(bebou, colors);
                 break;
 		}
 		
 		setGraphViewPage(bebou);
+	}
+
+	public void testKempeChain(Color[] colors){
+		Graph graph = null;
+		
+		
+		try {
+			graph = Graph.load("src/resources/graphKempe.txt");
+		} catch (ClassNotFoundException e1) {
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}	
+		Kempe.kempe(graph, colors);
+		System.out.println();
+		graph.print();
+		setGraphViewPage(graph);
 	}
 	
 }

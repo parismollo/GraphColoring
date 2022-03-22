@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
@@ -16,6 +17,7 @@ import javax.imageio.ImageIO;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
 
 public class MapChooser extends JPanel {
     
@@ -77,8 +79,9 @@ public class MapChooser extends JPanel {
         });
 
         selectBut.addActionListener(e -> {
-            Color[] colors = {Color.BLUE,Color.RED,Color.GREEN, Color.YELLOW, Color.MAGENTA, Color.ORANGE};
-            MapChooser.this.gui.setGraphViewPage(null, getName(maps.get(imageView.mapIndex)), "Greedy", colors, false);
+            //Color[] colors = {Color.BLUE,Color.RED,Color.GREEN, Color.YELLOW, Color.MAGENTA};
+            Color[] colors = {Color.BLUE,Color.RED,Color.GREEN, Color.YELLOW, Color.MAGENTA};
+            MapChooser.this.gui.setGraphViewPage(null, getName(maps.get(imageView.mapIndex)), "Kempe", colors, false);
             /*MapChooser.this.gui.setMapPage(
                 getName(maps.get(imageView.mapIndex)), 
                 MapChooser.this.devMode
@@ -95,7 +98,26 @@ public class MapChooser extends JPanel {
         nextPan.setOpaque(false);
         nextPan.add(nextBut);
 
-        this.add(title, BorderLayout.NORTH);
+        JPanel temp = new JPanel();
+        temp.setLayout(new GridLayout(1, 3));
+        JPanel temp2 = new JPanel();
+        temp2.setBorder(new EmptyBorder(0, 10, 0, 0));
+        temp2.setLayout(new BorderLayout());
+        IconPanel left_arrow = new IconPanel("return", 40);
+        left_arrow.addMouseListener(new MouseAdapter() {
+            public void mousePressed(MouseEvent e) {
+                super.mousePressed(e);
+                gui.setHomeView();
+            }
+        });
+        temp2.add(left_arrow, BorderLayout.WEST);
+        temp.add(temp2);
+        temp2 = new JPanel();
+        temp2.add(title);
+        temp.add(temp2);
+        temp.add(new JPanel());
+
+        this.add(temp, BorderLayout.NORTH);
         this.add(previousPan, BorderLayout.WEST);
         this.add(nextPan, BorderLayout.EAST);
         this.add(selectBut, BorderLayout.SOUTH);
