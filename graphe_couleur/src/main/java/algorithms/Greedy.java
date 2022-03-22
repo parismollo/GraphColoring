@@ -8,19 +8,26 @@ import java.awt.Color;
 
 import graphs.Graph;
 import graphs.Vertex;
+import utils.Complexity;
 
 public class Greedy {
+    public static int operations = 0;
+
     public static boolean boolGraphColoringGreedy(int id, Color[] nb, Color[] color_vertex, ArrayList<Vertex> list ){
+        Greedy.operations++;
         if(id == list.size()){
             return true;
         }
         for(int c=0;c<nb.length;c++){
             if(!containsColor(list.get(id).getVertices(), nb[c], color_vertex)){
                 color_vertex[list.get(id).getId()] = nb[c];//dans le cas où les vertex ne serait pas numérotés dans l'ordre d'id dans la list
+                Greedy.operations++;
                 if(boolGraphColoringGreedy(id+1, nb, color_vertex, list)){
                     return true;
                 }
                 color_vertex[list.get(id).getId()] = Color.white;
+                Greedy.operations++;
+            
             }
         }
         return false;
@@ -28,22 +35,32 @@ public class Greedy {
     public static boolean containsColor(ArrayList<Vertex> vertices , Color c, Color[] color_vertex){
         for(int i = 0 ; i < vertices.size();i++){
             if(color_vertex[vertices.get(i).getId()].equals(c)){
+                Greedy.operations++;
                 return true;
             }
         }
         return false;
     }
     public static void greedy(Graph graph, Color[] colors){
+        long start = System.currentTimeMillis();
+
         ArrayList<Vertex> list = graph.getVertices();
         Color[] color_vertex = new Color[list.size()+1];
         for(int i=0;i<color_vertex.length;i++){
+            Greedy.operations++;
             color_vertex[i] = Color.white;
         }
         if(boolGraphColoringGreedy(0, colors, color_vertex, list)){
             for(Vertex v : list){
+                Greedy.operations++;
                 v.setColor(color_vertex[v.getId()]);
             }
         }
+        long end = System.currentTimeMillis();
+        int elapsedTime = (int) (end - start) / 1000;
+
+        Complexity.timeCommplexity = operations;
+        Complexity.runTime = elapsedTime;
     }
 
     public static void bestGreedy(Graph graph, Color[] colors){
