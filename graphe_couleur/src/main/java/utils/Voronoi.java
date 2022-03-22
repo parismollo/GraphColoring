@@ -30,6 +30,7 @@ public class Voronoi extends JFrame {
     static int px[], py[]; 
     static int color[], cells, size;
     static BufferedImage I; 
+    static int SHIFT_MARGIN = 10;
 
     public Voronoi(int cells, boolean eucliedian, boolean saveImage, int screenRes) {
         Voronoi.cells = cells;
@@ -90,11 +91,11 @@ public class Voronoi extends JFrame {
         graphics.setColor(Color.BLACK);
         for(int i=0; i<cells; i++) {
             graphics.fill(new Ellipse2D .Double(px[i]-2.5, py[i]-2.5, 5, 5));
-            graphics.drawString(Integer.toString(i), px[i], py[i]);
+            graphics.drawString(Integer.toString(i), px[i]+2, py[i]+2);
         }
 
         /**
-         * (1) Save image or catch it. 
+         * (1) Try to save image or catch it if something goes wrong.
          */
         if (saveImage) {
             try {
@@ -151,10 +152,10 @@ public class Voronoi extends JFrame {
         int x = px[n];
         int y = py[n];
 
-        while (x < Voronoi.size && y < Voronoi.size && I.getRGB(x, y) == rgb ) {
+        while (x < Voronoi.size-SHIFT_MARGIN&& y < Voronoi.size-SHIFT_MARGIN&& I.getRGB(x+2, y+2) == rgb ) {
             y++;
         };
-        if (x < Voronoi.size && y < Voronoi.size && I.getRGB(x, y) != rgb) {
+        if (x < Voronoi.size-SHIFT_MARGIN && y < Voronoi.size-SHIFT_MARGIN && I.getRGB(x+2, y+2) != rgb) {
             graph.addEdge(graph.getVertex(n), graph.getVertex(findVertex(I.getRGB(x, y))));
         }
 
@@ -165,10 +166,10 @@ public class Voronoi extends JFrame {
         int x = px[n];
         int y = py[n];
 
-        while (x < Voronoi.size && y < Voronoi.size && I.getRGB(x, y) == rgb) {
+        while (x < Voronoi.size-SHIFT_MARGIN && y < Voronoi.size-SHIFT_MARGIN && I.getRGB(x+2, y+2) == rgb) {
             y--;
         };
-        if (x < Voronoi.size && y < Voronoi.size && I.getRGB(x, y) != rgb) {
+        if (x < Voronoi.size-SHIFT_MARGIN && y < Voronoi.size-SHIFT_MARGIN && I.getRGB(x+2, y+2) != rgb) {
             graph.addEdge(graph.getVertex(n), graph.getVertex(findVertex(I.getRGB(x, y))));
         }
 
@@ -179,10 +180,10 @@ public class Voronoi extends JFrame {
         int x = px[n];
         int y = py[n];
 
-        while (x < Voronoi.size && y < Voronoi.size && I.getRGB(x, y) == rgb) {
+        while (x < Voronoi.size-SHIFT_MARGIN && y < Voronoi.size-SHIFT_MARGIN && I.getRGB(x+2, y+2) == rgb) {
             x--;
         };
-        if (x < Voronoi.size && y < Voronoi.size && I.getRGB(x, y) != rgb) {
+        if (x < Voronoi.size-SHIFT_MARGIN && y < Voronoi.size-SHIFT_MARGIN && I.getRGB(x+2, y+2) != rgb) {
             graph.addEdge(graph.getVertex(n), graph.getVertex(findVertex(I.getRGB(x, y))));
         }
 
@@ -194,10 +195,10 @@ public class Voronoi extends JFrame {
         int x = px[n];
         int y = py[n];
 
-        while (x < Voronoi.size && y < Voronoi.size && I.getRGB(x, y) == rgb) {
+        while (x < Voronoi.size-SHIFT_MARGIN && y < Voronoi.size-SHIFT_MARGIN && I.getRGB(x+2, y+2) == rgb) {
             x++;
         };
-        if (x < Voronoi.size && y < Voronoi.size && I.getRGB(x, y) != rgb) {
+        if (x < Voronoi.size-SHIFT_MARGIN && y < Voronoi.size-SHIFT_MARGIN && I.getRGB(x+2, y+2) != rgb) {
             graph.addEdge(graph.getVertex(n), graph.getVertex(findVertex(I.getRGB(x, y))));
         }
 
@@ -208,11 +209,11 @@ public class Voronoi extends JFrame {
         int x = px[n];
         int y = py[n];
 
-        while (x < Voronoi.size && y < Voronoi.size && I.getRGB(x, y) == rgb) {
+        while (x < Voronoi.size-SHIFT_MARGIN && y < Voronoi.size-SHIFT_MARGIN && I.getRGB(x+2, y+2) == rgb) {
             x--;
             y--;
         };
-        if (x < Voronoi.size && y < Voronoi.size && I.getRGB(x, y) != rgb) {
+        if (x < Voronoi.size-SHIFT_MARGIN && y < Voronoi.size-SHIFT_MARGIN && I.getRGB(x+2, y+2) != rgb) {
             graph.addEdge(graph.getVertex(n), graph.getVertex(findVertex(I.getRGB(x, y))));
         }
 
@@ -224,11 +225,11 @@ public class Voronoi extends JFrame {
         int x = px[n];
         int y = py[n];
 
-        while (x < Voronoi.size && y < Voronoi.size && I.getRGB(x, y) == rgb) {
+        while (x < Voronoi.size-SHIFT_MARGIN && y < Voronoi.size-SHIFT_MARGIN && I.getRGB(x+2, y+2) == rgb) {
             x--;
             y++;
         };
-        if (x < Voronoi.size && y < Voronoi.size && I.getRGB(x, y) != rgb) {
+        if (x < Voronoi.size-SHIFT_MARGIN && y < Voronoi.size-SHIFT_MARGIN && I.getRGB(x+2, y+2) != rgb) {
             graph.addEdge(graph.getVertex(n), graph.getVertex(findVertex(I.getRGB(x, y))));
         }
 
@@ -239,11 +240,11 @@ public class Voronoi extends JFrame {
         int x = px[n];
         int y = py[n];
 
-        while (x < Voronoi.size && y < Voronoi.size && I.getRGB(x, y) == rgb) {
+        while (x < Voronoi.size-SHIFT_MARGIN && y < Voronoi.size-SHIFT_MARGIN && I.getRGB(x+2, y+2) == rgb) {
             x++;
             y--;
         };
-        if (x < Voronoi.size && y < Voronoi.size && I.getRGB(x, y) != rgb) {
+        if (x < Voronoi.size-SHIFT_MARGIN && y < Voronoi.size-SHIFT_MARGIN && I.getRGB(x+2, y+2) != rgb) {
             graph.addEdge(graph.getVertex(n), graph.getVertex(findVertex(I.getRGB(x, y))));
         }
 
@@ -254,11 +255,11 @@ public class Voronoi extends JFrame {
         int x = px[n];
         int y = py[n];
 
-        while (x < Voronoi.size && y < Voronoi.size && I.getRGB(x, y) == rgb) {
+        while (x < Voronoi.size-SHIFT_MARGIN && y < Voronoi.size-SHIFT_MARGIN && I.getRGB(x+2, y+2) == rgb) {
             x++;
             y++;
         };
-        if (x < Voronoi.size && y < Voronoi.size && I.getRGB(x, y) != rgb) {
+        if (x < Voronoi.size-SHIFT_MARGIN && y < Voronoi.size-SHIFT_MARGIN && I.getRGB(x+2, y+2) != rgb) {
             graph.addEdge(graph.getVertex(n), graph.getVertex(findVertex(I.getRGB(x, y))));
         }
 
