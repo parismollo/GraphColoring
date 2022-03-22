@@ -31,10 +31,13 @@ public class Voronoi extends JFrame {
     static int color[], cells, size;
     static BufferedImage I; 
     static int SHIFT_MARGIN = 10;
+    static Graph graph;
+    static boolean euclidien;
 
     public Voronoi(int cells, boolean eucliedian, boolean saveImage, int screenRes) {
         Voronoi.cells = cells;
         Voronoi.size = screenRes;
+        Voronoi.euclidien = eucliedian;
 
         /**
          * (1) JFrame configurations. 
@@ -51,7 +54,7 @@ public class Voronoi extends JFrame {
         py = new int[cells];
         color = new int[cells];
 
-        Graph graph = new Graph("Random Voronoi");
+        Voronoi.graph = new Graph("Random Voronoi");
         
 
         int n = 0;
@@ -65,7 +68,7 @@ public class Voronoi extends JFrame {
             px[i] = rand.nextInt(size);
             py[i] = rand.nextInt(size);
             color[i] = rand.nextInt(16777215);
-            graph.addVertex(Integer.toString(i));
+            Voronoi.graph.addVertex(Integer.toString(i));
         }
 
         /**
@@ -104,8 +107,8 @@ public class Voronoi extends JFrame {
         }
 
 
-        Voronoi.findNeighbors(graph);
-        System.out.println(graph);
+        Voronoi.findNeighbors(Voronoi.graph);
+        System.out.println(Voronoi.graph);
 
     }
     public void paint(Graphics g) {
@@ -273,11 +276,27 @@ public class Voronoi extends JFrame {
         return z;
     }
 
+    static Graph getVoronoiGraph() {
+        return Voronoi.graph;
+    }
+
+    public static String info() {
+        String s ="";
+        s+="\nVoronoi Information\n";
+        s+="(1) Vertices: "+Voronoi.cells+"\n";
+        s+="(2) Distance: "+(Voronoi.euclidien ? "Euclidien\n" : "Manhatan\n");
+        s+="(3) Shift Margin: "+Voronoi.SHIFT_MARGIN+"\n";
+        s+="(4) Screen Resolution: ("+Voronoi.size+", "+Voronoi.size+")\n";
+        return s;
+    }
+
     public static void runVoronoi(int cells, boolean eucliedian, boolean saveImage, int screenRes) {
         new Voronoi(100, true, false, 300).setVisible(true);
+        System.out.println(Voronoi.info());
     }
 
     public static void main(String[] args) {
         new Voronoi(100, true, false, 1000).setVisible(true);
+        System.out.println(Voronoi.info());
     }
 }
