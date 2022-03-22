@@ -301,7 +301,10 @@ public class GraphPlayView extends JPanel {
         pan.setLayout(new GridBagLayout());
         pan.add(new MapView(this, name, false));
         pan.setOpaque(false);
-        this.add(pan, BorderLayout.CENTER);
+        
+        // On retire ça pour l'instant
+        // this.add(pan, BorderLayout.CENTER);
+        this.add(new MapView(this, name, false), BorderLayout.CENTER);
         if(isGraph) {
             isGraph = !isGraph;
             switchBut.setText(isGraph ? "See map" : "See graph");
