@@ -290,9 +290,10 @@ public class Voronoi extends JFrame {
         return s;
     }
 
-    public static void runVoronoi(int cells, boolean eucliedian, boolean saveImage, int screenRes) {
+    public static Graph runVoronoi(int cells, boolean eucliedian, boolean saveImage, int screenRes) {
         new Voronoi(100, true, false, 300).setVisible(true);
         System.out.println(Voronoi.info());
+        return Voronoi.graph;
     }
 
     public static void main(String[] args) {
