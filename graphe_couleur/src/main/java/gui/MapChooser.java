@@ -5,6 +5,8 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.GridLayout;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
@@ -50,31 +52,13 @@ public class MapChooser extends JPanel {
 
         previousBut.addMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent e) {
-                if(imageView.mapIndex > 0) {
-                    if(!nextBut.isEnabled())
-                        nextBut.setEnabled(true);
-                    imageView.mapIndex--;
-                    title.setText("Choose your map : "+getName(maps.get(imageView.getMapIndex())));
-                    if(imageView.mapIndex <= 0)
-                        previousBut.setEnabled(false);
-                }
-                imageView.revalidate();
-                imageView.repaint();
+                previousMap();
             }
         });
 
         nextBut.addMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent e) {
-                if(imageView.mapIndex < maps.size() - 1) {
-                    if(!previousBut.isEnabled())
-                        previousBut.setEnabled(true);
-                    imageView.mapIndex++;
-                    title.setText("Choose your map : "+getName(maps.get(imageView.getMapIndex())));
-                    if(imageView.mapIndex >= maps.size() - 1)
-                        nextBut.setEnabled(false);
-                }
-                imageView.revalidate();
-                imageView.repaint();
+                nextMap();
             }
         });
 
@@ -86,6 +70,20 @@ public class MapChooser extends JPanel {
                 getName(maps.get(imageView.mapIndex)), 
                 MapChooser.this.devMode
             );*/
+        });
+
+        this.addKeyListener(new KeyAdapter() {
+            public void keyPressed(KeyEvent e) {
+                super.keyPressed(e);
+                switch(e.getKeyCode()) {
+                    case KeyEvent.VK_LEFT:
+                        previousMap();
+                        break;
+                    case KeyEvent.VK_RIGHT:
+                        nextMap();
+                        break;
+                }
+            }
         });
 
         this.setLayout(new BorderLayout());
@@ -124,6 +122,33 @@ public class MapChooser extends JPanel {
 
         this.add(imageView, BorderLayout.CENTER);
 
+        this.requestFocus();
+    }
+
+    public void previousMap() {
+        if(imageView.mapIndex > 0) {
+            if(!nextBut.isEnabled())
+                nextBut.setEnabled(true);
+            imageView.mapIndex--;
+            title.setText("Choose your map : "+getName(maps.get(imageView.getMapIndex())));
+            if(imageView.mapIndex <= 0)
+                previousBut.setEnabled(false);
+        }
+        imageView.revalidate();
+        imageView.repaint();
+    }
+
+    public void nextMap() {
+        if(imageView.mapIndex < maps.size() - 1) {
+            if(!previousBut.isEnabled())
+                previousBut.setEnabled(true);
+            imageView.mapIndex++;
+            title.setText("Choose your map : "+getName(maps.get(imageView.getMapIndex())));
+            if(imageView.mapIndex >= maps.size() - 1)
+                nextBut.setEnabled(false);
+        }
+        imageView.revalidate();
+        imageView.repaint();
     }
 
     public static List<File> getAllMaps() {

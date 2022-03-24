@@ -148,6 +148,7 @@ public class GUI extends JFrame {
 		this.getContentPane().add(lastPanel);
 		revalidate();
 		repaint();
+		lastPanel.requestFocus(); // IMPORTANT pour faire fonctionner le keyboard listener
 	}
 
 	public void setLastPage() {
