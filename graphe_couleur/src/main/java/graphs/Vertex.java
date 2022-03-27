@@ -13,7 +13,7 @@ public class Vertex implements Serializable {
     private final int id;
     private Color color = Color.WHITE;
     private ArrayList<Vertex> vertices;
-    private String title; 
+    private String title;
     private Point position;
 
     public Vertex(ArrayList<Vertex> vertices) {
@@ -102,11 +102,11 @@ public class Vertex implements Serializable {
     }
 
     public int getX() {
-        return position.x;
+        return position == null ? -1 : position.x;
     }
 
     public int getY() {
-        return position.y;
+        return position == null ? -1 : position.y;
     }
 
     public String printPosition() {

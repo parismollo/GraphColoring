@@ -159,6 +159,8 @@ public class GUI extends JFrame {
 		this.getContentPane().add(lastPanel);
 		revalidate();
 		repaint();
+		if(lastPanel instanceof MapChooser)
+			lastPanel.requestFocus();
 	}
 
 	public void close() {

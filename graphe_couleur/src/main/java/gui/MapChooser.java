@@ -63,13 +63,7 @@ public class MapChooser extends JPanel {
         });
 
         selectBut.addActionListener(e -> {
-            //Color[] colors = {Color.BLUE,Color.RED,Color.GREEN, Color.YELLOW, Color.MAGENTA};
-            Color[] colors = {Color.BLUE,Color.RED,Color.GREEN, Color.YELLOW, Color.MAGENTA};
-            MapChooser.this.gui.setGraphViewPage(null, getName(maps.get(imageView.mapIndex)), "Kempe", colors, false);
-            /*MapChooser.this.gui.setMapPage(
-                getName(maps.get(imageView.mapIndex)), 
-                MapChooser.this.devMode
-            );*/
+            selectMap();
         });
 
         this.addKeyListener(new KeyAdapter() {
@@ -81,6 +75,9 @@ public class MapChooser extends JPanel {
                         break;
                     case KeyEvent.VK_RIGHT:
                         nextMap();
+                        break;
+                    case KeyEvent.VK_ENTER:
+                        selectMap();
                         break;
                 }
             }
@@ -123,6 +120,16 @@ public class MapChooser extends JPanel {
         this.add(imageView, BorderLayout.CENTER);
 
         this.requestFocus();
+    }
+
+    public void selectMap() {
+            //Color[] colors = {Color.BLUE,Color.RED,Color.GREEN, Color.YELLOW, Color.MAGENTA};
+            Color[] colors = {Color.BLUE,Color.RED,Color.GREEN, Color.YELLOW, Color.MAGENTA};
+            MapChooser.this.gui.setGraphViewPage(null, getName(maps.get(imageView.mapIndex)), "Kempe", colors, false);
+            /*MapChooser.this.gui.setMapPage(
+                getName(maps.get(imageView.mapIndex)), 
+                MapChooser.this.devMode
+            );*/
     }
 
     public void previousMap() {

@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.GridBagLayout;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
@@ -32,9 +33,13 @@ public class GraphPlayView extends JPanel {
     private ImageButton selectedDrawBut;
     private ImageButton moveBut, lineBut;
     private JButton switchBut, saveBut, openBut;
+    private JButton[] algosButtons;
     private JToolBar toolBar;
 
+    private MapView mapView;
     private GraphView graphView;
+
+    private Graph graph;
 
     private String name, algo;
     private int width, height;
@@ -71,6 +76,11 @@ public class GraphPlayView extends JPanel {
         this.height = height;
         this.colors = colors;
         this.isGraph = isGraph;
+        if(name != null) {
+            mapView = new MapView(this, name, false);
+            this.graph = mapView.getGraph();
+            graphView = new GraphView(this, graph, width, height);
+        }
         this.setLayout(new BorderLayout());
         setupToolBar(false);
         if(isGraph)
@@ -258,6 +268,7 @@ public class GraphPlayView extends JPanel {
                 }
 	        }
 	    });
+
         if(name != null) {
             toolBar.addSeparator();
             switchBut = new JButton(isGraph ? "See map" : "See graph");
@@ -269,6 +280,7 @@ public class GraphPlayView extends JPanel {
             });
             toolBar.add(switchBut);
         }
+
         if(devMode) {
             toolBar.addSeparator();
             saveBut = new JButton("Save");
@@ -289,22 +301,52 @@ public class GraphPlayView extends JPanel {
             toolBar.add(saveBut);
             toolBar.addSeparator();
             toolBar.add(openBut);
-            
         }
+
+        toolBar.addSeparator();
+        toolBar.addSeparator();
+
+        String[] butNames = {"Greedy", "Kempe", "WelshPowell", "Dsatur"};
+
+        algosButtons = new JButton[butNames.length];
+        for(int i=0;i<algosButtons.length;i++) {
+            algosButtons[i] = new JButton(butNames[i]);
+            algosButtons[i].addActionListener(algoListener(butNames[i]));
+            toolBar.add(algosButtons[i]);
+        }
+
         this.add(toolBar, BorderLayout.NORTH);
     }
 
+    public ActionListener algoListener(final String algo) {
+        return e-> {
+            if(graph != null) {
+                graph.applyAlgo(algo, colors);
+                if(mapView != null)
+                    mapView.refresh(graph);
+                if(graphView != null)
+                    graphView.repaint();
+                revalidate();
+                repaint();
+            }
+        };
+    }
+
     public void switchToMap() {
+        if(mapView == null)
+            this.mapView = new MapView(this, name, false);
+        else
+            this.mapView.refresh(graph);
         this.removeAll();
         this.add(toolBar, BorderLayout.NORTH);
         JPanel pan = new JPanel();
         pan.setLayout(new GridBagLayout());
-        pan.add(new MapView(this, name, false));
+        pan.add(mapView);
         pan.setOpaque(false);
         
         // On retire ça pour l'instant
         // this.add(pan, BorderLayout.CENTER);
-        this.add(new MapView(this, name, false), BorderLayout.CENTER);
+        this.add(mapView, BorderLayout.CENTER);
         if(isGraph) {
             isGraph = !isGraph;
             switchBut.setText(isGraph ? "See map" : "See graph");
@@ -314,7 +356,13 @@ public class GraphPlayView extends JPanel {
     }
 
     public void switchToGraph() {
-        this.graphView = new GraphView(this, name, algo, width, height, GraphPlayView.this.colors);
+        if(graphView == null) {
+            this.graphView = new GraphView(this, name, algo, width, height, GraphPlayView.this.colors);
+        }
+        else {
+            // refresh this.graphView
+        }
+
         this.removeAll();
         this.add(toolBar, BorderLayout.NORTH);
         this.add(graphView, BorderLayout.CENTER);

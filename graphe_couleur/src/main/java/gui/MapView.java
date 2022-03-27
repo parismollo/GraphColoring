@@ -9,6 +9,7 @@ import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.Stack;
 
@@ -64,9 +65,13 @@ public class MapView extends JPanel {
             public void mousePressed(MouseEvent e) {
                 super.mousePressed(e);
                 Color color = graphPlayView != null ? graphPlayView.getUserColor() : Color.RED;
+
                 colorImage3(e.getX(), e.getY(),
                     new boolean[image.getWidth()][image.getHeight()],
                     color);
+                
+                checkAndChangeVertex();
+
                 if(MapView.this.devMode) {
                     System.out.println(e.getPoint());
                     System.out.print("Indicate the name of this place : ");
@@ -86,6 +91,27 @@ public class MapView extends JPanel {
         if(graph == null)
             return;
 
+        refresh(graph);
+    }
+
+    public void checkAndChangeVertex() {
+        if(graph == null)
+            return;
+        Color pixel;
+        for(Vertex v : graph.getVertices()) {
+            if(v.getX() == -1 || v.getY() == -1)
+                continue;
+            pixel = new Color(image.getRGB(v.getX(), v.getY()));
+            if(!v.getColor().equals(pixel)) {
+                v.setColor(pixel);
+            }
+        }
+    }
+
+    public void refresh(Graph graph) {
+        if(graph == null)
+            return;
+        this.graph = graph;
         for(Vertex v : graph.getVertices()) {
             if(v.getPosition() != null) {
                 colorImage3(v.getX(), v.getY(),
@@ -93,9 +119,8 @@ public class MapView extends JPanel {
                     v.getColor() != null ? v.getColor() : Color.WHITE);
             }
         }
-        System.out.println(graph);
     }
-
+    
     private BufferedImage getImage(final String name){
         String[] ext = {"png", "jpeg", "jpg"};
         BufferedImage img = null;
@@ -234,6 +259,10 @@ public class MapView extends JPanel {
 
     public String getMapName() {
         return name;
+    }
+
+    public Graph getGraph() {
+        return graph;
     }
 
 }
