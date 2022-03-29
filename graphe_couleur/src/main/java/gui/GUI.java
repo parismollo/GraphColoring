@@ -10,6 +10,8 @@ import java.io.IOException;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import algorithms.Dsatur;
+import algorithms.Greedy;
 import algorithms.Kempe;
 import graphs.Graph;
 import utils.Converter;
@@ -55,11 +57,12 @@ public class GUI extends JFrame {
 		//setGraphViewPage("France", "Dsatur", colors);
 		//setGraphViewPage("France", "Greedy", colors);
 		//setGraphViewPage("France", "BestGreedy", colors);
-		setGraphViewPage("France", "Kempe", colors);
+		setGraphViewPage("France", "kempe", colors);
 		//testGreedyRandom();
 		//testGreedy();
 		//testBestGreedy();
 		//testKempeChain(colors);
+		//testKempeChainEchec(colors);
 
 		
 		// TEST GRAPH BEBOU
@@ -238,6 +241,27 @@ public class GUI extends JFrame {
 			e1.printStackTrace();
 		}	
 		Kempe.kempe(graph, colors);
+		System.out.println();
+		graph.print();
+		setGraphViewPage(graph);
+	}
+
+	public void testKempeChainEchec(Color[] colors){
+		Graph graph = null;
+		
+		
+		try {
+			//graph = Graph.load("src/resources/graphKempe.txt");
+			graph = Graph.load("src/resources/graphKempe.txt");
+		} catch (ClassNotFoundException e1) {
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}	
+		//Greedy.greedy(graph, colors);//Ca ne marche pas avec greedy (enfin ça ne fait pas d'echec) car greedy modifie les couleurs du graph partiellement coloré si besoin
+		//Dsatur.dsatur(graph, colors);
+		Kempe.kempe(graph, colors);
+		//Graph.resetColors(graph);
 		System.out.println();
 		graph.print();
 		setGraphViewPage(graph);

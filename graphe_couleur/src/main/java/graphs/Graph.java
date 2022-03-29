@@ -222,23 +222,34 @@ public class Graph implements Serializable {
         applyAlgo(algo, this, colors);
     }
 
+    public static void resetColors(Graph graph){
+        ArrayList<Vertex> vertices = graph.getVertices();
+        for(Vertex v : vertices)
+            v.setColor(Color.white);
+    }
+
     public static void applyAlgo(String algo, Graph graph, Color[] colors) {
         algo = algo.toUpperCase();
         //ArrayList<Vertex> vertices = graph.getVertices();
         switch(algo) {
             case "DSATUR":
+                resetColors(graph);         //Au lieu de faire ça on pourrait par exemple donner un booleen colored aux graph qui vaut true si ils ont au moins un vertex coloré. Pour ne pas appeler cette fonction à chaque fois.
                 Dsatur.dsatur(graph, colors);
                 break;
             case "WELSHPOWELL":
+                resetColors(graph);
                 WelshPowell.welshPowell(graph, colors);
                 break;
             case "GREEDY":
+                resetColors(graph);
                 Greedy.greedy(graph, colors);
                 break;
             case "BESTGREEDY":
+                resetColors(graph);
                 Greedy.bestGreedy(graph, colors);
                 break;
             case "KEMPE":
+                resetColors(graph);
                 Kempe.kempe(graph, colors);
                 break;
         }
