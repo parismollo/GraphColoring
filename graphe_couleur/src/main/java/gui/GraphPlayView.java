@@ -306,7 +306,7 @@ public class GraphPlayView extends JPanel {
         toolBar.addSeparator();
         toolBar.addSeparator();
 
-        String[] butNames = {"Greedy", "Kempe", "WelshPowell", "Dsatur"};
+        String[] butNames = {"Greedy", "Kempe", "WelshPowell", "BestGreedy", "Dsatur"};
 
         algosButtons = new JButton[butNames.length];
         for(int i=0;i<algosButtons.length;i++) {
@@ -339,13 +339,15 @@ public class GraphPlayView extends JPanel {
             this.mapView.refresh(graph);
         this.removeAll();
         this.add(toolBar, BorderLayout.NORTH);
-        JPanel pan = new JPanel();
+
+        // On retire ça pour l'instant
+        /*JPanel pan = new JPanel();
         pan.setLayout(new GridBagLayout());
         pan.add(mapView);
         pan.setOpaque(false);
         
-        // On retire ça pour l'instant
-        // this.add(pan, BorderLayout.CENTER);
+        
+        this.add(pan, BorderLayout.CENTER);*/
         this.add(mapView, BorderLayout.CENTER);
         if(isGraph) {
             isGraph = !isGraph;
