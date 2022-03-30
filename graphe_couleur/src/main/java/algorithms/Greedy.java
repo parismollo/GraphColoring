@@ -46,10 +46,19 @@ public class Greedy {
 
         ArrayList<Vertex> list = graph.getVertices();
         Color[] color_vertex = new Color[list.size()+1];
+        for(Vertex v : list){
+            Greedy.operations++;
+            color_vertex[v.getId()] = v.getColor();
+        }
+        Greedy.operations++;
+        color_vertex[list.size()] = Color.white;
+        /*Dans le cas où le graph donné est partiellement coloré on ne le reset plus a blanc au début de greedy 
+        //Rm : il sera neamoins reset a blanc si greedy echoue il me semble
+        //Rm : Greedy va modifier les couleurs du graph partiellement coloré si nécessaire ça peut être un problème
         for(int i=0;i<color_vertex.length;i++){
             Greedy.operations++;
             color_vertex[i] = Color.white;
-        }
+        }*/
         if(boolGraphColoringGreedy(0, colors, color_vertex, list)){
             for(Vertex v : list){
                 Greedy.operations++;
