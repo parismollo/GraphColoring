@@ -28,17 +28,17 @@ public class VertexView extends JPanel {
     // couleur selectionné par l'utilisateur pour colorier
     // les noeuds. Mais on peut également creer des noeuds sans graphView.
     public VertexView(GraphView graphView, Vertex vertex) {
-        this(vertex);
-        this.graphView = graphView;
-    }
-
-    public VertexView(GraphView graphView, Vertex vertex, boolean devMode) {
-        this(graphView, vertex);
-        this.devMode = devMode;
+        this(graphView, vertex, false);
     }
 
     public VertexView(Vertex v) {
+        this(null, v, false);
+    }
+
+    public VertexView(GraphView gView, Vertex v, boolean devMode) {
+        this.graphView = gView;
         this.vertex = v;
+        this.devMode = devMode;
 
         this.setOpaque(false);
         this.setSize(DEFAULT_SIZE, DEFAULT_SIZE);
@@ -85,11 +85,10 @@ public class VertexView extends JPanel {
             }
         });
         
-        /* J'attends avant de le mettre. Pour pouvoir bouger les vertices sur les cartes
-        Et peut etre trouver des bugs (comme sur la France ?)
+        /* On peut mettre en commentaire pour pouvoir redeplacer les vertices */
         if(!devMode)
             return;
-        */
+        
 
         this.addMouseMotionListener(new MouseMotionAdapter() {
             public void mouseDragged(MouseEvent e) {

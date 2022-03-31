@@ -9,7 +9,6 @@ import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.Stack;
 
@@ -31,6 +30,8 @@ public class MapView extends JPanel {
     public static Scanner sc;
     private boolean devMode;
 
+    //private Dimension scaledDim; // On enregistre avec setSize finalement
+
     public MapView(final String name) {
         this(name, false);
     }
@@ -51,9 +52,6 @@ public class MapView extends JPanel {
                 graph.applyAlgo(graphPlayView.getAlgo(), graphPlayView.getColors());
 
             this.image = getImage(name);
-            if(this.image != null) {
-                this.setPreferredSize(new Dimension(image.getWidth(), image.getHeight()));
-            }
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -65,8 +63,9 @@ public class MapView extends JPanel {
             public void mousePressed(MouseEvent e) {
                 super.mousePressed(e);
                 Color color = graphPlayView != null ? graphPlayView.getUserColor() : Color.RED;
-
-                colorImage3(e.getX(), e.getY(),
+                int x = getScaledX(e.getX()), y = getScaledY(e.getY());
+                
+                colorImage3(x, y,
                     new boolean[image.getWidth()][image.getHeight()],
                     color);
                 
@@ -240,21 +239,32 @@ public class MapView extends JPanel {
         super.paintComponent(g);
         if(image == null)
             return;
-        g.drawImage(image, 0, 0, image.getWidth(), image.getHeight(), null);
-        /*
-        int imgW = 3*image.getWidth()/5;
-        int imgH = 3*image.getHeight()/5;
-        int spaceX = getWidth() - imgW;
-        spaceX /= 2;
-        int spaceY = getHeight() - imgH;
-        spaceY /= 2;
-        g.drawImage(image, spaceX, spaceY, imgW, imgH, null);
-        */
-        //System.out.println(getSize());
+        if(devMode) {
+            g.drawImage(image, 0, 0, image.getWidth(), image.getHeight(), null);
+            return;
+        }
+        this.setSize(getScaledMapDim());
+        g.drawImage(image, 0, 0, getWidth(), getHeight(), null);
+    }
+
+    private Dimension getScaledMapDim() {
+        return MapChooser.resize(image, getSize());
+    }
+
+    public Dimension getScaledMapDim(Dimension size) {
+        return MapChooser.resize(image, size);
     }
 
     public Dimension getMapDim() {
         return new Dimension(image.getWidth(), image.getHeight());
+    }
+
+    public int getScaledX(int x) {
+        return (x * image.getWidth()) / getWidth();
+    }
+
+    public int getScaledY(int y) {
+        return (y * image.getHeight()) / getHeight();
     }
 
     public String getMapName() {

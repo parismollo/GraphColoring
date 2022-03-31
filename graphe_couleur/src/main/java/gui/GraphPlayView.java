@@ -446,4 +446,8 @@ public class GraphPlayView extends JPanel {
         return toolBar;
     }
 
+    public MapView getMapView() {
+        return mapView;
+    }
+
 }

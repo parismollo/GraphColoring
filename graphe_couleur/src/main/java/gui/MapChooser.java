@@ -123,7 +123,6 @@ public class MapChooser extends JPanel {
     }
 
     public void selectMap() {
-            //Color[] colors = {Color.BLUE,Color.RED,Color.GREEN, Color.YELLOW, Color.MAGENTA};
             Color[] colors = {Color.BLUE,Color.RED,Color.GREEN, Color.YELLOW, Color.MAGENTA};
             MapChooser.this.gui.setGraphViewPage(null, getName(maps.get(imageView.mapIndex)), "Kempe", colors, false);
             /*MapChooser.this.gui.setMapPage(
@@ -181,6 +180,32 @@ public class MapChooser extends JPanel {
         return name.equals("jpg") || name.equals("jpeg");
     }
     
+    public static Dimension resize(BufferedImage pic, Dimension maxDim) {
+        return resize(pic, (int)maxDim.getWidth(), (int)maxDim.getHeight());
+    }
+
+    public static Dimension resize(BufferedImage pic, int w_max, int h_max) {
+        if(pic == null)
+            return null;
+        int w, h;
+        if(pic.getWidth(null) > w_max)
+            w = w_max;
+        else
+            w = pic.getWidth(null);
+        
+        h = pic.getHeight(null);
+        float coeff = (float)w / (float)pic.getWidth();
+        h *= coeff;
+        
+        if(h > h_max) {
+            coeff = (float)h_max / (float)h;
+            h = h_max;
+            w *= coeff;
+        }
+
+        return new Dimension(w, h);
+    }
+
     public class ImageView extends JPanel {
         private static final long serialVersionUID = 1L;
         
@@ -203,7 +228,7 @@ public class MapChooser extends JPanel {
         public void drawImg(BufferedImage img, Graphics g) {
 			if(img == null)
                 return;
-            Dimension dim = resize(img, getWidth(), getHeight());
+            Dimension dim = MapChooser.resize(img, getWidth(), getHeight());
 
 			g.drawImage(img, (this.getWidth()/2)-((int)dim.getWidth()/2), 
 				(this.getHeight()/2)-((int)dim.getHeight()/2), 
@@ -218,26 +243,6 @@ public class MapChooser extends JPanel {
                 } catch (IOException e) {e.printStackTrace();}
             }
             return images;
-        }
-
-        public Dimension resize(BufferedImage pic, int w_max, int h_max) {
-            int w, h;
-            if(pic.getWidth(null) > w_max)
-                w = w_max;
-            else
-                w = pic.getWidth(null);
-            
-            h = pic.getHeight(null);
-            float coeff = (float)w / (float)pic.getWidth();
-            h *= coeff;
-            
-            if(h > h_max) {
-                coeff = (float)h_max / (float)h;
-                h = h_max;
-                w *= coeff;
-            }
-
-            return new Dimension(w, h);
         }
 
         public int getMapIndex() {

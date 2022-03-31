@@ -162,9 +162,27 @@ public class GraphView extends JPanel {
         return null;
     }
 
+    public void refreshVerticesViewLocations(MapView map) {
+        Dimension scaled = map.getScaledMapDim(getSize());
+        Dimension mapDim = map.getMapDim();
+        for(VertexView vView : verticesView) {
+            if(vView.getVertex() == null || vView.getVertex().getX() == -1)
+                continue;
+            int x = (vView.getVertex().getX() * (int)scaled.getWidth()) / (int)mapDim.getWidth();
+            int y = (vView.getVertex().getY() * (int)scaled.getHeight()) / (int)mapDim.getHeight();
+            vView.setLocation(x, y);
+        }
+    }
+
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
+        if(graphPlayView != null) {
+            MapView map = graphPlayView.getMapView();
+            if(map != null) {
+                refreshVerticesViewLocations(map);
+            }
+        }
         // On change la taille des arretes.
         Graphics2D g2d = (Graphics2D)g;
 

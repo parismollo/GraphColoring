@@ -21,7 +21,7 @@ public class App {
         // POUR TESTER LE MAPCHOOSER :
         // true -> developper mode,
         // false -> on dessine juste pour tester
-        //gui.setMapChooser(false);
+        // gui.setMapChooser(false);
         //////////////////////////////
         
     }
