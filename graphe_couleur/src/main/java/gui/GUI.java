@@ -57,7 +57,7 @@ public class GUI extends JFrame {
 		//setGraphViewPage("France", "Dsatur", colors);
 		//setGraphViewPage("France", "Greedy", colors);
 		//setGraphViewPage("France", "BestGreedy", colors);
-		setGraphViewPage("France", "kempe", colors);
+		//setGraphViewPage("France", "kempe", colors);
 		//testGreedyRandom();
 		//testGreedy();
 		//testBestGreedy();
@@ -259,8 +259,7 @@ public class GUI extends JFrame {
 			e1.printStackTrace();
 		}	
 		//Greedy.greedy(graph, colors);//Ca ne marche pas avec greedy (enfin ça ne fait pas d'echec) car greedy modifie les couleurs du graph partiellement coloré si besoin
-		//Dsatur.dsatur(graph, colors);
-		Kempe.kempe(graph, colors);
+		Dsatur.dsatur(graph, colors);
 		//Graph.resetColors(graph);
 		System.out.println();
 		graph.print();

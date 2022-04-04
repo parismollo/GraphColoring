@@ -18,14 +18,15 @@ public class Greedy {
         if(id == list.size()){
             return true;
         }
+        Vertex v = list.get(id);
         for(int c=0;c<nb.length;c++){
-            if(!containsColor(list.get(id).getVertices(), nb[c], color_vertex)){
-                color_vertex[list.get(id).getId()] = nb[c];//dans le cas où les vertex ne serait pas numérotés dans l'ordre d'id dans la list
+            if(!containsColor(v.getVertices(), nb[c], color_vertex)){
+                color_vertex[v.getId()] = nb[c];//dans le cas où les vertex ne serait pas numérotés dans l'ordre d'id dans la list
                 Greedy.operations++;
                 if(boolGraphColoringGreedy(id+1, nb, color_vertex, list)){
                     return true;
                 }
-                color_vertex[list.get(id).getId()] = Color.white;
+                color_vertex[v.getId()] = Color.white;
                 Greedy.operations++;
             
             }
@@ -33,8 +34,8 @@ public class Greedy {
         return false;
     }
     public static boolean containsColor(ArrayList<Vertex> vertices , Color c, Color[] color_vertex){
-        for(int i = 0 ; i < vertices.size();i++){
-            if(color_vertex[vertices.get(i).getId()].equals(c)){
+        for(Vertex v : vertices){
+            if(color_vertex[v.getId()].equals(c)){
                 Greedy.operations++;
                 return true;
             }
@@ -73,16 +74,21 @@ public class Greedy {
     }
 
     public static void bestGreedy(Graph graph, Color[] colors){
-		Color[] memo = new Color[graph.getVertices().size()+1];
-		for(int i=0;i<memo.length;i++){
+        ArrayList<Vertex> vertices = graph.getVertices();
+		Color[] memo = new Color[vertices.size()+1];
+        for(Vertex v : vertices){
+            memo[v.getId()] = v.getColor();
+        }
+        memo[vertices.size()] = Color.white;
+		/*for(int i=0;i<memo.length;i++){
 			memo[i] = Color.white;
-		}
+		}*/
 		Map<Color[],Integer> test = new HashMap<>();
 		test.put(colors,colors.length);
-        algorithms.Greedy.bestGraphColoringGreedy(0, colors, memo, graph.getVertices(), test);
+        bestGraphColoringGreedy(0, colors, memo, vertices, test);
 		Color[] fnl = new Color[memo.length];
 		fnl = test.entrySet().iterator().next().getKey();
-		for(int i=1;i<=graph.getVertices().size();i++){
+		for(int i=1;i<=vertices.size();i++){
 			graph.getVertex(i).setColor(fnl[i]);
 		}
     }
@@ -107,11 +113,12 @@ public class Greedy {
             }
             return;
         }
+        Vertex v = list.get(id);
         for(int c=0;c<nb.length;c++){
-            if(!containsColor(list.get(id).getVertices(), nb[c], color_vertex)){
-                color_vertex[list.get(id).getId()] = nb[c];
+            if(!containsColor(v.getVertices(), nb[c], color_vertex)){
+                color_vertex[v.getId()] = nb[c];
                 bestGraphColoringGreedy(id+1, nb, color_vertex, list, best_option);
-                color_vertex[list.get(id).getId()] = Color.white;
+                color_vertex[v.getId()] = Color.white;
             }
         }
     }

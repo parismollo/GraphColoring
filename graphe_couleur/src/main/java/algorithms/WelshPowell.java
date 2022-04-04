@@ -39,10 +39,10 @@ public class WelshPowell {
         while(iterator != colors.length) {
             WelshPowell.operations++;
             Color current = colors[iterator];
-            for(int i = 0 ; i < temp.size();i++){
+            for(Vertex v : temp){
                 WelshPowell.operations++;
-                if(temp.get(i).getColor().equals(Color.WHITE) && containsColor(temp.get(i).getVertices(), current) == false){
-                    temp.get(i).setColor(current);
+                if(v.getColor().equals(Color.WHITE) && containsColor(v.getVertices(), current) == false){
+                    v.setColor(current);
                 }
             }
             iterator++;
@@ -56,9 +56,9 @@ public class WelshPowell {
     }
 
     public static boolean containsColor(ArrayList<Vertex> vertices , Color c){
-        for(int i = 0 ; i < vertices.size();i++){
+        for(Vertex v : vertices){
             WelshPowell.operations++;
-            if(vertices.get(i).getColor().equals(c)){
+            if(v.getColor().equals(c)){
                 return true;
             }
         }

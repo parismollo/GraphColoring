@@ -16,7 +16,7 @@ public class Kempe {
         if(vertices.isEmpty())
             return;
         Color c1 = vertices.get(0).getColor();
-        ArrayList<Vertex> vertices2 = vertices.get(0).getVertices(); //probleme
+        ArrayList<Vertex> vertices2 = vertices.get(0).getVertices();
         Color c2 = Color.white;
         if(vertices2.isEmpty())
             return;
@@ -143,6 +143,7 @@ public class Kempe {
                     colored = true;
                     break;
                 }
+                
             }
         } else 
             colored = true;
@@ -161,9 +162,9 @@ public class Kempe {
     }
 
     public static boolean containsColor(ArrayList<Vertex> vertices , Color c){
-        for(int i = 0 ; i < vertices.size();i++){
+        for(Vertex v : vertices){
             Kempe.operations++;
-            if(vertices.get(i).getColor().equals(c)){
+            if(v.getColor().equals(c)){
                 return true;
             }
         }

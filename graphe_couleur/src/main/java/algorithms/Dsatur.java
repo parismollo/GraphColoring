@@ -33,10 +33,10 @@ public class Dsatur {
         ArrayList<Vertex> temp = new ArrayList<Vertex>();
         temp = selectionSort(list);
         //Color tab [] = {Color.BLUE,Color.RED,Color.GREEN,Color.YELLOW};
-        for (int i = 0; i < temp.size(); i++) {
+        for (Vertex v : temp) {
             for (int j = 0; j < colors.length; j++) {
-                if(temp.get(i).getColor().equals(Color.WHITE) && containsColor(temp.get(i).getVertices(), colors[j]) == false){
-                    temp.get(i).setColor(colors[j]);
+                if(v.getColor().equals(Color.WHITE) && containsColor(v.getVertices(), colors[j]) == false){
+                    v.setColor(colors[j]);
                     Dsatur.operations++;                  
                 }
             }
@@ -52,8 +52,8 @@ public class Dsatur {
     }
 
     public static boolean containsColor(ArrayList<Vertex> vertices , Color c){
-        for(int i = 0 ; i < vertices.size();i++){
-            if(vertices.get(i).getColor().equals(c)){
+        for(Vertex v : vertices){
+            if(v.getColor().equals(c)){
                 Dsatur.operations++;
                 return true;
             }
