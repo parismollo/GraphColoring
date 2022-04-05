@@ -163,8 +163,10 @@ public class GraphView extends JPanel {
     }
 
     public void refreshVerticesViewLocations(MapView map) {
+        int vertexSize = getVertexViewSize();
         Dimension scaled = map.getScaledMapDim(getSize());
         Dimension mapDim = map.getMapDim();
+        mapDim = new Dimension((int)mapDim.getWidth()+vertexSize, (int)mapDim.getHeight()+vertexSize);
         for(VertexView vView : verticesView) {
             if(vView.getVertex() == null || vView.getVertex().getX() == -1)
                 continue;
@@ -280,6 +282,14 @@ public class GraphView extends JPanel {
 
     public ArrayList<VertexView> getVerticesView() {
         return verticesView;
+    }
+
+    public int getVertexViewSize() {
+        try {
+            return (int)verticesView.get(0).getSize().getWidth();
+        } catch(Exception e) {
+            return 0;
+        }
     }
 
 }
