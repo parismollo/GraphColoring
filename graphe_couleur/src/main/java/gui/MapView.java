@@ -50,8 +50,19 @@ public class MapView extends JPanel {
             this.graph = Converter.mapToGraph(RESOURCES_FOLDER+name+".csv");
             if(graphPlayView != null && graphPlayView.getAlgo() != null && graphPlayView.getColors() != null)
                 graph.applyAlgo(graphPlayView.getAlgo(), graphPlayView.getColors());
-
             this.image = getImage(name);
+
+            if(devMode) {
+                System.out.println("\n[LOG]: Regions in blue have coordinates set already.\n");
+                for (Vertex v : this.graph.getVertices()) {
+                    if(v.getX() != -1 && v.getY() != -1) {
+                        colorImage3(v.getX(), v.getY(),
+                        new boolean[this.image.getWidth()][this.image.getHeight()],
+                        Color.BLUE);
+                    }
+                }
+                checkAndChangeVertex();
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
