@@ -34,7 +34,7 @@ public class Complexity {
          */
 
          for(int i=0; i<iterations; i++) {
-            Complexity.g = Voronoi.runVoronoi(VoronoiDensity, eucliedian, false, 500);
+            Complexity.g = Voronoi.runVoronoi(VoronoiDensity, eucliedian, false, 500, true);
             Complexity.inputSize = VoronoiDensity;
             gui.setGraphViewPage(g);
 
@@ -66,6 +66,6 @@ public class Complexity {
     }
 
     public static void main(String[] args) {
-        Complexity.runComplexity(1, 10, false);
+        Complexity.runComplexity(10, 10, false);
     }
 }

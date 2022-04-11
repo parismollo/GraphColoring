@@ -15,6 +15,7 @@ import algorithms.Greedy;
 import algorithms.Kempe;
 import graphs.Graph;
 import utils.Converter;
+import utils.Voronoi;
 
 public class GUI extends JFrame {
 	private static final long serialVersionUID = 1L;
@@ -100,7 +101,8 @@ public class GUI extends JFrame {
 	}
 
 	public void setRandomGraphView(int edges) {
-		setGraphViewPage(Graph.randomGraph(edges));
+		Graph g = Voronoi.runVoronoi(edges, false, false, 500, false);
+		setGraphViewPage(g);
 	}
 
 	public void setCreatorPage() {

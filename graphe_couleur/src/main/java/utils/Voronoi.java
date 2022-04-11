@@ -344,14 +344,16 @@ public class Voronoi extends JFrame {
         return s;
     }
 
-    public static Graph runVoronoi(int cells, boolean eucliedian, boolean saveImage, int screenRes) {
-        new Voronoi(cells, eucliedian, saveImage, screenRes).setVisible(true);
+    public static Graph runVoronoi(int cells, boolean eucliedian, boolean saveImage, int screenRes, boolean displayVoronoi) {
+        new Voronoi(cells, eucliedian, saveImage, screenRes).setVisible(displayVoronoi);
         // System.out.println(Voronoi.info());
         return Voronoi.graph;
     }
 
     public static void main(String[] args) {
-        new Voronoi(20, false, false, 500).setVisible(true);
+        // new Voronoi(20, false, false, 500).setVisible(true);
         // System.out.println(Voronoi.info());
+        Graph g = runVoronoi(20, false, false, 500, false);
+        System.out.println(g.toString());
     }
 }
