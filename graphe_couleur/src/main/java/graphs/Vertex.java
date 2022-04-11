@@ -15,6 +15,7 @@ public class Vertex implements Serializable {
     private ArrayList<Vertex> vertices;
     private String title;
     private Point position;
+    private ArrayList<Point> outsidePositions = new ArrayList<>();
 
     public Vertex(ArrayList<Vertex> vertices) {
         this.id = counter++;
@@ -69,6 +70,13 @@ public class Vertex implements Serializable {
         for(Vertex v : vertices)
             str += v.getTitle()+" ";
         str+="}";
+        if(this.outsidePositions.size() > 0) {
+            str+= " Outside Coordinates: ";
+            for (Point point : outsidePositions) {
+                str+="["+point.x+";"+point.y+"]";
+            }
+        }
+        
         return str;
     }
 
@@ -97,6 +105,18 @@ public class Vertex implements Serializable {
         this.position = p;
     }
 
+    public void setOutsidePosition(int x, int y) {
+        this.outsidePositions.add(new Point(x, y));
+    }
+
+    public void setOutsidePosition(Point p) {
+        this.outsidePositions.add(p);
+    }
+
+    public ArrayList<Point> getOutsidePositions() {
+        return this.outsidePositions;
+    }
+
     public Point getPosition() {
         return position;
     }
@@ -112,6 +132,19 @@ public class Vertex implements Serializable {
     public String printPosition() {
         if (this.position != null) {
             return "["+this.getX()+";"+this.getY()+"]";
+        }
+        return "[?; ?]";
+    }
+
+    public String printOutsidePositions() {
+        String s = "";
+        if (this.outsidePositions.size() > 0) {
+            s += "[";
+            for (Point p : this.outsidePositions) {
+                s+=" ["+p.getX()+";"+p.getY()+"] ";
+            }
+            s+= "]";
+            return s;
         }
         return "[?; ?]";
     }

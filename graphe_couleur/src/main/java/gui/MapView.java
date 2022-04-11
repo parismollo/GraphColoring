@@ -29,6 +29,7 @@ public class MapView extends JPanel {
     private BufferedImage image;
     public static Scanner sc;
     private boolean devMode;
+    // private boolean otherPos;
 
     //private Dimension scaledDim; // On enregistre avec setSize finalement
 
@@ -59,6 +60,12 @@ public class MapView extends JPanel {
                         colorImage3(v.getX(), v.getY(),
                         new boolean[this.image.getWidth()][this.image.getHeight()],
                         Color.BLUE);
+
+                        for (Point p : v.getOutsidePositions()) {
+                            colorImage3(p.x, p.y,
+                                new boolean[this.image.getWidth()][this.image.getHeight()],
+                                Color.BLUE);
+                        }
                     }
                 }
                 checkAndChangeVertex();
@@ -66,28 +73,41 @@ public class MapView extends JPanel {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
+       
         if(sc == null && devMode)
             sc = new Scanner(System.in);
-
+        
         this.addMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent e) {
+
                 super.mousePressed(e);
                 Color color = graphPlayView != null ? graphPlayView.getUserColor() : Color.RED;
                 int x = getScaledX(e.getX()), y = getScaledY(e.getY());
-                
-                colorImage3(x, y,
-                    new boolean[image.getWidth()][image.getHeight()],
-                    color);
-                
+                // System.out.println("[LOG]: "+getSize()+" "+image.getWidth()+" "+image.getHeight());
+                colorImage3(x, y, new boolean[image.getWidth()][image.getHeight()], color);
                 checkAndChangeVertex();
 
                 if(MapView.this.devMode) {
-                    System.out.println(e.getPoint());
+                    
+                    // System.out.println(e.getPoint());
                     System.out.print("Indicate the name of this place : ");
+
                     try {
-                        Vertex v = MapView.this.graph.getVertex(sc.nextLine());
-                        v.setPosition(e.getPoint());
+                        
+                        String region  = sc.nextLine();
+                        System.out.println("Name inserted: "+region);
+                        Vertex v = MapView.this.graph.getVertex(region);
+                        boolean otherPos = askQuestion();
+
+                        if(otherPos) {
+                            System.out.println("[LOG]: Adding aditional position for "+region);
+                            v.setOutsidePosition(e.getPoint());
+                            System.out.println("[LOG]: otherpos: "+v.getOutsidePositions());
+                        
+                        }else {
+                            System.out.println("[LOG]: Adding position for "+region);
+                            v.setPosition(e.getPoint());
+                        }
                         System.out.println();
                         Converter.writeCoordinates(v, RESOURCES_FOLDER+name+".csv");
                     } catch (Exception e1) {
@@ -102,6 +122,12 @@ public class MapView extends JPanel {
             return;
 
         refresh(graph);
+    }
+
+    private boolean askQuestion() {
+        System.out.println("[LOG]: Would you like to append a position to an existant Vertex? [y/n] ");
+        String selected = sc.nextLine().toUpperCase();
+        return selected.equals("Y");
     }
 
     public void checkAndChangeVertex() {
@@ -127,6 +153,11 @@ public class MapView extends JPanel {
                 colorImage3(v.getX(), v.getY(),
                     new boolean[image.getWidth()][image.getHeight()],
                     v.getColor() != null ? v.getColor() : Color.WHITE);
+                for (Point p : v.getOutsidePositions()) {
+                    colorImage3(p.x, p.y,
+                        new boolean[this.image.getWidth()][this.image.getHeight()],
+                        v.getColor());
+                }
             }
         }
     }
@@ -250,11 +281,10 @@ public class MapView extends JPanel {
         super.paintComponent(g);
         if(image == null)
             return;
-        if(devMode) {
-            g.drawImage(image, 0, 0, image.getWidth(), image.getHeight(), null);
-            return;
-        }
-        this.setSize(getScaledMapDim());
+        if(devMode)
+            this.setSize(new Dimension(image.getWidth(), image.getHeight()));
+        else
+            this.setSize(getScaledMapDim());
         g.drawImage(image, 0, 0, getWidth(), getHeight(), null);
     }
 

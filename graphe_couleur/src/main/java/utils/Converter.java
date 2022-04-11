@@ -1,5 +1,6 @@
 package utils;
 
+import java.awt.Point;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -39,10 +40,19 @@ public class Converter {
             if(v == null) {
                 v = graph.addVertex(main);
             }
-            if(vertices.length == 3) {
+            if(vertices.length >= 3) {
                 String[] points = vertices[2].split(",");
                 points = new String[] {getNumber(points[0]), getNumber(points[1])};
                 v.setPosition(Integer.parseInt(points[0]), Integer.parseInt(points[1]));
+                // Set here the otherPositions for vertex v.See comments on  writecoordinates().
+                if(vertices.length > 3) {
+                    String[] points2 = vertices[3].split(";");
+                    for (String string : points2) {
+                        String[] newPos = string.split(",");
+                        int a = Integer.parseInt(getNumber(newPos[0])), b = Integer.parseInt(getNumber(newPos[1]));
+                        v.setOutsidePosition(a, b);
+                    }
+                }
             }
 
             for(String s : borders) {
@@ -141,10 +151,36 @@ public class Converter {
             String[] split = line.split(",\"");
             if(split != null && split[0].equals(v.getTitle())) {
                 String main = split[0].strip()+",";
+                // System.out.println(main);
                 main += "\""+split[1].strip();
+                // System.out.println(main);
                 main = main.substring(0, main.lastIndexOf("\"")+1)+",";
-                main += "\""+v.getX()+","+v.getY()+"\"";
+                // System.out.println(main);
+
+                // BUG: we might have an issue here in case the person tries to insert additional pos without the main one.
+                // Therefore, possible best solution: if person insert pos without main one, force it to be a main one.
+                // So, the len of a line in the csv will always be either 2, 3 or 4 separeted by commas and all parts with information.
+                // e.g RegionA, "RegionB, RegionC", "255, 255", "545,545;"
+
+                if(v.getX() != -1 && v.getY() != 1) {
+                    main += "\""+v.getX()+","+v.getY()+"\"";
+                }
+                if(v.getOutsidePositions().size()>0) {
+                    main += ",\"";
+                    int counter = 0;
+                    for (Point p : v.getOutsidePositions()) {
+                        counter++;
+                        if (counter < v.getOutsidePositions().size()) {
+                            main +=(int)p.x+","+(int)p.y+";";
+                        }else {
+                            main +=(int)p.x+","+(int)p.y+"";
+                        }
+                    }
+                    main+="\"";
+                }
+                // System.out.println(main);
                 newStr += main+"\n";
+                // System.out.println(newStr);
                 System.out.println("Vertex: "+v.getTitle()+" updated.");
             }
             else {
@@ -161,6 +197,17 @@ public class Converter {
         return Optional.ofNullable(filename)
           .filter(f -> f.contains("."))
           .map(f -> f.substring(filename.lastIndexOf(".") + 1));
+    }
+
+    public static void main(String[] args){
+        try {
+            Graph g = Converter.mapToGraph("src/resources/USA.csv");
+            System.out.println(g.toString());
+            
+        } catch (FileNotFoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
 
 }
