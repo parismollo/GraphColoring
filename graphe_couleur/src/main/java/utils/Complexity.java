@@ -9,7 +9,6 @@ import gui.GUI;
 
 import java.awt.Color;
 import java.util.ArrayList;
-import java.util.Arrays;
 public class Complexity {
 
         /**
@@ -31,8 +30,8 @@ public class Complexity {
     public static ArrayList<Integer> numberOfColorsAvg = new ArrayList<Integer>();
 
 
-    public static int a = 0;
-    public static int b = 0;
+    // public static int a = 0;
+    // public static int b = 0;
 
 
     public static ArrayList<Graph> generateRandomGraphs(int number, int density, boolean euclidian) {
@@ -40,12 +39,18 @@ public class Complexity {
         Complexity.inputSize = density;
 
         for(int i=0; i<number; i++) {
-            graphs.add(Voronoi.runVoronoi(density, euclidian, false, 500, false));
+            graphs.add(Voronoi.runVoronoi(density, euclidian, false, 500, true));
         }
         return graphs;
     }
 
-    public static void computePerfomance(ArrayList<Graph> graphs, String algo) {
+    public static void computePerfomance(Graph graph, String algo) {
+        ArrayList<Graph> g = new ArrayList<Graph>();
+        g.add(graph);
+        computePerfomance(g, algo);
+    }
+
+    public static String[] computePerfomance(ArrayList<Graph> graphs, String algo) {
         algo = algo.toUpperCase();
         switch (algo) {
             case "DSATUR":
@@ -80,7 +85,7 @@ public class Complexity {
                 System.out.println("[LOG]: Please select a valid algorithm: [Welsh, Dsatur, Greedy, Kempe");
                 break;
         }
-        infoAvg(algo);   
+        return infoAvg(algo);   
     }
 
     private static void updateStats(Graph graph) {
@@ -90,50 +95,7 @@ public class Complexity {
         numberOfColorsAvg.add(numberOfColors);
     }
 
-
-
-    public static void runComplexity(int iterations, int VoronoiDensity, boolean eucliedian) {
-        
-        GUI gui = new GUI(500, 500);
-        /**
-         * For each Voronoi iteration run each algorithm and ouput perfomance.
-         */
-
-         for(int i=0; i<iterations; i++) {
-            Complexity.g = Voronoi.runVoronoi(VoronoiDensity, eucliedian, false, 500, false);
-            Complexity.inputSize = VoronoiDensity;
-            gui.setGraphViewPage(g);
-      
-            Dsatur.dsatur(g, colors); 
-            numberOfColors = g.numberOfColors();
-            Complexity.info("Dsatur");
-         
-
-            Greedy.greedy(g, colors);
-            numberOfColors = g.numberOfColors();
-            Complexity.info("Greedy");
-
-            WelshPowell.welshPowell(g, colors);
-            numberOfColors = g.numberOfColors();
-            Complexity.info("WelshPowell");
-
-            Kempe.kempe(g, colors);
-            numberOfColors = g.numberOfColors();
-            Complexity.info("Kempe");
-
-         }
-    }
-
-    public static void info(String title) {
-        System.out.println("\n--------------------------------------------------------");
-        System.out.println("Complexity Analysis of ["+title+"]\n");
-        System.out.println("Size of input (n° of vertices): "+Complexity.inputSize+" vertices\n");
-        System.out.println("Time Complexity: "+Complexity.timeCommplexity+" operations\n");
-        System.out.println("Runtime: "+Complexity.runTime+" nanoseconds \n");
-        System.out.println("Number of Colors: "+Complexity.numberOfColors);
-    }
-
-    public static void infoAvg(String title) {
+    public static String[] infoAvg(String title) {
         int sumTime = 0;
         for(int time : timeComplexityAvg) {
             sumTime+=time;
@@ -148,21 +110,76 @@ public class Complexity {
         for(int color : numberOfColorsAvg) {
             numberOfColors+=color;
         }
-    
+
+        int operations = (sumTime/timeComplexityAvg.size());
+        int runtime = (sumRunTime/runTimeAvg.size());
+        int colors = (numberOfColors/numberOfColorsAvg.size());
+
         System.out.println("\n--------------------------------------------------------");
         System.out.println("Complexity Analysis of ["+title+"]\n");
         System.out.println("Size of input (n° of vertices): "+Complexity.inputSize+" vertices\n");
-        System.out.println("Time Complexity: "+(sumTime/timeComplexityAvg.size())+" operations\n");
-        System.out.println("Runtime: "+(sumRunTime/runTimeAvg.size())+" nanoseconds \n");
-        System.out.println("Number of Colors: "+(numberOfColors/numberOfColorsAvg.size()));
+        System.out.println("Time Complexity: "+operations+" operations\n");
+        System.out.println("Runtime: "+runtime+" nanoseconds \n");
+        System.out.println("Number of Colors: "+colors);
+
+        // Algo, input size, operations, runtime, colors
+
+
+        String[] res = {title, Integer.toString(Complexity.inputSize), Integer.toString(operations), Integer.toString(runtime), Integer.toString(colors)};
+        return res;
     }
 
     public static void main(String[] args) {
-        // Complexity.runComplexity(10, 10, false);
-        ArrayList<Graph> graphs = generateRandomGraphs(10, 50, false);
+        coloringSimulation(10, 20, false);
+    }
+
+    private static void coloringSimulation(int iterations, int density, boolean euclidian) {
+        ArrayList<Graph> graphs = Complexity.generateRandomGraphs(iterations, density, euclidian);
         Complexity.computePerfomance(graphs, "dsatur");
         try { Complexity.computePerfomance(graphs, "kempe");} catch(Exception e) {System.out.println("\n[LOG]: Kempe Failed.");}
         Complexity.computePerfomance(graphs, "greedy");
         Complexity.computePerfomance(graphs, "welsh");
     }
+/*
+    public static void runComplexity(int iterations, int VoronoiDensity, boolean eucliedian) {
+        
+        GUI gui = new GUI(500, 500);
+        
+        //  For each Voronoi iteration run each algorithm and ouput perfomance.
+         
+
+         for(int i=0; i<iterations; i++) {
+            Complexity.g = Voronoi.runVoronoi(VoronoiDensity, eucliedian, false, 500, false);
+            Complexity.inputSize = VoronoiDensity;
+            gui.setGraphViewPage(g);
+      
+            Dsatur.dsatur(g, colors); 
+            numberOfColors = g.numberOfColors();
+            Complexity.info("Dsatur", g.getTitle());
+         
+
+            Greedy.greedy(g, colors);
+            numberOfColors = g.numberOfColors();
+            Complexity.info("Greedy", g.getTitle());
+
+            WelshPowell.welshPowell(g, colors);
+            numberOfColors = g.numberOfColors();
+            Complexity.info("WelshPowell", g.getTitle());
+
+            Kempe.kempe(g, colors);
+            numberOfColors = g.numberOfColors();
+            Complexity.info("Kempe", g.getTitle());
+
+         }
+    }
+
+    public static void info(String title, String graphTitle) {
+        System.out.println("\n--------------------------------------------------------");
+        System.out.println("Complexity Analysis of ["+title+"] for "+graphTitle+"\n");
+        System.out.println("Size of input (n° of vertices): "+Complexity.inputSize+" vertices\n");
+        System.out.println("Time Complexity: "+Complexity.timeCommplexity+" operations\n");
+        System.out.println("Runtime: "+Complexity.runTime+" nanoseconds \n");
+        System.out.println("Number of Colors: "+Complexity.numberOfColors);
+    }
+*/
 }
