@@ -56,12 +56,14 @@ public class GraphPlayView extends JPanel {
     private Color[] colors;
 
     private JPanel westPanel;
+    private TopPanel topPanel;
 
     private boolean isGraph = true;
     
     public GraphPlayView(GUI gui) {
         this.gui = gui;
         this.graphView = new GraphView(this);
+        this.topPanel = new TopPanel();
         this.setLayout(new BorderLayout());
         //setupToolBar(true); // devMode true
         /*IconPanel left_arrow = new IconPanel("return", 40);
@@ -71,7 +73,7 @@ public class GraphPlayView extends JPanel {
                 gui.setLastPage();
             }
         });*/
-        this.add(new topPanel(),BorderLayout.NORTH);
+        this.add(topPanel,BorderLayout.NORTH);
         this.add(graphView, BorderLayout.CENTER);
         this.add(new playerPanel(),BorderLayout.WEST);
         this.setBackground(GUI.BACKGROUND_COLOR);
@@ -81,6 +83,7 @@ public class GraphPlayView extends JPanel {
     public GraphPlayView(GUI gui, Graph graph, int width, int height) {
         this.gui = gui;
         this.graphView = new GraphView(this, graph, width, height);
+        this.topPanel = new TopPanel();
         this.setLayout(new BorderLayout());
         //setupToolBar(false);
         /*IconPanel left_arrow = new IconPanel("return", 40);
@@ -90,7 +93,7 @@ public class GraphPlayView extends JPanel {
                 gui.setLastPage();
             }
         });*/
-        this.add(new topPanel(),BorderLayout.NORTH);
+        this.add(topPanel,BorderLayout.NORTH);
         this.add(graphView, BorderLayout.CENTER);
         this.add(new playerPanel(),BorderLayout.WEST);
         this.setBackground(GUI.BACKGROUND_COLOR);
@@ -108,6 +111,7 @@ public class GraphPlayView extends JPanel {
         this.height = height;
         this.colors = colors;
         this.isGraph = isGraph;
+        this.topPanel = new TopPanel();
         this.setBackground(GUI.BACKGROUND_COLOR);
         if(name != null) {
             mapView = new MapView(this, name, false);
@@ -128,7 +132,6 @@ public class GraphPlayView extends JPanel {
                 gui.setLastPage();
             }
         });
-        this.add(new topPanel(),BorderLayout.NORTH);
     }
 
     private class ColorButton extends JPanel {
@@ -143,11 +146,11 @@ public class GraphPlayView extends JPanel {
 
         private boolean selected;
 
-        public ColorButton(Color c) {
+        public ColorButton(Color c, int size) {
             this.color = c;
             this.lightColor = getLighterColor(color, 0.55f);
             this.darkColor = lightColor;
-            this.setMaximumSize(new Dimension(50, 30));
+            this.setPreferredSize(new Dimension(size, size));
             this.setOpaque(false);
             setSelected(false);
             this.addMouseListener(new MouseAdapter() {
@@ -194,12 +197,13 @@ public class GraphPlayView extends JPanel {
         public void paintComponent(Graphics g) {
             super.paintComponent(g);
             // if mouseEntered change color
+            int space = 4;
             g.setColor(color);
-            g.fillOval(0, 0, getWidth(), getHeight());
+            g.fillOval(space, space, getWidth()-2*space, getHeight()-2*space);
             g.setColor(selected ? Color.RED : Color.BLACK);
             Graphics2D g2d = (Graphics2D)g;
             g2d.setStroke(new BasicStroke(3.0f));
-            g.drawOval(0, 0, getWidth(), getHeight());
+            g.drawOval(space, space, getWidth()-2*space, getHeight()-2*space);
         }
 
         public Color getColor() {
@@ -229,7 +233,7 @@ public class GraphPlayView extends JPanel {
         private BufferedImage icon;
     
         public ImageButton(String path, int size) {
-            this.setMaximumSize(new Dimension(size, size));
+            this.setPreferredSize(new Dimension(size, size));
             setOpaque(false);
             this.path = convertPath(path);
             
@@ -309,8 +313,6 @@ public class GraphPlayView extends JPanel {
         @Override
         public void paintComponent(Graphics g) {
             super.paintComponent(g);
-            g.setColor(GUI.LIGHT_COLOR2);
-            g.fillRoundRect(0, 0, getWidth(), getHeight(), 10, 10);
             Graphics2D g2d = (Graphics2D)g;
             
             g2d.setRenderingHint(
@@ -350,6 +352,7 @@ public class GraphPlayView extends JPanel {
                     westPanel.add(new AlgoPanel());
                     westPanel.revalidate();
                     westPanel.repaint();
+                    topPanel.refreshTitle();
                 }
             });
             
@@ -360,6 +363,7 @@ public class GraphPlayView extends JPanel {
                     westPanel.add(new PlayingPanel());
                     westPanel.revalidate();
                     westPanel.repaint();
+                    topPanel.refreshTitle();
                 }
             });
 
@@ -419,11 +423,20 @@ public class GraphPlayView extends JPanel {
             this.setLayout(new GridLayout(2, 3));
 
             Color[] colors = {Color.WHITE, Color.BLUE, Color.RED, Color.GREEN, Color.YELLOW, Color.MAGENTA};
-            selectedColorBut = new ColorButton(colors[0]);
-            this.add(selectedColorBut);
-            selectedColorBut.setSelected(true);
-            for(int i=1;i<colors.length;i++)
-                this.add(new ColorButton(colors[i]));
+            JPanel tmp;
+            for(int i=0;i<colors.length;i++) {
+                tmp = new JPanel();
+                tmp.setOpaque(false);
+                if(i == 0) {
+                    selectedColorBut = new ColorButton(colors[i], 60);
+                    selectedColorBut.setSelected(true);
+                    tmp.add(selectedColorBut);
+                }
+                else
+                    tmp.add(new ColorButton(colors[i], 60));
+                this.add(tmp);
+                //this.add(new ColorButton(colors[i]));
+            }
             /*JPanel tmp;
             for(int i=1;i<colors.length;i++) {
                 tmp = new JPanel();
@@ -469,8 +482,13 @@ public class GraphPlayView extends JPanel {
             g.setColor(bgColor);
             g.fillRoundRect(0, 0, getWidth(), getHeight(), 50, 50);
         }
+        
         public String getTitle() {
         	return title.getText();
+        }
+
+        public void setBgColor(Color color) {
+            this.bgColor = color;
         }
 
     }
@@ -543,7 +561,6 @@ public class GraphPlayView extends JPanel {
                     public void mousePressed(MouseEvent e) {
                         super.mousePressed(e);
                         if(graph != null) {
-                        	System.out.println(b.getTitle());
                             graph.applyAlgo(b.getTitle(), colors);
                             if(mapView != null)
                                 mapView.refresh(graph);
@@ -555,13 +572,13 @@ public class GraphPlayView extends JPanel {
                     }
                     @Override
                     public void mouseEntered(MouseEvent e) {
-                        b.setBackground(GUI.LIGHT_COLOR2); 
+                        b.setBgColor(GUI.LIGHT_COLOR2);
                         repaint();
                     }
 
                     @Override
                     public void mouseExited(MouseEvent e) {
-                    	b.setBackground(GUI.LIGHT_COLOR1);
+                    	b.setBgColor(GUI.LIGHT_COLOR1);
                         repaint();
                     }
                 });
@@ -590,6 +607,7 @@ public class GraphPlayView extends JPanel {
     		
     		JSlider slider = getSlider(VertexView.DEFAULT_SIZE, 0, 300, 75, 75);
     		slider.setOpaque(false);
+            slider.setBorder(new EmptyBorder(0, 40, 0, 40));
             slider.addChangeListener(new ChangeListener() {
     	        public void stateChanged(ChangeEvent event) {
                     if(graphView == null)
@@ -601,6 +619,7 @@ public class GraphPlayView extends JPanel {
                     }
     	        }
     	    });
+            
             this.add(slider);
     	}
     }
@@ -624,45 +643,55 @@ public class GraphPlayView extends JPanel {
     			}
     		});
     		buttons[0].setLayout(new GridBagLayout());
-    		add(buttons[0]);
+            JPanel tmp = getTempPanel();
+            tmp.add(buttons[0]);
+    		add(tmp);
     		buttons[1].addMouseListener(new MouseAdapter(){
     			public void mousePressed(MouseEvent e) {
     				openGraphDialog();	
     			}
     		});
     		buttons[1].setLayout(new GridBagLayout());
-    		add(buttons[1]);
+            tmp = getTempPanel();
+            tmp.add(buttons[1]);
+    		add(tmp);
     	}
     }
     
-    private class graphCreatorPanel extends JPanel{
+    private class graphCreatorPanel extends JPanel {
 
 		private static final long serialVersionUID = 1L;
 
 		public graphCreatorPanel() {
-    		
 			setOpaque(false);
-			
     		this.setLayout(new GridLayout(1,2));
     		
-    		moveBut = new ImageButton("move", 45);
+    		moveBut = new ImageButton("move", 70);
             selectedDrawBut = moveBut;
             moveBut.setSelected(true);
-            lineBut = new ImageButton("line", 45);
-            this.add(moveBut);
-            this.add(lineBut);
+            lineBut = new ImageButton("line", 70);
+
+            JPanel tmp = getTempPanel();
+            tmp.setLayout(new GridBagLayout());
+            tmp.add(moveBut);
+            this.add(tmp);
+
+            tmp = getTempPanel();
+            tmp.setLayout(new GridBagLayout());
+            tmp.add(lineBut);
+            this.add(tmp);
     		
     	}
     	
     }
-    
-    private class topPanel extends JPanel{
+
+    private class TopPanel extends JPanel {
 
 		private static final long serialVersionUID = 1L;
+        
+        private JLabel title;
 
-		public topPanel() {
-    		
-    		
+		public TopPanel() {
             setLayout(new GridLayout(1, 3));
             setBackground(GUI.BACKGROUND_COLOR);
             JPanel temp2 = new JPanel();
@@ -672,7 +701,13 @@ public class GraphPlayView extends JPanel {
             left_arrow.addMouseListener(new MouseAdapter() {
                 public void mousePressed(MouseEvent e) {
                     super.mousePressed(e);
-                    gui.setLastPage();
+                    if(getSubPanel() == null || getSubPanel() instanceof MenuPanel)
+                        gui.setLastPage();
+                    else {
+                        westPanel.removeAll();
+                        refreshWestPanel();
+                    }
+                    // else
                 }
             });
 
@@ -690,25 +725,30 @@ public class GraphPlayView extends JPanel {
             add(temp2);
             
             temp2 = new JPanel();
-            //temp2.setBackground(GUI.BACKGROUND_COLOR);
-            JLabel title;
-            if(westPanel != null) {
-            	title = new JLabel(westPanel.getComponent(0).getName());
-                title.setFont(title.getFont().deriveFont(24.0f));
-                title.setHorizontalAlignment(JLabel.CENTER);
-                title.setForeground(Color.WHITE);
-                temp2.setBackground(GUI.BACKGROUND_COLOR);
-            }
-            else {
-            	title = new JLabel("");
-            	temp2.setBackground(GUI.BACKGROUND_COLOR);
-            }
+            temp2.setBackground(GUI.BACKGROUND_COLOR);
+            
+            title = new JLabel();
+            title.setFont(title.getFont().deriveFont(24.0f));
+            title.setHorizontalAlignment(JLabel.CENTER);
+            title.setForeground(Color.WHITE);
+
+            refreshTitle();
+
             temp2.add(title);
             add(temp2);
             temp2 = new JPanel();
             temp2.setBackground(GUI.BACKGROUND_COLOR);
             add(temp2);
+
+            setBorder(new EmptyBorder(8, 0, 35, 0));
     	}
+
+        public void refreshTitle() {
+            if(westPanel != null && westPanel.getComponentCount() > 0)
+                title.setText(westPanel.getComponent(0).getName());
+            else
+                title.setText("");
+        }
     }
     
 
@@ -816,6 +856,11 @@ public class GraphPlayView extends JPanel {
         };
     }
     
+    public JPanel getSubPanel() {
+        if(westPanel == null || westPanel.getComponentCount() == 0)
+            return null;
+        return (JPanel)westPanel.getComponent(0);
+    }
 
     public void switchToMap() {
         if(mapView == null)
@@ -826,58 +871,57 @@ public class GraphPlayView extends JPanel {
         
         if(isGraph)
             isGraph = !isGraph;
-
-       /////////////////////////////////////////////////////////////////////////////////////////// 
-        //this.add(toolBar, BorderLayout.NORTH);
-
-        // On retire ça pour l'instant
-        /*JPanel pan = new JPanel();
-        pan.setLayout(new GridBagLayout());
-        pan.add(mapView);
-        pan.setOpaque(false);
-        
-        
-        this.add(pan, BorderLayout.CENTER);*/
-        
-        //this.add(mapView, BorderLayout.CENTER);
         
         this.setLayout(new BorderLayout());
-        if(westPanel.getComponentCount() != 0) {
-	        if(westPanel.getComponent(0).getName().equals("MenuPanel")){
-	        	this.add(new topPanel(), BorderLayout.NORTH);
-	        	westPanel.removeAll();
-	            westPanel.add(new MenuPanel());
-	        }
-	        if(westPanel.getComponent(0).getName().equals("AlgoPanel")) {
 
-	        	this.add(new topPanel(), BorderLayout.NORTH);
-	        	westPanel.removeAll();
-	            westPanel.add(new AlgoPanel());
-	        }
-	        if(westPanel.getComponent(0).getName().equals("PlayingPanel")) {
+        refreshWestPanel();
+        topPanel.refreshTitle();
 
-	        	this.add(new topPanel(), BorderLayout.NORTH);
-	        	westPanel.removeAll();
-	            westPanel.add(new PlayingPanel());
-	        }
-        }
-        else {
-        	westPanel.removeAll();
-            westPanel.add(new MenuPanel());
-        }
-
+        this.add(topPanel, BorderLayout.NORTH);
         this.add(westPanel, BorderLayout.WEST);
+
         this.add(mapView);
         
         this.revalidate();
         this.repaint();
     }
     
+    public JPanel getPanel(String pnl) {
+        switch(pnl) {
+            case "AlgoPanel":
+                return new AlgoPanel();
+            case "PlayingPanel":
+                return new PlayingPanel();
+            case "MenuPanel":
+            default:
+                return new MenuPanel();
+        }
+    }
+
+    public void refreshWestPanel() {
+        if(westPanel.getComponentCount() == 0) {
+            westPanel.add(new MenuPanel());
+        }
+        else {
+            String[] panels = {"AlgoPanel", "PlayingPanel"};
+            for(String pnl : panels) {
+                if(westPanel.getComponent(0).getName().equals(pnl)) {
+                    westPanel.removeAll();
+                    westPanel.add(getPanel(pnl));
+                    break;
+                }
+            }
+        }
+        topPanel.refreshTitle();
+        westPanel.revalidate();
+        westPanel.repaint();
+    }
+
     public void setupWestPanel() {
         westPanel = new JPanel();
         westPanel.setOpaque(false);
         westPanel.setLayout(new GridLayout());
-        westPanel.setBorder(new EmptyBorder(80, 50, 80, 50));
+        westPanel.setBorder(new EmptyBorder(0, 50, 80, 50)); // 0 pour top car 80 dans topPanel
     }
 
     public void switchToGraph() {
@@ -894,34 +938,18 @@ public class GraphPlayView extends JPanel {
         this.removeAll();
         //this.add(toolBar, BorderLayout.NORTH);
         this.setLayout(new BorderLayout());
-        if(westPanel.getComponentCount() != 0) {
-	        if(westPanel.getComponent(0).getName().equals("MenuPanel")){
-	        	this.add(new topPanel(), BorderLayout.NORTH);
-	        	westPanel.removeAll();
-	            westPanel.add(new MenuPanel());
-	        }
-	        if(westPanel.getComponent(0).getName().equals("AlgoPanel")) {
-	        	this.add(new topPanel(), BorderLayout.NORTH);
-	        	westPanel.removeAll();
-	            westPanel.add(new AlgoPanel());
-	        }
-	        if(westPanel.getComponent(0).getName().equals("PlayingPanel")) {
-	        	this.add(new topPanel(), BorderLayout.NORTH);
-	        	westPanel.removeAll();
-	            westPanel.add(new PlayingPanel());
-	        }
-	        
-        /*else {
-        	westPanel.removeAll();
-            westPanel.add(new MenuPanel());
-        }*/
 
+        refreshWestPanel();
+        topPanel.refreshTitle();
+        
+        //this.add(topPanel, BorderLayout.NORTH);
+        this.add(topPanel, BorderLayout.NORTH);
         this.add(westPanel, BorderLayout.WEST);
+
         this.add(graphView, BorderLayout.CENTER);
 
         this.revalidate();
         this.repaint();
-        }
     }
 
     public void saveGraphDialog() {
@@ -977,6 +1005,12 @@ public class GraphPlayView extends JPanel {
 
 	    return slider;
 	}
+
+    public JPanel getTempPanel() {
+        JPanel tmp = new JPanel();
+        tmp.setOpaque(false);
+        return tmp;
+    }
 
     public String getAlgo() {
         return algo;
