@@ -188,7 +188,7 @@ public class GUI extends JFrame {
 		//ArrayList<Vertex> list = algorithms.WelshPowell.selectionSort(graph.getVertices());
 		System.out.println(algorithms.Greedy.boolGraphColoringGreedy(0, colors, graph_colors, graph.getVertices()));
 		algorithms.Greedy.greedy(graph, colors);
-		graph.print();
+		// graph.print();
 		setGraphViewPage(graph);
 	}
 
@@ -198,7 +198,7 @@ public class GUI extends JFrame {
 		Graph graph = Graph.randomGraph(8);
 		Color[] colors = {Color.BLUE,Color.RED,Color.GREEN, Color.YELLOW, Color.MAGENTA, Color.ORANGE};
 		algorithms.Greedy.bestGreedy(graph, colors);
-		graph.print();
+		// graph.print();
 		setGraphViewPage(graph);
 	}
 
@@ -210,7 +210,7 @@ public class GUI extends JFrame {
 		} catch (ClassNotFoundException | IOException e1) {
 			e1.printStackTrace();
 		}
-		bebou.print();
+		// bebou.print();
 		switch(algo){
 			case "DSATUR":
                 algorithms.Dsatur.dsatur(bebou, colors);
@@ -244,7 +244,7 @@ public class GUI extends JFrame {
 		}	
 		Kempe.kempe(graph, colors);
 		System.out.println();
-		graph.print();
+		// graph.print();
 		setGraphViewPage(graph);
 	}
 
@@ -264,7 +264,7 @@ public class GUI extends JFrame {
 		Dsatur.dsatur(graph, colors);
 		//Graph.resetColors(graph);
 		System.out.println();
-		graph.print();
+		// graph.print();
 		setGraphViewPage(graph);
 	}
 	

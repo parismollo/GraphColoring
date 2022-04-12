@@ -118,6 +118,17 @@ public class Graph implements Serializable {
     public void setVerticesList(ArrayList<Vertex> vertices){
         this.vertices = vertices;
     }
+
+    public int numberOfColors() {
+        ArrayList<Color> colors = new ArrayList<Color>();
+        for (Vertex vertex : this.vertices) {
+            if(!colors.contains(vertex.getColor())) {
+                colors.add(vertex.getColor());
+            }
+        }
+        return colors.size();
+        
+    }
     
     public static Graph randomGraph(int nb) {
         int c = 0;
@@ -176,10 +187,10 @@ public class Graph implements Serializable {
         return max;
     }
 
-    public void print() {
-        for(Vertex v : vertices)
-            System.out.println(v.printId());
-    }
+    // public void print() {
+    //     for(Vertex v : vertices)
+    //         System.out.println(v.printId());
+    // }
 
     @Override
     public String toString() {

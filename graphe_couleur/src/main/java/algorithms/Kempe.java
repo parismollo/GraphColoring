@@ -85,7 +85,7 @@ public class Kempe {
         kempe_graph(kempe_graph,v1,c1,c2);
         if(kempe_graph.getVertices().contains(v2))
             kempeChain(current, v2.getId());
-        kempe_graph.print();
+        // kempe_graph.info();
         return kempe_graph;
     }
     
@@ -101,7 +101,7 @@ public class Kempe {
     }
     
 
-
+    @SuppressWarnings("unchecked")
     public static void kempe(Graph graph, Color[] colors){
         long start = System.nanoTime();
         if(graph.getVertices().size() == 0){
@@ -149,7 +149,7 @@ public class Kempe {
             colored = true;
         if(!colored){
             reverseKempeChain(kempeChain(current, 0));
-            System.out.print("On utilise les chaines de kempe");
+            // System.out.print("On utilise les chaines de kempe");
             for(Color c : colors){
                 Kempe.operations++;
                 if(!containsColor(current.getVertices(), c)){

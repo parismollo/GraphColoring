@@ -14,29 +14,26 @@ public class Greedy {
     public static int operations = 0;
 
     public static boolean boolGraphColoringGreedy(int id, Color[] nb, Color[] color_vertex, ArrayList<Vertex> list ){
-        Greedy.operations++;
         if(id == list.size()){
             return true;
         }
         Vertex v = list.get(id);
         for(int c=0;c<nb.length;c++){
+            Greedy.operations++;
             if(!containsColor(v.getVertices(), nb[c], color_vertex)){
                 color_vertex[v.getId()] = nb[c];//dans le cas où les vertex ne serait pas numérotés dans l'ordre d'id dans la list
-                Greedy.operations++;
                 if(boolGraphColoringGreedy(id+1, nb, color_vertex, list)){
                     return true;
                 }
-                color_vertex[v.getId()] = Color.white;
-                Greedy.operations++;
-            
+                color_vertex[v.getId()] = Color.white;            
             }
         }
         return false;
     }
     public static boolean containsColor(ArrayList<Vertex> vertices , Color c, Color[] color_vertex){
         for(Vertex v : vertices){
+            Greedy.operations++;
             if(color_vertex[v.getId()].equals(c)){
-                Greedy.operations++;
                 return true;
             }
         }
@@ -51,7 +48,6 @@ public class Greedy {
             Greedy.operations++;
             color_vertex[v.getId()] = v.getColor();
         }
-        Greedy.operations++;
         color_vertex[list.size()] = Color.white;
         /*Dans le cas où le graph donné est partiellement coloré on ne le reset plus a blanc au début de greedy 
         //Rm : il sera neamoins reset a blanc si greedy echoue il me semble
