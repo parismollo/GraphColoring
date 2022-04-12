@@ -682,10 +682,20 @@ public class GraphPlayView extends JPanel {
             left_arrow.addMouseListener(new MouseAdapter() {
                 public void mousePressed(MouseEvent e) {
                     super.mousePressed(e);
+                    gui.setLastPage();
+                }
+            });
+
+            IconPanel home = new IconPanel("home", 40);
+            home.addMouseListener(new MouseAdapter() {
+                public void mousePressed(MouseEvent e) {
+                    super.mousePressed(e);
                     gui.setHomeView();
                 }
             });
+
             temp2.setBackground(GUI.BACKGROUND_COLOR);
+            temp2.add(home,BorderLayout.EAST);
             temp2.add(left_arrow, BorderLayout.WEST);
             add(temp2);
             
@@ -696,7 +706,8 @@ public class GraphPlayView extends JPanel {
             	title = new JLabel(westPanel.getComponent(0).getName());
                 title.setFont(title.getFont().deriveFont(24.0f));
                 title.setHorizontalAlignment(JLabel.CENTER);
-                title.setBackground(GUI.BACKGROUND_COLOR);
+                title.setForeground(Color.WHITE);
+                temp2.setBackground(GUI.BACKGROUND_COLOR);
             }
             else {
             	title = new JLabel("");
@@ -910,10 +921,10 @@ public class GraphPlayView extends JPanel {
 	            westPanel.add(new PlayingPanel());
 	        }
 	        
-        else {
+        /*else {
         	westPanel.removeAll();
             westPanel.add(new MenuPanel());
-        }
+        }*/
 
         this.add(westPanel, BorderLayout.WEST);
         this.add(graphView, BorderLayout.CENTER);
