@@ -143,11 +143,11 @@ public class GraphPlayView extends JPanel {
 
         private boolean selected;
 
-        public ColorButton(Color c) {
+        public ColorButton(Color c, int size) {
             this.color = c;
             this.lightColor = getLighterColor(color, 0.55f);
             this.darkColor = lightColor;
-            this.setMaximumSize(new Dimension(50, 30));
+            this.setPreferredSize(new Dimension(size, size));
             this.setOpaque(false);
             setSelected(false);
             this.addMouseListener(new MouseAdapter() {
@@ -194,12 +194,13 @@ public class GraphPlayView extends JPanel {
         public void paintComponent(Graphics g) {
             super.paintComponent(g);
             // if mouseEntered change color
+            int space = 4;
             g.setColor(color);
-            g.fillOval(0, 0, getWidth(), getHeight());
+            g.fillOval(space, space, getWidth()-2*space, getHeight()-2*space);
             g.setColor(selected ? Color.RED : Color.BLACK);
             Graphics2D g2d = (Graphics2D)g;
             g2d.setStroke(new BasicStroke(3.0f));
-            g.drawOval(0, 0, getWidth(), getHeight());
+            g.drawOval(space, space, getWidth()-2*space, getHeight()-2*space);
         }
 
         public Color getColor() {
@@ -419,11 +420,20 @@ public class GraphPlayView extends JPanel {
             this.setLayout(new GridLayout(2, 3));
 
             Color[] colors = {Color.WHITE, Color.BLUE, Color.RED, Color.GREEN, Color.YELLOW, Color.MAGENTA};
-            selectedColorBut = new ColorButton(colors[0]);
-            this.add(selectedColorBut);
-            selectedColorBut.setSelected(true);
-            for(int i=1;i<colors.length;i++)
-                this.add(new ColorButton(colors[i]));
+            JPanel tmp;
+            for(int i=0;i<colors.length;i++) {
+                tmp = new JPanel();
+                tmp.setOpaque(false);
+                if(i == 0) {
+                    selectedColorBut = new ColorButton(colors[i], 50);
+                    selectedColorBut.setSelected(true);
+                    tmp.add(selectedColorBut);
+                }
+                else
+                    tmp.add(new ColorButton(colors[i], 50));
+                this.add(tmp);
+                //this.add(new ColorButton(colors[i]));
+            }
             /*JPanel tmp;
             for(int i=1;i<colors.length;i++) {
                 tmp = new JPanel();
