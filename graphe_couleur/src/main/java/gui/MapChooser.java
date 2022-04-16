@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -16,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.imageio.ImageIO;
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -37,15 +39,16 @@ public class MapChooser extends JPanel {
         this.gui = gui;
         this.devMode = devMode;
         this.setBackground(Color.WHITE);
-        title = new JLabel("Choose your map : ");
+        title = new JLabel();
         title.setFont(title.getFont().deriveFont(24.0f));
+        title.setForeground(Color.WHITE);
         title.setHorizontalAlignment(JLabel.CENTER);
 
         this.maps = getAllMaps();
         this.imageView = new ImageView(maps);
 
         if(maps != null && maps.size() >= 0) {
-            title.setText("Choose your map : "+getName(maps.get(0)));
+            title.setText(getName(maps.get(0)));
         }
         
         previousBut.setEnabled(false);
@@ -84,6 +87,7 @@ public class MapChooser extends JPanel {
         });
 
         this.setLayout(new BorderLayout());
+        this.setBackground(GUI.BACKGROUND_COLOR);
 
         JPanel previousPan = new JPanel();
         previousPan.setOpaque(false);
@@ -94,9 +98,12 @@ public class MapChooser extends JPanel {
         nextPan.add(nextBut);
 
         JPanel temp = new JPanel();
+        temp.setOpaque(false);
+        temp.setBorder(BorderFactory.createMatteBorder(0, 0, 4, 0, GUI.DARK_COLOR2));
         temp.setLayout(new GridLayout(1, 3));
         JPanel temp2 = new JPanel();
-        temp2.setBorder(new EmptyBorder(0, 10, 0, 0));
+        temp2.setOpaque(false);
+        temp2.setBorder(new EmptyBorder(8, 10, 4, 10));
         temp2.setLayout(new BorderLayout());
         IconPanel left_arrow = new IconPanel("return", 40);
         left_arrow.addMouseListener(new MouseAdapter() {
@@ -108,14 +115,18 @@ public class MapChooser extends JPanel {
         temp2.add(left_arrow, BorderLayout.WEST);
         temp.add(temp2);
         temp2 = new JPanel();
+        temp2.setLayout(new GridBagLayout());
+        temp2.setOpaque(false);
         temp2.add(title);
         temp.add(temp2);
-        temp.add(new JPanel());
+        temp2 = new JPanel();
+        temp2.setOpaque(false);
+        temp.add(temp2);
 
         this.add(temp, BorderLayout.NORTH);
         this.add(previousPan, BorderLayout.WEST);
         this.add(nextPan, BorderLayout.EAST);
-        this.add(selectBut, BorderLayout.SOUTH);
+        //this.add(selectBut, BorderLayout.SOUTH);
 
         this.add(imageView, BorderLayout.CENTER);
 
@@ -136,7 +147,7 @@ public class MapChooser extends JPanel {
             if(!nextBut.isEnabled())
                 nextBut.setEnabled(true);
             imageView.mapIndex--;
-            title.setText("Choose your map : "+getName(maps.get(imageView.getMapIndex())));
+            title.setText(getName(maps.get(imageView.getMapIndex())));
             if(imageView.mapIndex <= 0)
                 previousBut.setEnabled(false);
         }
@@ -149,7 +160,7 @@ public class MapChooser extends JPanel {
             if(!previousBut.isEnabled())
                 previousBut.setEnabled(true);
             imageView.mapIndex++;
-            title.setText("Choose your map : "+getName(maps.get(imageView.getMapIndex())));
+            title.setText(getName(maps.get(imageView.getMapIndex())));
             if(imageView.mapIndex >= maps.size() - 1)
                 nextBut.setEnabled(false);
         }
@@ -215,6 +226,12 @@ public class MapChooser extends JPanel {
         public ImageView(List<File> maps) {
             this.mapsImg = getImages(maps);
             setOpaque(false);
+            addMouseListener(new MouseAdapter() {
+                public void mousePressed(MouseEvent e) {
+                    super.mousePressed(e);
+                    selectMap();
+                }
+            });
         }
         
         @Override

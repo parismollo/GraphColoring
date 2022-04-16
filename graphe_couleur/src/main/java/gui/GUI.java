@@ -4,17 +4,14 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import algorithms.Dsatur;
-import algorithms.Greedy;
 import algorithms.Kempe;
 import graphs.Graph;
-import utils.Converter;
 import utils.Voronoi;
 
 public class GUI extends JFrame {
@@ -22,6 +19,7 @@ public class GUI extends JFrame {
 
 	public static Color BACKGROUND_COLOR = new Color(41, 50, 65),
 						DARK_COLOR1 = new Color(61, 90, 128),
+						DARK_COLOR2 = new Color(46, 55, 75),
 						LIGHT_COLOR1 = new Color(152, 193, 217),
 						LIGHT_COLOR2 = new Color(224, 251, 252),
 						RED = new Color(238, 108, 77);
@@ -53,7 +51,7 @@ public class GUI extends JFrame {
 		//setHomePage();
 		
 		//Color[] colors = {Color.BLUE,Color.RED,Color.GREEN, Color.YELLOW, Color.MAGENTA, Color.ORANGE};
-		Color[] colors = {Color.BLUE,Color.RED,Color.GREEN, Color.YELLOW, Color.MAGENTA};
+		//Color[] colors = {Color.BLUE,Color.RED,Color.GREEN, Color.YELLOW, Color.MAGENTA};
 		//setGraphViewPage("France", "WelshPowell", colors);
 		//setGraphViewPage("France", "Dsatur", colors);
 		//setGraphViewPage("France", "Greedy", colors);

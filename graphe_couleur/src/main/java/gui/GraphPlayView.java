@@ -75,7 +75,7 @@ public class GraphPlayView extends JPanel {
         });*/
         this.add(topPanel,BorderLayout.NORTH);
         this.add(graphView, BorderLayout.CENTER);
-        this.add(new playerPanel(),BorderLayout.WEST);
+        this.add(new PlayerPanel(),BorderLayout.WEST);
         this.setBackground(GUI.BACKGROUND_COLOR);
     }
 
@@ -95,7 +95,7 @@ public class GraphPlayView extends JPanel {
         });*/
         this.add(topPanel,BorderLayout.NORTH);
         this.add(graphView, BorderLayout.CENTER);
-        this.add(new playerPanel(),BorderLayout.WEST);
+        this.add(new PlayerPanel(),BorderLayout.WEST);
         this.setBackground(GUI.BACKGROUND_COLOR);
     }
 
@@ -296,7 +296,7 @@ public class GraphPlayView extends JPanel {
 
     }
 
-    private class OptionsPanel extends JPanel {
+    public static class OptionsPanel extends JPanel {
 
 		private static final long serialVersionUID = 1L;
 		private int shadowSpace = 25;
@@ -590,16 +590,16 @@ public class GraphPlayView extends JPanel {
     	
     }
     
-    private class playerPanel extends OptionsPanel{
+    private class PlayerPanel extends OptionsPanel{
     	
 		private static final long serialVersionUID = 1L;
 
-		public playerPanel() {
+		public PlayerPanel() {
     		setOpaque(false);
     		setName("PlayerPanel");
     		ColorPanel c = new ColorPanel();
-    		saveOpenPanel so = new saveOpenPanel();
-    		graphCreatorPanel g = new graphCreatorPanel();
+    		SaveOpenPanel so = new SaveOpenPanel();
+    		GraphCreatorPanel g = new GraphCreatorPanel();
     		this.setLayout(new GridLayout(4,1));
     		this.add(c);
     		this.add(so);
@@ -624,11 +624,11 @@ public class GraphPlayView extends JPanel {
     	}
     }
     
-    private class saveOpenPanel extends JPanel{
+    private class SaveOpenPanel extends JPanel{
 
 		private static final long serialVersionUID = 1L;
 
-		public saveOpenPanel() {
+		public SaveOpenPanel() {
 			
 			setOpaque(false);
 			
@@ -658,11 +658,11 @@ public class GraphPlayView extends JPanel {
     	}
     }
     
-    private class graphCreatorPanel extends JPanel {
+    private class GraphCreatorPanel extends JPanel {
 
 		private static final long serialVersionUID = 1L;
 
-		public graphCreatorPanel() {
+		public GraphCreatorPanel() {
 			setOpaque(false);
     		this.setLayout(new GridLayout(1,2));
     		
@@ -693,7 +693,8 @@ public class GraphPlayView extends JPanel {
 
 		public TopPanel() {
             setLayout(new GridLayout(1, 3));
-            setBackground(GUI.BACKGROUND_COLOR);
+            setOpaque(false);
+            setBorder(BorderFactory.createMatteBorder(0, 0, 4, 0, GUI.DARK_COLOR2));
             JPanel temp2 = new JPanel();
             temp2.setBorder(new EmptyBorder(0, 10, 0, 0));
             temp2.setLayout(new BorderLayout());
@@ -719,14 +720,15 @@ public class GraphPlayView extends JPanel {
                 }
             });
 
-            temp2.setBackground(GUI.BACKGROUND_COLOR);
+            temp2.setOpaque(false);
             temp2.add(home,BorderLayout.EAST);
             temp2.add(left_arrow, BorderLayout.WEST);
             add(temp2);
             
             temp2 = new JPanel();
-            temp2.setBackground(GUI.BACKGROUND_COLOR);
-            
+            temp2.setOpaque(false);
+            temp2.setLayout(new GridBagLayout());
+
             title = new JLabel();
             title.setFont(title.getFont().deriveFont(24.0f));
             title.setHorizontalAlignment(JLabel.CENTER);
@@ -737,10 +739,8 @@ public class GraphPlayView extends JPanel {
             temp2.add(title);
             add(temp2);
             temp2 = new JPanel();
-            temp2.setBackground(GUI.BACKGROUND_COLOR);
+            temp2.setOpaque(false);
             add(temp2);
-
-            setBorder(new EmptyBorder(8, 0, 35, 0));
     	}
 
         public void refreshTitle() {
@@ -877,7 +877,13 @@ public class GraphPlayView extends JPanel {
         refreshWestPanel();
         topPanel.refreshTitle();
 
-        this.add(topPanel, BorderLayout.NORTH);
+        JPanel nPan = new JPanel();
+        nPan.setOpaque(false);
+        nPan.setLayout(new GridLayout());
+        nPan.add(topPanel);
+        nPan.setBorder(new EmptyBorder(8, 0, 35, 0));
+
+        this.add(nPan, BorderLayout.NORTH);
         this.add(westPanel, BorderLayout.WEST);
 
         this.add(mapView);
@@ -941,9 +947,14 @@ public class GraphPlayView extends JPanel {
 
         refreshWestPanel();
         topPanel.refreshTitle();
-        
-        //this.add(topPanel, BorderLayout.NORTH);
-        this.add(topPanel, BorderLayout.NORTH);
+
+        JPanel nPan = new JPanel();
+        nPan.setOpaque(false);
+        nPan.setLayout(new GridLayout());
+        nPan.add(topPanel);
+        nPan.setBorder(new EmptyBorder(8, 0, 35, 0));
+
+        this.add(nPan, BorderLayout.NORTH);
         this.add(westPanel, BorderLayout.WEST);
 
         this.add(graphView, BorderLayout.CENTER);
