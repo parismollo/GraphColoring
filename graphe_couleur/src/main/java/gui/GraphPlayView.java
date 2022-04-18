@@ -19,7 +19,6 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
-//import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -38,6 +37,7 @@ public class GraphPlayView extends JPanel {
 	private static final long serialVersionUID = 1L;
 
 	private GUI gui;
+    private String title;
 
     private ColorButton selectedColorBut;
     private ImageButton selectedDrawBut;
@@ -61,41 +61,38 @@ public class GraphPlayView extends JPanel {
     private boolean isGraph = true;
     
     public GraphPlayView(GUI gui) {
+        this.title = "Graph Creator";
         this.gui = gui;
         this.graphView = new GraphView(this);
         this.topPanel = new TopPanel();
         this.setLayout(new BorderLayout());
         //setupToolBar(true); // devMode true
-        /*IconPanel left_arrow = new IconPanel("return", 40);
-        left_arrow.addMouseListener(new MouseAdapter() {
-            public void mousePressed(MouseEvent e) {
-                super.mousePressed(e);
-                gui.setLastPage();
-            }
-        });*/
-        this.add(topPanel,BorderLayout.NORTH);
+
+        this.add(getTopContainer(), BorderLayout.NORTH);
         this.add(graphView, BorderLayout.CENTER);
-        this.add(new PlayerPanel(),BorderLayout.WEST);
+        setupWestPanel();
+        westPanel.add(new PlayerPanel());
+        this.add(westPanel, BorderLayout.WEST);
+        topPanel.refreshTitle();
+
         this.setBackground(GUI.BACKGROUND_COLOR);
     }
 
     // ICI : isGraph = true.
     public GraphPlayView(GUI gui, Graph graph, int width, int height) {
+        this.title = "Random Graph";
         this.gui = gui;
         this.graphView = new GraphView(this, graph, width, height);
         this.topPanel = new TopPanel();
         this.setLayout(new BorderLayout());
         //setupToolBar(false);
-        /*IconPanel left_arrow = new IconPanel("return", 40);
-        left_arrow.addMouseListener(new MouseAdapter() {
-            public void mousePressed(MouseEvent e) {
-                super.mousePressed(e);
-                gui.setLastPage();
-            }
-        });*/
-        this.add(topPanel,BorderLayout.NORTH);
+
+        this.add(getTopContainer(), BorderLayout.NORTH);
         this.add(graphView, BorderLayout.CENTER);
-        this.add(new PlayerPanel(),BorderLayout.WEST);
+        setupWestPanel();
+        westPanel.add(new PlayerPanel());
+        this.add(westPanel, BorderLayout.WEST);
+        topPanel.refreshTitle();
         this.setBackground(GUI.BACKGROUND_COLOR);
     }
 
@@ -125,13 +122,6 @@ public class GraphPlayView extends JPanel {
             switchToGraph();
         else
             switchToMap();
-        IconPanel left_arrow = new IconPanel("return", 40);
-        left_arrow.addMouseListener(new MouseAdapter() {
-            public void mousePressed(MouseEvent e) {
-                super.mousePressed(e);
-                gui.setLastPage();
-            }
-        });
     }
 
     private class ColorButton extends JPanel {
@@ -344,7 +334,10 @@ public class GraphPlayView extends JPanel {
                 new CustomButton("playing", "Playing"),
                 switchBut
             };
-
+            for(int i=0;i<2;i++) {
+                buttons[i].changeIconSize(64);
+                buttons[i].changeTextSize(20);
+            }
             buttons[0].addMouseListener(new MouseAdapter() {
                 public void mousePressed(MouseEvent e) {
                     super.mousePressed(e);
@@ -396,18 +389,16 @@ public class GraphPlayView extends JPanel {
 
             int line = switchBut == null ? 2 : 3;
             setLayout(new GridLayout(line, 1));
-            JPanel tmp = new JPanel();
+            JPanel tmp = getTempPanel();
             tmp.setLayout(new GridLayout());
-            tmp.setOpaque(false);
-            tmp.setBorder(new EmptyBorder(60, 0, 60, 0));
+            tmp.setBorder(new EmptyBorder(10, 0, 50, 0));
             tmp.add(selectColor);
             add(tmp);
 
             add(new ColorPanel());
 
-            tmp = new JPanel();
-            tmp.setLayout(new GridBagLayout());
-            tmp.setOpaque(false);
+            tmp = getTempPanel();
+            tmp.setLayout(new GridLayout());
             tmp.add(switchBut);
             add(tmp);
         }
@@ -463,8 +454,9 @@ public class GraphPlayView extends JPanel {
             this.bgColor = color;
             setOpaque(false);
             setLayout(new GridLayout());
-            
-            title.setFont(title.getFont().deriveFont(Font.BOLD, 32f));
+            setPreferredSize(new Dimension(180, 80));
+
+            title.setFont(title.getFont().deriveFont(Font.BOLD, 20f));
             title.setHorizontalAlignment(SwingConstants.CENTER);
 
             this.add(this.title);
@@ -497,6 +489,8 @@ public class GraphPlayView extends JPanel {
         CustomButton switchBut = null;
         if(name != null) {
             switchBut = new CustomButton("graph", isGraph ? "See map" : "See graph");
+            switchBut.changeIconSize(64);
+            switchBut.changeTextSize(20);
             switchBut.addMouseListener(new MouseAdapter() {
                 public void mousePressed(MouseEvent e) {
                     super.mousePressed(e);
@@ -523,9 +517,9 @@ public class GraphPlayView extends JPanel {
     		int line = switchBut == null ? 3 : 4;
             setLayout(new GridLayout(line, 1));
             JPanel tmp = new JPanel();
-            tmp.setLayout(new GridLayout());
             tmp.setOpaque(false);
-            tmp.setBorder(new EmptyBorder(60, 0, 60, 0));
+            tmp.setLayout(new GridLayout());
+            tmp.setBorder(new EmptyBorder(10, 0, 20, 0));
             tmp.add(selectAlgo);
             add(tmp);
             
@@ -533,6 +527,8 @@ public class GraphPlayView extends JPanel {
             add(tmp);
             
             CustomButton runbut = new CustomButton("run", "Run Simulation");
+            runbut.changeIconSize(64);
+            runbut.changeTextSize(20);
             this.add(runbut);
             
             this.add(switchBut);
@@ -582,15 +578,18 @@ public class GraphPlayView extends JPanel {
                         repaint();
                     }
                 });
-
-    			add(b);
+                JPanel tmp = getTempPanel();
+                tmp.setLayout(new GridLayout());
+                tmp.setBorder(new EmptyBorder(5, 5, 5, 5));
+                tmp.add(b);
+    			add(tmp);
     		}
     		
     	}
     	
     }
-    
-    private class PlayerPanel extends OptionsPanel{
+
+    private class PlayerPanel extends OptionsPanel {
     	
 		private static final long serialVersionUID = 1L;
 
@@ -600,7 +599,16 @@ public class GraphPlayView extends JPanel {
     		ColorPanel c = new ColorPanel();
     		SaveOpenPanel so = new SaveOpenPanel();
     		GraphCreatorPanel g = new GraphCreatorPanel();
-    		this.setLayout(new GridLayout(4,1));
+    		this.setLayout(new GridLayout(5,1));
+
+            StrButton selectColor = new StrButton("Select Color", GUI.LIGHT_COLOR1);
+            selectColor.setEnabled(false);
+            JPanel tmp = getTempPanel();
+            tmp.setLayout(new GridLayout());
+            tmp.setBorder(new EmptyBorder(10, 0, 10, 0));
+            tmp.add(selectColor);
+
+            this.add(tmp);
     		this.add(c);
     		this.add(so);
     		this.add(g);
@@ -636,13 +644,20 @@ public class GraphPlayView extends JPanel {
     				new CustomButton("save", "Save"),
                     new CustomButton("open", "Open"),
     		};
+
+            for(CustomButton cB : buttons) {
+                cB.setPreferredSize(new Dimension(180, 80));
+                cB.changeIconSize(40);
+                cB.changeTextSize(20);
+            }
+
     		this.setLayout(new GridLayout(1,2));
     		buttons[0].addMouseListener(new MouseAdapter(){
     			public void mousePressed(MouseEvent e) {
     				saveGraphDialog();
     			}
     		});
-    		buttons[0].setLayout(new GridBagLayout());
+            
             JPanel tmp = getTempPanel();
             tmp.add(buttons[0]);
     		add(tmp);
@@ -651,7 +666,6 @@ public class GraphPlayView extends JPanel {
     				openGraphDialog();	
     			}
     		});
-    		buttons[1].setLayout(new GridBagLayout());
             tmp = getTempPanel();
             tmp.add(buttons[1]);
     		add(tmp);
@@ -702,13 +716,13 @@ public class GraphPlayView extends JPanel {
             left_arrow.addMouseListener(new MouseAdapter() {
                 public void mousePressed(MouseEvent e) {
                     super.mousePressed(e);
-                    if(getSubPanel() == null || getSubPanel() instanceof MenuPanel)
+                    if(getSubPanel() == null || getSubPanel() instanceof MenuPanel ||
+                       getSubPanel() instanceof PlayerPanel)
                         gui.setLastPage();
                     else {
                         westPanel.removeAll();
                         refreshWestPanel();
                     }
-                    // else
                 }
             });
 
@@ -744,8 +758,13 @@ public class GraphPlayView extends JPanel {
     	}
 
         public void refreshTitle() {
-            if(westPanel != null && westPanel.getComponentCount() > 0)
+            if(GraphPlayView.this.title != null) {
+                title.setText(GraphPlayView.this.title);
+                return;
+            }
+            if(westPanel != null && westPanel.getComponentCount() > 0) {
                 title.setText(westPanel.getComponent(0).getName());
+            }
             else
                 title.setText("");
         }
@@ -877,13 +896,7 @@ public class GraphPlayView extends JPanel {
         refreshWestPanel();
         topPanel.refreshTitle();
 
-        JPanel nPan = new JPanel();
-        nPan.setOpaque(false);
-        nPan.setLayout(new GridLayout());
-        nPan.add(topPanel);
-        nPan.setBorder(new EmptyBorder(8, 0, 35, 0));
-
-        this.add(nPan, BorderLayout.NORTH);
+        this.add(getTopContainer(), BorderLayout.NORTH);
         this.add(westPanel, BorderLayout.WEST);
 
         this.add(mapView);
@@ -904,12 +917,21 @@ public class GraphPlayView extends JPanel {
         }
     }
 
+    public JPanel getTopContainer() {
+        JPanel nPan = new JPanel();
+        nPan.setOpaque(false);
+        nPan.setLayout(new GridLayout());
+        nPan.add(topPanel);
+        nPan.setBorder(new EmptyBorder(8, 0, 35, 0));
+        return nPan;
+    }
+
     public void refreshWestPanel() {
         if(westPanel.getComponentCount() == 0) {
             westPanel.add(new MenuPanel());
         }
         else {
-            String[] panels = {"AlgoPanel", "PlayingPanel"};
+            String[] panels = {"AlgoPanel", "PlayingPanel", "PlayerPanel"};
             for(String pnl : panels) {
                 if(westPanel.getComponent(0).getName().equals(pnl)) {
                     westPanel.removeAll();
@@ -948,13 +970,7 @@ public class GraphPlayView extends JPanel {
         refreshWestPanel();
         topPanel.refreshTitle();
 
-        JPanel nPan = new JPanel();
-        nPan.setOpaque(false);
-        nPan.setLayout(new GridLayout());
-        nPan.add(topPanel);
-        nPan.setBorder(new EmptyBorder(8, 0, 35, 0));
-
-        this.add(nPan, BorderLayout.NORTH);
+        this.add(getTopContainer(), BorderLayout.NORTH);
         this.add(westPanel, BorderLayout.WEST);
 
         this.add(graphView, BorderLayout.CENTER);
@@ -991,8 +1007,11 @@ public class GraphPlayView extends JPanel {
                 Graph graph = Graph.load(file_path.getAbsolutePath());
                 this.graphView = new GraphView(this, graph);
                 this.removeAll();
-                this.add(toolBar, BorderLayout.NORTH);
+                this.add(getTopContainer(), BorderLayout.NORTH);
                 this.add(graphView, BorderLayout.CENTER);
+                setupWestPanel();
+                westPanel.add(new PlayerPanel());
+                this.add(westPanel, BorderLayout.WEST);
                 this.revalidate();
                 this.repaint();
             }catch(Exception e) {

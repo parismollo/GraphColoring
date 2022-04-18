@@ -6,7 +6,7 @@ import gui.GUI;
 public class App {
     public static void main( String[] args ){
         //testRoutine1();
-        GUI gui = new GUI(800, 600);
+        GUI gui = new GUI(1000, 660);
         //gui.setCreatorPage();
         gui.setHomeView();
         // Pour tester la coloration d'une carte :
