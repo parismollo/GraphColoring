@@ -13,6 +13,23 @@ import utils.Complexity;
 public class Greedy {
     public static int operations = 0;
 
+    public static ArrayList<Vertex> selectionSort(ArrayList<Vertex> list) {
+        for(int i = 0 ; i < list.size() -1 ; i ++) {
+            Greedy.operations++;
+            int index = i;
+            for(int j = i + 1 ; j < list.size() ; j++) {
+                Greedy.operations++;
+                if(list.get(j).getId() < list.get(index).getId()) {
+                    index = j;
+                }
+            }
+            Vertex tmp = list.get(index);
+            list.set(index, list.get(i));
+            list.set(i, tmp);
+        }
+        return list;
+    }
+
     public static boolean boolGraphColoringGreedy(int id, Color[] nb, Color[] color_vertex, ArrayList<Vertex> list ){
         if(id == list.size()){
             return true;
@@ -40,25 +57,9 @@ public class Greedy {
         return false;
     }
 
-    public static ArrayList<Vertex> selectionSort(ArrayList<Vertex> list) {
-        for(int i = 0 ; i < list.size() -1 ; i ++) {
-            WelshPowell.operations++;
-            int index = i;
-            for(int j = i + 1 ; j < list.size() ; j++) {
-                WelshPowell.operations++;
-                if(list.get(j).getId() > list.get(index).getId()) {
-                    index = j;
-                }
-            }
-            Vertex tmp = list.get(index);
-            list.set(index, list.get(i));
-            list.set(i, tmp);
-        }
-        return list;
-    }
-
     public static void greedy(Graph graph, Color[] colors){
         long start = System.nanoTime();
+
         graph.setVerticesList(selectionSort(graph.getVertices()));
         ArrayList<Vertex> list = graph.getVertices();
         Color[] color_vertex = new Color[list.size()+1];
@@ -77,12 +78,9 @@ public class Greedy {
         if(boolGraphColoringGreedy(0, colors, color_vertex, list)){
             for(Vertex v : list){
                 Greedy.operations++;
-                
-                System.out.println(v.getId() +" " +  color_vertex[v.getId()]);
                 v.setColor(color_vertex[v.getId()]);
             }
         }
-        System.out.println();
         long end = System.nanoTime();
         int elapsedTime = (int) (end - start);
 
