@@ -170,8 +170,9 @@ public class GraphPlayView extends JPanel {
                 }
 
             });
+                        
         }
-
+        
         public void setSelected(boolean selected) {
             this.selected = selected;
             repaint();
@@ -187,13 +188,15 @@ public class GraphPlayView extends JPanel {
         public void paintComponent(Graphics g) {
             super.paintComponent(g);
             // if mouseEntered change color
+            int w = (int)getPreferredSize().getWidth(),
+            	h = (int)getPreferredSize().getHeight();
             int space = 4;
             g.setColor(color);
-            g.fillOval(space, space, getWidth()-2*space, getHeight()-2*space);
+            g.fillOval(space, space, w-2*space, h-2*space);
             g.setColor(selected ? Color.RED : Color.BLACK);
             Graphics2D g2d = (Graphics2D)g;
-            g2d.setStroke(new BasicStroke(3.0f));
-            g.drawOval(space, space, getWidth()-2*space, getHeight()-2*space);
+            g2d.setStroke(new BasicStroke(2.0f));
+            g.drawOval(space, space, w-2*space, h-2*space);
         }
 
         public Color getColor() {
@@ -294,7 +297,7 @@ public class GraphPlayView extends JPanel {
         public OptionsPanel() {
             
         	this.setOpaque(false);
-            int topBottom = 32, leftRight = 64;
+            int topBottom = 16, leftRight = 64;
 
             this.setBorder(new EmptyBorder(topBottom, leftRight,
                                            topBottom + shadowSpace, leftRight + shadowSpace));
@@ -419,12 +422,12 @@ public class GraphPlayView extends JPanel {
                 tmp = new JPanel();
                 tmp.setOpaque(false);
                 if(i == 0) {
-                    selectedColorBut = new ColorButton(colors[i], 60);
+                    selectedColorBut = new ColorButton(colors[i], 42);
                     selectedColorBut.setSelected(true);
                     tmp.add(selectedColorBut);
                 }
                 else
-                    tmp.add(new ColorButton(colors[i], 60));
+                    tmp.add(new ColorButton(colors[i], 42));
                 this.add(tmp);
                 //this.add(new ColorButton(colors[i]));
             }
@@ -949,7 +952,7 @@ public class GraphPlayView extends JPanel {
         westPanel = new JPanel();
         westPanel.setOpaque(false);
         westPanel.setLayout(new GridLayout());
-        westPanel.setBorder(new EmptyBorder(0, 50, 80, 50)); // 0 pour top car 80 dans topPanel
+        westPanel.setBorder(new EmptyBorder(0, 50, 30, 50)); // 0 pour top car 80 dans topPanel
     }
 
     public void switchToGraph() {
