@@ -49,8 +49,10 @@ public class MapView extends JPanel {
         
         try {
             this.graph = Converter.mapToGraph(RESOURCES_FOLDER+name+".csv");
-            if(graphPlayView != null && graphPlayView.getAlgo() != null && graphPlayView.getColors() != null)
-                graph.applyAlgo(graphPlayView.getAlgo(), graphPlayView.getColors());
+            // Permet de colorier la carte directement.
+            // Je pense que ce n'est plus necessaire.
+            // if(graphPlayView != null && graphPlayView.getAlgo() != null && graphPlayView.getColors() != null)
+            //    graph.applyAlgo(graphPlayView.getAlgo(), graphPlayView.getColors());
             this.image = getImage(name);
 
             if(devMode) {

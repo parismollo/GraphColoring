@@ -1054,7 +1054,7 @@ public class GraphPlayView extends JPanel {
     }
 
     public Color getUserColor() {
-        return selectedColorBut == null ? null : selectedColorBut.getColor();
+        return selectedColorBut == null ? Color.WHITE: selectedColorBut.getColor();
     }
 
     public JToolBar getToolBar() {
