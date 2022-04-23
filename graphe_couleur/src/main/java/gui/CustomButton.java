@@ -69,17 +69,18 @@ public class CustomButton extends JPanel implements MouseListener {
     }
 
     public void setHomeListener(GUI gui, int type) {
+        Color[] colors = {Color.BLUE,Color.RED,Color.GREEN, Color.YELLOW, Color.MAGENTA};
         this.addMouseListener(new MouseAdapter() {
             public void mouseReleased(MouseEvent e) {
                 switch(type) {
                     case 0:
-                       gui.setCreatorPage();
+                        gui.setCreatorPage(colors);
                         break;
                     case 1:
                         gui.setMapChooser(false);
                         break;
                     case 2:
-                        gui.setRandomGraphView(18);
+                        gui.setRandomGraphView(18, colors);
                         break;
                 }
                 background = GUI.LIGHT_COLOR1;

@@ -98,15 +98,15 @@ public class GUI extends JFrame {
 		repaint();
 	}
 
-	public void setRandomGraphView(int edges) {
+	public void setRandomGraphView(int edges, Color[] colors) {
 		Graph g = Voronoi.runVoronoi(edges, false, false, 500, false);
-		setGraphViewPage(g);
+		setGraphViewPage(g, null, null, colors, true);
 	}
 
-	public void setCreatorPage() {
+	public void setCreatorPage(Color[] colors) {
 		this.getContentPane().removeAll();
 		this.setResizable(true);
-		this.getContentPane().add(new GraphPlayView(this));
+		this.getContentPane().add(new GraphPlayView(this, colors));
 		revalidate();
 		repaint();
 	}
@@ -125,7 +125,7 @@ public class GUI extends JFrame {
 		//this.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		GraphPlayView graphPlayView;
 		if(graph != null)
-			graphPlayView = new GraphPlayView(this, graph, width, height);
+			graphPlayView = new GraphPlayView(this, graph, colors, width, height);
 		else
 			graphPlayView = new GraphPlayView(this, name, algo, width, height, colors, isGraph);
 		this.getContentPane().add(graphPlayView);

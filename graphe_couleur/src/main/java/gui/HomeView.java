@@ -18,24 +18,9 @@ public class HomeView extends JPanel {
     
     private GUI gui;
 
-    private JButton graphCreator = new JButton("Graph Creator"),
-                    mapChooser = new JButton("Choose Map"),
-                    randomGraph = new JButton("Random Graph");
-
     public HomeView(GUI gui) {
         this.gui = gui;
 
-        graphCreator.addActionListener(e -> {
-            gui.setCreatorPage();
-        });
-
-        mapChooser.addActionListener(e -> {
-            gui.setMapChooser(false);
-        });
-
-        randomGraph.addActionListener(e -> {
-            gui.setRandomGraphView(18);
-        });
         /*
         JPanel centerPan = new JPanel();
         centerPan.setPreferredSize(new Dimension(300, 150));
@@ -72,8 +57,8 @@ public class HomeView extends JPanel {
     public void resize(JPanel pan, CenterPan centerPan) {
     	Dimension screen = gui.getSize();
         int w = 1920, h = 1010;
-        int top = ((int)screen.getWidth() * 170) / w;
-        int left = ((int)screen.getHeight() * 500) / h;
+        int top = ((int)screen.getHeight() * 170) / h;
+        int left = ((int)screen.getWidth() * 500) / w;
         pan.setBorder(new EmptyBorder(top, left, top, left));
         int iconSize = 128, textSize = 32;
         int s1 = ((int)screen.getHeight() * iconSize) / h;
