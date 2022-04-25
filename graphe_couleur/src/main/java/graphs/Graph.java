@@ -267,4 +267,19 @@ public class Graph implements Serializable {
         //graph.setVerticesList(vertices);
     }
 
+    public static boolean isWellColored(Graph graph){//retourne false si le graphe n'est pas entiérement coloré ou si il est mal coloré (2 vertex voisins avec la même couleur) et true sinon
+        ArrayList<Vertex> vertices = graph.getVertices();
+        for(Vertex v : vertices){
+            Color c = v.getColor();
+            if(c.equals(Color.white)){
+                return false;
+            }
+            for(Vertex next : v.getVertices()){//version naive donc on va comparer plusieurs fois la même chose
+                if(next.getColor().equals(c))
+                    return false;
+            }
+        }
+        return true;
+    }
+
 }

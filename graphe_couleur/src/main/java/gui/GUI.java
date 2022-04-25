@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import javax.swing.JFrame;
@@ -12,6 +13,7 @@ import javax.swing.JPanel;
 import algorithms.Dsatur;
 import algorithms.Kempe;
 import graphs.Graph;
+import utils.Converter;
 import utils.Voronoi;
 
 public class GUI extends JFrame {
@@ -62,17 +64,9 @@ public class GUI extends JFrame {
 		//testBestGreedy();
 		//testKempeChain(colors);
 		//testKempeChainEchec(colors);
-
 		
-		// TEST GRAPH BEBOU
-		/*
-		Graph random = Graph.randomGraph(11);
-		try {
-			random.save("src/resources/graphBebou.txt");
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}*/
-		//testBebou("KEMPE", colors);
+		
+		
 		
 		this.addWindowListener(new WindowAdapter()
         {
@@ -265,5 +259,29 @@ public class GUI extends JFrame {
 		// graph.print();
 		setGraphViewPage(graph);
 	}
+
+	// Quelques tests :
+	/* Test de la fonction isWellColored
+		Graph graph = null;
+		try {
+			graph = Converter.mapToGraph(MapView.RESOURCES_FOLDER+"Europe.csv");
+		} catch (FileNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		System.out.println(Graph.isWellColored(graph));
+		Kempe.kempe(graph, colors);
+		System.out.println(Graph.isWellColored(graph));
+		*/
+
+		// TEST GRAPH BEBOU
+		/*
+		Graph random = Graph.randomGraph(11);
+		try {
+			random.save("src/resources/graphBebou.txt");
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}*/
+		//testBebou("KEMPE", colors);
 	
 }
