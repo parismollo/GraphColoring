@@ -1,0 +1,12 @@
+State,Borders
+Corps,"Rond Droit, Rond Gauche, Pied Droit, Pied Gauche, Rayure Haut, Rayure Bas, Debut Queue, Fin Queue","245,446"
+Pupille Droite,"None","278,289"
+Pupille Gauche,"None","176,290"
+Rond Droit,"Corps","312,342"
+Rond Gauche,"Corps","139,350"
+Pied Droit,"Corps","370,624"
+Pied Gauche,"Corps","183,620"
+Rayure Haut,"Corps, Fin Queue","379,452"
+Rayure Bas,"Corps, Debut Queue","397,513"
+Debut Queue,"Corps, Rayure Bas, Fin Queue","428,522"
+Fin Queue,"Corps, Rayure Haut, Debut Queue","440,375"
