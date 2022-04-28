@@ -23,6 +23,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
 import javax.swing.JToolBar;
@@ -569,6 +570,7 @@ public class GraphPlayView extends JPanel {
 
                     } else {
                         System.out.println("[LOG]: Graph is empty, try again later...");
+                        JOptionPane.showMessageDialog(getPanel("AlgoPanel"), "Nothing here so far. Please create a graph!", "Error!", JOptionPane.ERROR_MESSAGE);
                     }
                 }
             });
