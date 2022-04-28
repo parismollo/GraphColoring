@@ -11,7 +11,10 @@ import graphs.Graph;
 
 public class ComplexityInterface {
 
-    public static void main(String[] args) {
+    public static ArrayList<Graph> graphs;
+
+    public static JFrame getFrame() {
+
         JFrame frame = new JFrame();
         JPanel resultsPanel = new JPanel();
         resultsPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
@@ -35,11 +38,6 @@ public class ComplexityInterface {
 
         setTableHeader(resultsPanel, customFont);
 
-        int iterations = 10;
-        int density =  10;
-        boolean euclidian = false;
-
-        ArrayList<Graph> graphs = Complexity.generateRandomGraphs(iterations, density, euclidian);
         String[] dsaturResults = Complexity.computePerfomance(graphs, "dsatur");
         String[] greedyResults = Complexity.computePerfomance(graphs, "greedy");
         String[] welshResults = Complexity.computePerfomance(graphs, "welsh");
@@ -58,15 +56,20 @@ public class ComplexityInterface {
         for (String string : kempeResults) {
             resultsPanel.add(getJlabel(string, customFont, true));
         }
-        
         frame.add(resultsPanel);    
         frame.setSize(700,400); 
         frame.setVisible(true);
 		frame.setResizable(false);
 		frame.setLocationRelativeTo(null);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        // frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        return frame;
 
     }
+
+
+    public static void setGraphs(ArrayList<Graph> graphs) {
+        ComplexityInterface.graphs = graphs;
+    } 
 
     private static void setTableHeader(JPanel resultsPanel, Font customFont) {
         resultsPanel.add(getJlabel("Algorithm", customFont, false));

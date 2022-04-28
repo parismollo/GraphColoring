@@ -16,10 +16,12 @@ import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.JFileChooser;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
@@ -31,6 +33,7 @@ import javax.swing.event.ChangeListener;
 import javax.swing.filechooser.FileSystemView;
 
 import graphs.Graph;
+import utils.ComplexityInterface;
 
 public class GraphPlayView extends JPanel {
 
@@ -550,6 +553,25 @@ public class GraphPlayView extends JPanel {
             CustomButton runbut = new CustomButton("run", "Run Simulation");
             runbut.changeIconSize(64);
             runbut.changeTextSize(20);
+            runbut.addMouseListener(new MouseAdapter() {
+                public void mousePressed(MouseEvent e) {
+                    System.out.println("[LOG]: Run simulation: Mouse Pressed");
+                    if (graph.getVertices().size() > 0) {
+                        System.out.println(graph.toString());
+                
+                        ArrayList<Graph> graphs = new ArrayList<Graph>(); // Create an ArrayList object
+                        graphs.add(graph);
+                        System.out.println(graph.getVertices().size());
+                        ComplexityInterface.setGraphs(graphs);
+                        JFrame frame = ComplexityInterface.getFrame();
+                        frame.setVisible(true);
+                        // frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+                    } else {
+                        System.out.println("[LOG]: Graph is empty, try again later...");
+                    }
+                }
+            });
             this.add(runbut);
             
             if(switchBut != null)

@@ -5,7 +5,6 @@ import algorithms.Greedy;
 import algorithms.Kempe;
 import algorithms.WelshPowell;
 import graphs.Graph;
-import gui.GUI;
 
 import java.awt.Color;
 import java.util.ArrayList;
@@ -36,7 +35,7 @@ public class Complexity {
 
     public static ArrayList<Graph> generateRandomGraphs(int number, int density, boolean euclidian) {
         ArrayList<Graph> graphs = new ArrayList<Graph>(); // Create an ArrayList object
-        Complexity.inputSize = density;
+        // Complexity.inputSize = density;
 
         for(int i=0; i<number; i++) {
             graphs.add(Voronoi.runVoronoi(density, euclidian, false, 500, true));
@@ -93,6 +92,7 @@ public class Complexity {
         timeComplexityAvg.add(timeCommplexity);
         runTimeAvg.add(runTime);
         numberOfColorsAvg.add(numberOfColors);
+        Complexity.inputSize = graph.getVertices().size();
     }
 
     public static String[] infoAvg(String title) {
