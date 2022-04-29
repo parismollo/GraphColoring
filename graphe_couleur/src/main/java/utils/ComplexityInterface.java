@@ -68,6 +68,7 @@ public class ComplexityInterface {
 
 
     public static void setGraphs(ArrayList<Graph> graphs) {
+        ComplexityInterface.graphs = null;
         ComplexityInterface.graphs = graphs;
     } 
 

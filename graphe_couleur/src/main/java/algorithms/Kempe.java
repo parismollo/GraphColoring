@@ -9,7 +9,7 @@ import graphs.Vertex;
 import utils.Complexity;
 
 public class Kempe {
-    static int operations = 0;
+    public static int operations = 0;
 
     public static void reverseKempeChain(Graph graph) {
         ArrayList<Vertex> vertices = graph.getVertices();

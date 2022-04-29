@@ -33,6 +33,16 @@ public class Complexity {
     // public static int b = 0;
 
 
+    public static void resetParams() {
+        Complexity.timeCommplexity = 0;
+        Complexity.runTime = 0;
+        Complexity.numberOfColors = 0;
+        Complexity.timeComplexityAvg.clear();
+        Complexity.runTimeAvg.clear();
+        Complexity.numberOfColorsAvg.clear();
+    }
+
+
     public static ArrayList<Graph> generateRandomGraphs(int number, int density, boolean euclidian) {
         ArrayList<Graph> graphs = new ArrayList<Graph>(); // Create an ArrayList object
         // Complexity.inputSize = density;
@@ -56,6 +66,8 @@ public class Complexity {
                 for (Graph graph : graphs) {
                     Dsatur.dsatur(graph, colors);
                     updateStats(graph);
+                    // reset the stats at dsatur
+                    Dsatur.operations = 0;
                 }
                 break;
 
@@ -63,6 +75,8 @@ public class Complexity {
                 for (Graph graph : graphs) {
                     Kempe.kempe(graph, colors);
                     updateStats(graph);
+                    // reset the stats at kempe
+                    Kempe.operations = 0;
                 }
                 break;
 
@@ -70,6 +84,8 @@ public class Complexity {
                 for (Graph graph : graphs) {
                     Greedy.greedy(graph, colors);
                     updateStats(graph);
+                    // reset the stats at greedy
+                    Greedy.operations = 0;
                 }
                 break;
 
@@ -77,6 +93,7 @@ public class Complexity {
                 for (Graph graph : graphs) {
                     WelshPowell.welshPowell(graph, colors);
                     updateStats(graph);
+                    WelshPowell.operations = 0;
                 }
                 break;
 

@@ -8,7 +8,7 @@ import graphs.Vertex;
 import utils.Complexity;
 
 public class Dsatur {
-    static int operations = 0;
+    public static int operations = 0;
 
     public static ArrayList<Vertex> selectionSort(ArrayList<Vertex> list) {
         for(int i = 0 ; i < list.size() -1 ; i ++) {

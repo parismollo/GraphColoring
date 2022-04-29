@@ -34,6 +34,7 @@ import javax.swing.event.ChangeListener;
 import javax.swing.filechooser.FileSystemView;
 
 import graphs.Graph;
+import utils.Complexity;
 import utils.ComplexityInterface;
 
 public class GraphPlayView extends JPanel {
@@ -556,10 +557,9 @@ public class GraphPlayView extends JPanel {
             runbut.changeTextSize(20);
             runbut.addMouseListener(new MouseAdapter() {
                 public void mousePressed(MouseEvent e) {
+                    // Complexity.resetParams();
                     System.out.println("[LOG]: Run simulation: Mouse Pressed");
-                    if (graph.getVertices().size() > 0) {
-                        System.out.println(graph.toString());
-                
+                    if (graph.getVertices().size() > 0) {                
                         ArrayList<Graph> graphs = new ArrayList<Graph>(); // Create an ArrayList object
                         graphs.add(graph);
                         System.out.println(graph.getVertices().size());
