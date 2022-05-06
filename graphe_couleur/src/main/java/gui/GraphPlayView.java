@@ -34,7 +34,6 @@ import javax.swing.event.ChangeListener;
 import javax.swing.filechooser.FileSystemView;
 
 import graphs.Graph;
-import utils.Complexity;
 import utils.ComplexityInterface;
 
 public class GraphPlayView extends JPanel {
@@ -42,7 +41,7 @@ public class GraphPlayView extends JPanel {
 	private static final long serialVersionUID = 1L;
 
 	private GUI gui;
-    private String title;
+    protected String title;
 
     private ColorButton selectedColorBut;
     private ImageButton selectedDrawBut;
@@ -60,13 +59,12 @@ public class GraphPlayView extends JPanel {
     private Color[] colors;
 
     private JPanel westPanel;
-    private TopPanel topPanel;
+    protected TopPanel topPanel;
     private boolean creatorMode;
 
     private boolean isGraph = true;
     
     public GraphPlayView(GUI gui, Color[] colors) {
-        this.title = "Graph Creator";
         this.creatorMode = true;
         this.gui = gui;
         this.colors = colors;
@@ -86,9 +84,7 @@ public class GraphPlayView extends JPanel {
         this.setBackground(GUI.BACKGROUND_COLOR);
     }
 
-    // ICI : isGraph = true.
     public GraphPlayView(GUI gui, Graph graph, Color[] colors, int width, int height) {
-        this.title = "Random Graph";
         this.gui = gui;
         this.colors = colors;
         this.graphView = new GraphView(this, graph, width, height);
@@ -700,7 +696,7 @@ public class GraphPlayView extends JPanel {
     	
     }
 
-    private class TopPanel extends JPanel {
+    protected class TopPanel extends JPanel {
 
 		private static final long serialVersionUID = 1L;
         

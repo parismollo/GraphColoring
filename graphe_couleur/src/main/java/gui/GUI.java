@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import javax.swing.JFrame;
@@ -13,7 +12,6 @@ import javax.swing.JPanel;
 import algorithms.Dsatur;
 import algorithms.Kempe;
 import graphs.Graph;
-import utils.Converter;
 import utils.Voronoi;
 
 public class GUI extends JFrame {
@@ -93,14 +91,19 @@ public class GUI extends JFrame {
 	}
 
 	public void setRandomGraphView(int edges, Color[] colors) {
+		this.getContentPane().removeAll();
+		this.setResizable(true);
 		Graph g = Voronoi.runVoronoi(edges, false, false, 500, false);
-		setGraphViewPage(g, null, null, colors, true);
+		RandomGraphView rgv = new RandomGraphView(this, g, colors, width, height);
+		this.getContentPane().add(rgv);
+		revalidate();
+		repaint();
 	}
 
 	public void setCreatorPage(Color[] colors) {
 		this.getContentPane().removeAll();
 		this.setResizable(true);
-		this.getContentPane().add(new GraphPlayView(this, colors));
+		this.getContentPane().add(new GraphCreatorView(this, colors));
 		revalidate();
 		repaint();
 	}
