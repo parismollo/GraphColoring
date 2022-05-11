@@ -386,7 +386,7 @@ public class GraphPlayView extends JPanel {
 		public PlayingPanel() {
     		setName("PlayingPanel");
 
-            int line = creatorMode ? 5 : 4;
+            int line = creatorMode ? 6 : 5;
             CustomButton switchBut = createSwitchBut();
             if(!creatorMode && switchBut == null)
                 line--;
@@ -406,6 +406,8 @@ public class GraphPlayView extends JPanel {
     		    this.add(new GraphCreatorPanel());
             }
     		
+            this.add(new CheckColoringPanel());
+
     		JSlider slider = getSlider(VertexView.DEFAULT_SIZE, 0, 300, 75, 75);
     		slider.setOpaque(false);
             slider.addChangeListener(new ChangeListener() {
@@ -425,6 +427,84 @@ public class GraphPlayView extends JPanel {
                 this.add(createSwitchBut());
         }
 
+    }
+
+    private class CheckColoringPanel extends JPanel {
+
+        private JLabel msg;
+
+        public CheckColoringPanel() {
+            this.setOpaque(false);
+            StrButton reset = new StrButton("Reset", GUI.LIGHT_COLOR1);
+            StrButton check = new StrButton("Check coloring", GUI.LIGHT_COLOR1);
+
+            reset.addMouseListener(new MouseAdapter() {
+                public void mousePressed(MouseEvent e) {
+                    super.mousePressed(e);
+                    graph.cleanVertices(Color.WHITE);
+                    if (isGraph)
+                        switchToGraph();
+                    else
+                        switchToMap();
+                }
+                @Override
+                public void mouseEntered(MouseEvent e) {
+                    reset.setBgColor(GUI.LIGHT_COLOR2);
+                    repaint();
+                }
+
+                @Override
+                public void mouseExited(MouseEvent e) {
+                    reset.setBgColor(GUI.LIGHT_COLOR1);
+                    repaint();
+                }
+            });
+
+            check.addMouseListener(new MouseAdapter() {
+                public void mousePressed(MouseEvent e) {
+                    super.mousePressed(e);
+                    if(graph.isWellColored())
+                        setMsg("Le graphe est bien colorié !", Color.GREEN);
+                    else
+                        setMsg("Erreur ! Le graphe a été mal colorié.", Color.RED);
+                }
+                @Override
+                public void mouseEntered(MouseEvent e) {
+                    check.setBgColor(GUI.LIGHT_COLOR2);
+                    repaint();
+                }
+
+                @Override
+                public void mouseExited(MouseEvent e) {
+                    check.setBgColor(GUI.LIGHT_COLOR1);
+                    repaint();
+                }
+            });
+
+            this.setLayout(new GridLayout(2, 1));
+            
+            JPanel pan = getTempPanel();
+            pan.setLayout(new GridLayout(1, 2));
+            pan.add(reset);
+            pan.add(check);
+            this.add(pan);
+
+            msg = new JLabel("Check your graph !");
+            msg.setHorizontalAlignment(JLabel.CENTER);
+            pan = getTempPanel();
+            pan.setLayout(new GridBagLayout());
+            pan.add(msg);
+            this.add(pan);
+        }
+
+        public void setMsg(String message) {
+            setMsg(message, Color.BLACK);
+        }
+
+        public void setMsg(String message, Color textColor) {
+            msg.setForeground(textColor);
+            this.msg.setText(message);
+        }
     }
 
     private class ColorPanel extends JPanel {
