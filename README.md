@@ -30,3 +30,4 @@ Ecrire la commande suivante dans le terminal :
 
 Si cette commande ne fonctionne pas, vous pouvez essayer celle là:
     java -cp graph_coloring.jar launcher.App
+
