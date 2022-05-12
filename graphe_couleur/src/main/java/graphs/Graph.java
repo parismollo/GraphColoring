@@ -274,6 +274,8 @@ public class Graph implements Serializable {
     public static boolean isWellColored(Graph graph){//retourne false si le graphe n'est pas entiérement coloré ou si il est mal coloré (2 vertex voisins avec la même couleur) et true sinon
         ArrayList<Vertex> vertices = graph.getVertices();
         for(Vertex v : vertices){
+            if(v.getTitle() == "None")
+                continue;
             Color c = v.getColor();
             if(c.equals(Color.white)){
                 return false;
