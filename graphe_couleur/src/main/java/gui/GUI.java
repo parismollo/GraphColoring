@@ -36,7 +36,7 @@ public class GUI extends JFrame {
 	private int height;
 	
 	public GUI(int w, int h) {
-		this.setTitle("Graph");
+		this.setTitle("Graph coloring");
 		this.width = w;
 		this.height = h;
 		this.setMinimumSize(new Dimension(width+75, height));

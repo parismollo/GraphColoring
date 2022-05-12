@@ -1,20 +1,32 @@
-# PROJET COLORATION DE GRAPHES!
+# PROJET COLORATION DE GRAPHES
 
 LE PROJET :
 
-Ce dépôt correspond au projet sur le Théorème des 4 couleurs. Le but du projet est la coloration de cartes avec 4 ou 5 couleurs en transformant ces cartes en graphes planaires que l'on colorie.
-Il est donc possible grâce à ce projet, depuis une interface graphique, de créer des graphes planaires aléatoire ou de construire des graphes. 
-On peut ensuite colorier ces graphes ainsi que des cartes que l'on peut aussi transformer en graphes.
-La coloration s'effectue de deux maniéres :
-- soit à l'aide de différents algorithmes, en ayant des informations sur le temps et l'efficacité de ces algorithmes pour le graphe coloré,
--soit manuellement, avec la possibilité de vérifier que la coloration est correcte.
+Ce dépôt correspond au projet sur le Théorème des 4 couleurs. Le but du projet est de colorier des cartes avec 4 ou 5 couleurs en les transformant d'abord en graphes planaires. On peut alors choisir d'afficher le graphe ou la carte, et observer le resultat sur une interface graphique.
 
-Ce projet à été réaliser par Jade Cortial, Alexandre Zhou, Leopold Abignoli, Paris Mollo et Daniel Gilardoni
+La coloration s'effectue de deux manières :
+- soit à l'aide de différents algorithmes (dont on peut observer le résultat de leur temps d'execution et complexité selon le graphe colorié).
+- soit manuellement, avec la possibilité de vérifier que la coloration est correcte.
+
+Il est également possible, de générer des graphes planaires aléatoires ou alors de les construire à l'aide de la souris.
+Finalement, le logiciel dispose d'un mode de jeu où l'utilisateur peut colorier un(e) carte/graphe et verifier si le coloriage est réussi.
+
+Ce projet à été réalisé par Jade Cortial, Alexandre Zhou, Leopold Abignoli, Paris Mollo et Daniel Gilardoni
 
 LANCER LE PROJET :
 
 Cloner le dépôt :
-    git clone [URL du dépôt]
-Aller dans le dossier cloné "graphe_couleur"
-Ecrire les commandes suivantes dans le terminal :
-    java -cp graphes_coloration.jar launcher.App
+
+HTTPS:
+    git clone https://gaufre.informatique.univ-paris-diderot.fr/cortial/projetajlp.git
+
+SSH:
+    git clone git@gaufre.informatique.univ-paris-diderot.fr:cortial/projetajlp.git
+
+Aller dans le dossier "graph_coloring".
+
+Ecrire la commande suivante dans le terminal :
+    java -jar graph_coloring.jar
+
+Si cette commande ne fonctionne pas, vous pouvez essayer celle là:
+    java -cp graph_coloring.jar launcher.App

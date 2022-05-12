@@ -2,4 +2,4 @@
 export ARGS=`echo "$@"`
 mvn package
 clear
-java -cp ./target/graphe*.jar launcher.App "$ARGS"
+java -cp ./target/g*.jar launcher.App "$ARGS"
