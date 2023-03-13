@@ -1,33 +1,28 @@
-# PROJET COLORATION DE GRAPHES
+# Graph Coloring Project
 
-LE PROJET :
+## Project Description:
 
-Ce dépôt correspond au projet sur le Théorème des 4 couleurs. Le but du projet est de colorier des cartes avec 4 ou 5 couleurs en les transformant d'abord en graphes planaires. On peut alors choisir d'afficher le graphe ou la carte, et observer le resultat sur une interface graphique.
+This repository corresponds to the project on the Four Color Theorem. The goal of the project is to color maps with 4 or 5 colors by first transforming them into planar graphs. You can then choose to display the graph or the map, and observe the result on a graphical interface.
 
-La coloration s'effectue de deux manières :
-- soit à l'aide de différents algorithmes (dont on peut observer le résultat de leur temps d'execution et complexité selon le graphe colorié).
-- soit manuellement, avec la possibilité de vérifier que la coloration est correcte.
+The coloring is done in two ways:
 
-Il est également possible, de générer des graphes planaires aléatoires ou alors de les construire à l'aide de la souris.
-Finalement, le logiciel dispose d'un mode de jeu où l'utilisateur peut colorier un(e) carte/graphe et verifier si le coloriage est réussi.
+1. Either using different algorithms (whose result of execution time and complexity can be observed according to the colored graph).
+2. Or manually, with the possibility of verifying that the coloring is correct.
 
-Ce projet à été réalisé par Jade Cortial, Alexandre Zhou, Leopold Abignoli, Paris Mollo et Daniel Gilardoni
+It is also possible to generate random planar graphs or to construct them using the mouse. Finally, the software has a game mode where the user can color a map/graph and check if the coloring is successful.
 
-LANCER LE PROJET :
+This project was carried out by Jade Cortial, Alexandre Zhou, Leopold Abignoli, Paris Mollo and Daniel Gilardoni.
 
-Cloner le dépôt :
+## How to run the project:
 
-HTTPS:
-    git clone https://gaufre.informatique.univ-paris-diderot.fr/cortial/projetajlp.git
+Clone the repository:
 
-SSH:
-    git clone git@gaufre.informatique.univ-paris-diderot.fr:cortial/projetajlp.git
+HTTPS: git clone https://gaufre.informatique.univ-paris-diderot.fr/cortial/projetajlp.git
 
-Aller dans le dossier "graph_coloring".
+SSH: git clone git@gaufre.informatique.univ-paris-diderot.fr:cortial/projetajlp.git
 
-Ecrire la commande suivante dans le terminal :
-    java -jar graph_coloring.jar
+Go to the "graph_coloring" folder.
 
-Si cette commande ne fonctionne pas, vous pouvez essayer celle là:
-    java -cp graph_coloring.jar launcher.App
+Type the following command in the terminal: java -jar graph_coloring.jar
 
+If this command doesn't work, you can try this one: java -cp graph_coloring.jar launcher.App
